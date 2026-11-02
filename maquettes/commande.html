@@ -30,11 +30,34 @@
   .bandeau-gros { background: var(--bleu-pale); color: #123E61; }
   .bandeau-gros div { max-width: 1360px; margin: 0 auto; padding: 10px 24px; font-size: 14px; }
 
+  /* ===== Cartes de catégories ===== */
+  .categories { margin-bottom: 24px; }
+  .categories .titre-ligne h2 { font-size: 24px; }
+  .grille-cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .cat { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 14px; border-radius: 14px; border: 2px solid transparent; cursor: pointer; text-align: left; font: inherit; color: var(--encre); min-height: 124px; transition: transform .12s, box-shadow .12s, border-color .12s; }
+  .cat:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(30,27,22,.10); }
+  .cat:focus-visible { outline: 3px solid var(--vert); outline-offset: 2px; }
+  .cat .ico { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.7); display: grid; place-items: center; }
+  .cat .txt { display: flex; flex-direction: column; gap: 4px; margin-top: auto; }
+  .cat b { font-size: 15px; line-height: 1.25; }
+  .cat .nb { font-size: 13px; font-weight: 700; color: var(--texte-2); }
+  .cat[aria-pressed="true"] { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(31,77,46,.15); }
+  .cat[aria-pressed="true"] .nb { color: var(--vert); }
+  .cat-tout { background: var(--vert); color: var(--manioc); }
+  .cat-tout .nb { color: var(--manioc); opacity: .9; }
+  .cat-tout .ico { background: rgba(247,242,232,.15); }
+  .cat-tout[aria-pressed="true"] { border-color: var(--osier); box-shadow: 0 0 0 3px rgba(212,154,58,.35); }
+  .cat-tout[aria-pressed="true"] .nb { color: var(--manioc); }
+  .entete-liste { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .entete-liste .nb-cat { background: var(--vert-pale); color: var(--vert); font-weight: 800; font-size: 14px; border-radius: 999px; padding: 2px 12px; }
+
   /* ===== Barre de filtres regroupés ===== */
   .outils { margin-bottom: 16px; }
   .gauche { min-width: 0; }
+  /* assez de hauteur pour que le panier reste collé même quand la catégorie a peu de produits */
+  @media (min-width: 1101px) { .gauche { min-height: calc(100vh + 420px); } }
   .titre-ligne { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
-  .titre-ligne h1 { font-size: 28px; }
+  .titre-ligne h1 { font-size: 28px; scroll-margin-top: 110px; outline: none; }
   .titre-ligne p { margin: 0; color: var(--texte-3); font-size: 14px; }
   .barre-filtres { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px; background: var(--blanc); border: 1px solid var(--ligne); border-radius: 14px; }
   .barre-filtres .lib { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-3); padding: 0 6px; }
@@ -90,7 +113,7 @@
   .pas button { height: 100%; border: 0; background: none; font-size: 20px; font-weight: 800; cursor: pointer; color: var(--encre); border-radius: 10px; }
   .pas button:hover { background: var(--manioc); }
   .pas output { text-align: center; font-weight: 800; font-size: 15px; }
-  .achat .btn { width: 100%; }
+  .achat .btn { width: 100%; gap: 0; }
   .btn-preco { background: var(--osier); color: var(--encre); }
   .btn-preco:hover { background: #E0A847; color: var(--encre); }
   .vide-res { padding: 48px; text-align: center; color: var(--texte-3); grid-column: 1 / -1; }
@@ -171,6 +194,7 @@
   .puces-f label:has(input:checked) { border-color: var(--vert); background: var(--vert-pale); color: var(--vert); font-weight: 800; }
   .puces-f input { position: absolute; opacity: 0; width: 1px; height: 1px; }
   .puces-f label:has(input:focus-visible) { outline: 2px solid var(--vert); outline-offset: 2px; }
+  .feuille-pied .btn { white-space: nowrap; padding: 0 12px; }
   .feuille-pied { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--ligne); }
 
   @media (max-width: 1100px) {
@@ -219,11 +243,21 @@
   @media (max-width: 760px) {
     .entete-in { flex-wrap: wrap; padding: 10px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left)); gap: 10px; }
     .marque { flex: 1; min-width: 0; }
+    .entete { position: static; }
+    .titre-ligne h1 { scroll-margin-top: 12px; }
     .canal { order: 4; flex: 1 1 100%; }
     .canal button { flex: 1; }
     .marque b { font-size: 17px; } .marque img { width: 38px; height: 38px; }
     .recherche { order: 3; flex-basis: 100%; }
     .titre-ligne h1 { font-size: 23px; }
+    .grille-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .cat { flex-direction: row; align-items: center; min-height: 64px; padding: 10px; gap: 10px; }
+    .cat .ico { width: 38px; height: 38px; flex: none; }
+    .cat .txt { margin-top: 0; min-width: 0; gap: 0; }
+    .cat b { font-size: 14px; }
+    .cat .nb { margin-top: 2px; font-size: 12.5px; }
+    .categories .titre-ligne h2 { font-size: 20px; }
+    .categories .titre-ligne p { display: none; }
     .tiroir { width: 100%; }
     .tiroir-corps { padding-bottom: 24px; }
     .tiroir .totaux { padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
@@ -244,7 +278,7 @@
 </style>
 </head>
 <body>
-<div class="exemple">Maquette v3.1 pour présentation — produits et prix d’exemple · <a href="index.html">Retour au sommaire</a></div>
+<div class="exemple">Maquette v3.2 pour présentation — produits et prix d’exemple · <a href="index.html">Retour au sommaire</a></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-feuille" viewBox="0 0 64 64"><path d="M14 50C14 26 30 12 52 12c0 24-14 40-38 38z M14 50 36 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -277,21 +311,25 @@
 
 <main class="corps">
   <div class="gauche">
+  <section class="categories" aria-labelledby="t-cats">
+    <div class="titre-ligne"><h2 id="t-cats">Nos catégories</h2><p>Touchez une catégorie pour voir ses produits</p></div>
+    <div class="grille-cats" id="grille-cats"></div>
+  </section>
   <section class="outils" aria-label="Recherche et filtres">
-  <div class="titre-ligne"><h1 id="t-res">Tous les produits</h1><p id="nb-res"></p></div>
+  <div class="titre-ligne"><div class="entete-liste"><h1 id="t-res" tabindex="-1">Tous les produits</h1><span class="nb-cat" id="nb-cat"></span></div><p id="nb-res"></p></div>
   <div class="barre-filtres" id="barre-filtres">
     <span class="lib">Filtrer</span>
-    <div class="deroul" data-f="cat"><button type="button" aria-expanded="false">Catégorie <span class="compte" hidden></span><svg width="16" height="16" aria-hidden="true"><use href="#i-fleche"/></svg></button><div class="menu-d" role="group" aria-label="Catégorie"></div></div>
+    
     <div class="deroul" data-f="dispo"><button type="button" aria-expanded="false">Disponibilité <span class="compte" hidden></span><svg width="16" height="16" aria-hidden="true"><use href="#i-fleche"/></svg></button><div class="menu-d" role="group" aria-label="Disponibilité"></div></div>
     <div class="deroul" data-f="cons"><button type="button" aria-expanded="false">Conservation <span class="compte" hidden></span><svg width="16" height="16" aria-hidden="true"><use href="#i-fleche"/></svg></button><div class="menu-d" role="group" aria-label="Conservation"></div></div>
     <div class="deroul" data-f="unite"><button type="button" aria-expanded="false">Vendu en <span class="compte" hidden></span><svg width="16" height="16" aria-hidden="true"><use href="#i-fleche"/></svg></button><div class="menu-d" role="group" aria-label="Vendu en"></div></div>
     <span class="sep" aria-hidden="true"></span>
-    <div class="tri"><label for="tri" class="lib">Trier</label><select id="tri"><option value="pop">Populaires</option><option value="prix">Prix croissant</option><option value="nom">Nom A–Z</option></select></div>
+    <div class="tri"><label for="tri" class="lib">Trier</label><select id="tri"><option value="nom">Nom A–Z</option><option value="prix">Prix croissant</option><option value="pop">Populaires</option></select></div>
   </div>
   <div class="filtres-compact">
     <button class="btn btn-secondaire" type="button" id="ouvrir-filtres"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Filtres<span class="compte" id="nb-filtres" hidden></span></button>
     <label class="sr" for="tri-m">Trier</label>
-    <select id="tri-m"><option value="pop">Populaires</option><option value="prix">Prix croissant</option><option value="nom">Nom A–Z</option></select>
+    <select id="tri-m"><option value="nom">Nom A–Z</option><option value="prix">Prix croissant</option><option value="pop">Populaires</option></select>
   </div>
   <div class="actifs" id="actifs" aria-live="polite"></div>
 </section>
@@ -322,7 +360,7 @@
   <div class="feuille-tete"><h2 id="t-feuille">Filtres</h2><button class="x" type="button" id="fermer-filtres" aria-label="Fermer les filtres">×</button></div>
   <div class="feuille-corps" id="feuille-corps"></div>
   <div class="feuille-pied">
-    <button class="btn btn-secondaire" type="button" id="effacer-f">Tout effacer</button>
+    <button class="btn btn-secondaire" type="button" id="effacer-f">Effacer</button>
     <button class="btn btn-primaire" type="button" id="voir-res">Voir les produits</button>
   </div>
 </section>
@@ -416,7 +454,7 @@ const produits = [
     { c: 'detail', u: 'unité', lib: 'Bouteille de 330 ml', l: .33, prix: 2.29 },
     { c: 'gros', u: 'unité', lib: 'Caisse de 24 bouteilles', l: 7.92, prix: 49.99 } ] }
 ];
-const etat = { canal: 'detail', cat: new Set(), dispo: new Set(), cons: new Set(), unite: new Set(), q: '', tri: 'pop' };
+const etat = { canal: 'detail', cat: new Set(), dispo: new Set(), cons: new Set(), unite: new Set(), q: '', tri: 'nom' };
 const optionsF = {
   cat: () => Object.keys(teintes).map(c => [c, c, produits.filter(p => p.cat === c).length]),
   dispo: () => [['stock', 'En stock', produits.filter(p => p.stock > 0).length], ['preco', 'En précommande', produits.filter(p => p.stock <= 0).length]],
@@ -443,7 +481,7 @@ function filtrer() {
     if (etat.cons.size && !etat.cons.has(p.surgele ? 'surgele' : 'sec')) return false;
     if (etat.unite.size && !formatsDe(p).some(f => etat.unite.has(f.u))) return false;
     return true;
-  }).sort((a, b) => etat.tri === 'nom' ? a.nom.localeCompare(b.nom) : etat.tri === 'prix' ? formatChoisi(a).prix - formatChoisi(b).prix : a.pop - b.pop);
+  }).sort((a, b) => etat.tri === 'nom' ? a.nom.localeCompare(b.nom, 'fr') : etat.tri === 'prix' ? formatChoisi(a).prix - formatChoisi(b).prix : a.pop - b.pop);
 }
 
 function rendreFiltres() {
@@ -462,8 +500,9 @@ function rendreFiltres() {
 
 function rendreGrille() {
   const liste = filtrer();
-  document.getElementById('t-res').textContent = etat.cat.size === 1 ? [...etat.cat][0] : (etat.canal === 'gros' ? 'Achat en gros' : 'Tous les produits');
-  document.getElementById('nb-res').textContent = `${liste.length} produit${liste.length > 1 ? 's' : ''} · prix ${etat.canal === 'gros' ? 'de gros' : 'au détail'}`;
+  document.getElementById('t-res').textContent = etat.cat.size === 1 ? [...etat.cat][0] : (etat.canal === 'gros' ? 'Tous les produits en gros' : 'Tous les produits');
+  document.getElementById('nb-cat').textContent = `${liste.length} produit${liste.length > 1 ? 's' : ''}`;
+  document.getElementById('nb-res').textContent = `Ordre ${etat.tri === 'nom' ? 'alphabétique' : etat.tri === 'prix' ? 'de prix' : 'de popularité'} · prix ${etat.canal === 'gros' ? 'de gros' : 'au détail'}`;
   if (!liste.length) { document.getElementById('grille').innerHTML = '<p class="vide-res carte">Aucun produit ne correspond à ces filtres.</p>'; return; }
   document.getElementById('grille').innerHTML = liste.map(p => {
     const [fond, encre, icone] = teintes[p.cat];
@@ -542,17 +581,28 @@ function avis(txt) {
   clearTimeout(tAvis); tAvis = setTimeout(() => a.classList.remove('vu'), 2200);
 }
 
+function rendreCats() {
+  const cats = Object.keys(teintes).sort((a, b) => a.localeCompare(b, 'fr'));
+  const choisie = etat.cat.size ? [...etat.cat][0] : null;
+  const carte = (c, nom, n, fond, encre, ico, cls) =>
+    `<button type="button" class="cat ${cls || ''}" data-cat="${c}" aria-pressed="${c === (choisie || '')}" style="${fond ? `background:${fond}` : ''}">
+      <span class="ico" style="color:${encre || 'inherit'}"><svg width="26" height="26" aria-hidden="true"><use href="#${ico}"/></svg></span>
+      <span class="txt"><b>${nom}</b><span class="nb">${n} produit${n > 1 ? 's' : ''}</span></span></button>`;
+  document.getElementById('grille-cats').innerHTML =
+    carte('', 'Tous les produits', produits.length, '', '', 'i-sac', 'cat-tout') +
+    cats.map(c => { const [f, e, i] = teintes[c]; return carte(c, c, produits.filter(p => p.cat === c).length, f, e, i); }).join('');
+}
 function rendreFeuille() {
   const titres = { cat: 'Catégorie', dispo: 'Disponibilité', cons: 'Conservation', unite: 'Vendu en' };
-  document.getElementById('feuille-corps').innerHTML = ['cat', 'dispo', 'cons', 'unite'].map(f =>
+  document.getElementById('feuille-corps').innerHTML = ['dispo', 'cons', 'unite'].map(f =>
     `<fieldset class="groupe-f" style="border:0;margin:0;padding-left:0;padding-right:0"><h3>${titres[f]}</h3><div class="puces-f">${optionsF[f]().map(([v, l, n]) =>
       `<label><input type="checkbox" data-f="${f}" value="${v}" ${etat[f].has(v) ? 'checked' : ''}> ${l}${n !== undefined ? ` <span class="n">${n}</span>` : ''}</label>`).join('')}</div></fieldset>`).join('');
-  const nf = ['cat', 'dispo', 'cons', 'unite'].reduce((a, f) => a + etat[f].size, 0), c = document.getElementById('nb-filtres');
+  const nf = ['dispo', 'cons', 'unite'].reduce((a, f) => a + etat[f].size, 0), c = document.getElementById('nb-filtres');
   c.hidden = !nf; c.textContent = nf;
   const n = filtrer().length;
   document.getElementById('voir-res').textContent = `Voir ${n} produit${n > 1 ? 's' : ''}`;
 }
-function tout() { rendreFiltres(); rendreGrille(); rendreFeuille(); }
+function tout() { rendreCats(); rendreFiltres(); rendreGrille(); rendreFeuille(); }
 
 // Bascule détail / gros
 document.querySelector('.canal').addEventListener('click', e => {
@@ -589,6 +639,16 @@ document.getElementById('ouvrir-filtres').addEventListener('click', ouvrirF);
 document.getElementById('fermer-filtres').addEventListener('click', fermerF);
 document.getElementById('voir-res').addEventListener('click', () => { fermerF(); document.getElementById('t-res').scrollIntoView({ behavior: 'smooth' }); });
 document.getElementById('effacer-f').addEventListener('click', () => { ['cat', 'dispo', 'cons', 'unite'].forEach(f => etat[f].clear()); tout(); });
+
+// Cartes de catégories : un clic affiche la catégorie, son nombre de produits et la liste
+document.getElementById('grille-cats').addEventListener('click', e => {
+  const b = e.target.closest('.cat'); if (!b) return;
+  const c = b.dataset.cat;
+  etat.cat.clear(); if (c && b.getAttribute('aria-pressed') !== 'true') etat.cat.add(c);
+  tout();
+  const t = document.getElementById('t-res');
+  t.scrollIntoView({ behavior: 'smooth', block: 'start' }); t.focus({ preventScroll: true });
+});
 
 // Cartes produit
 document.getElementById('grille').addEventListener('change', e => {
