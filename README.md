@@ -32,3 +32,10 @@ Les produits, prix, noms de clients et chiffres sont des **exemples**. Les champ
 - Polices : Bricolage Grotesque (titres), Manrope (texte)
 
 Zenviko — Développement web et soutien informatique
+
+## Développement de l'application
+
+- `CLAUDE.md` : instructions pour Claude Code (contexte, pile technique, règles métier, exigences).
+- `docs/cahier-des-charges.md` : cahier des charges complet et plan par étapes.
+- `docs/deploiement-planethoster.md` : mise en ligne sur PlanetHoster (N0C, Montréal).
+- `docs/prompt-claude-code.md` : message de départ à coller dans Claude Code.
