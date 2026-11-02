@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F4D2E">
 <title>Commander — Le Bon Panier</title>
 <link rel="icon" href="assets/icone-porteuse.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,7 +124,7 @@
 
   /* ===== Tiroir de commande (étape 2) ===== */
   .voile { position: fixed; inset: 0; background: rgba(30,27,22,.45); z-index: 40; display: none; }
-  .tiroir { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 100%); background: var(--blanc); z-index: 50; transform: translateX(100%); transition: transform .2s; display: flex; flex-direction: column; visibility: hidden; }
+  .tiroir { position: fixed; top: 0; right: 0; bottom: 0; height: 100vh; height: 100dvh; width: min(460px, 100%); background: var(--blanc); z-index: 50; transform: translateX(100%); transition: transform .2s; display: flex; flex-direction: column; visibility: hidden; }
   body.tiroir-ouvert .voile { display: block; }
   body.tiroir-ouvert .tiroir { transform: none; visibility: visible; }
   .tiroir-tete { padding: 16px 20px; border-bottom: 1px solid var(--ligne); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
@@ -151,26 +152,86 @@
 
   footer { text-align: center; color: var(--texte-3); font-size: 13px; padding: 24px; }
 
+  /* ===== Filtres sur téléphone et tablette : bouton + feuille ===== */
+  .filtres-compact { display: none; }
+  .feuille { position: fixed; left: 0; right: 0; bottom: 0; z-index: 55; background: var(--blanc); border-radius: 20px 20px 0 0; max-height: 88vh; max-height: 88dvh; display: flex; flex-direction: column; transform: translateY(105%); transition: transform .22s ease; visibility: hidden; box-shadow: 0 -10px 30px rgba(0,0,0,.18); }
+  body.filtres-ouverts .feuille { transform: none; visibility: visible; }
+  body.filtres-ouverts .voile { display: block; }
+  body.filtres-ouverts, body.tiroir-ouvert { overflow: hidden; }
+  .poignee { width: 40px; height: 5px; border-radius: 999px; background: #D9D2C3; margin: 8px auto 0; }
+  .feuille-tete { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px 12px; border-bottom: 1px solid var(--ligne); }
+  .feuille-tete h2 { font-size: 21px; }
+  .feuille-corps { overflow: auto; padding: 4px 20px 16px; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+  .groupe-f { padding: 14px 0; border-bottom: 1px solid #F0EADF; }
+  .groupe-f:last-child { border-bottom: 0; }
+  .groupe-f h3 { font-family: var(--corps); font-size: 12.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-3); margin-bottom: 10px; }
+  .puces-f { display: flex; flex-wrap: wrap; gap: 8px; }
+  .puces-f label { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border: 1.5px solid var(--ligne); border-radius: 999px; font-size: 15px; font-weight: 600; cursor: pointer; background: var(--blanc); }
+  .puces-f label .n { font-size: 12.5px; color: var(--texte-3); font-weight: 500; }
+  .puces-f label:has(input:checked) { border-color: var(--vert); background: var(--vert-pale); color: var(--vert); font-weight: 800; }
+  .puces-f input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .puces-f label:has(input:focus-visible) { outline: 2px solid var(--vert); outline-offset: 2px; }
+  .feuille-pied { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; padding: 12px 20px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--ligne); }
+
   @media (max-width: 1100px) {
+    .barre-filtres { display: none; }
+    .filtres-compact { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .filtres-compact .btn { justify-content: center; }
+    .filtres-compact .compte { background: var(--vert); color: var(--blanc); border-radius: 999px; font-size: 12px; padding: 0 8px; }
+    .filtres-compact select { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 12px; background: var(--blanc); font-weight: 600; font-size: 16px; width: 100%; }
     .corps { grid-template-columns: 1fr; }
     .panier { display: none; }
-    .barre-total { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--encre); color: var(--manioc); padding: 10px 16px; gap: 12px; align-items: center; justify-content: space-between; box-shadow: 0 -6px 18px rgba(0,0,0,.15); }
+    .barre-total { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--encre); color: var(--manioc); padding: 10px max(16px, env(safe-area-inset-right)) calc(10px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); gap: 12px; align-items: center; justify-content: space-between; box-shadow: 0 -6px 18px rgba(0,0,0,.15); }
     .barre-total .t { display: flex; flex-direction: column; line-height: 1.2; }
     .barre-total .t small { font-size: 12.5px; opacity: .85; }
     .barre-total .t b { font-family: var(--titre); font-size: 22px; }
     .barre-total .btn { background: var(--osier); color: var(--encre); }
     .avis { bottom: 92px; }
   }
+  /* Écrans tactiles (téléphones, tablettes) : 16 px dans les champs, sinon iOS zoome */
+  @media (pointer: coarse) { input, select, textarea { font-size: 16px !important; } }
+  /* Tablette et petit portable : la recherche passe sur sa propre ligne */
+  @media (max-width: 1024px) {
+    .entete-in { flex-wrap: wrap; }
+    .marque { flex: 1; }
+    .recherche { order: 3; flex-basis: 100%; }
+  }
+  @media (min-width: 761px) and (max-width: 1100px) {
+    .grille { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .feuille { left: 50%; right: auto; bottom: 50%; width: min(560px, 92vw); border-radius: 20px; transform: translate(-50%, 60%); opacity: 0; transition: .2s; }
+    body.filtres-ouverts .feuille { transform: translate(-50%, 50%); opacity: 1; }
+    .poignee { display: none; }
+  }
+  /* Téléphone à l’horizontale et écrans bas : l’en-tête ne reste pas collé pour laisser voir les produits */
+  @media (max-height: 520px) {
+    .entete { position: static; }
+    .panier { top: 16px; max-height: calc(100vh - 32px); }
+    .feuille { max-height: 92vh; max-height: 92dvh; }
+    .barre-total { padding-top: 6px; padding-bottom: calc(6px + env(safe-area-inset-bottom)); }
+    .barre-total .t b { font-size: 18px; }
+  }
+  @media (max-width: 380px) {
+    .canal button { padding: 0 10px; }
+    .marque span { display: none; }
+    .grille { grid-template-columns: 1fr; }
+    .barre-total .t b { font-size: 19px; }
+  }
   @media (max-width: 760px) {
-    .entete-in { flex-wrap: wrap; padding: 10px 16px; gap: 10px; }
+    .entete-in { flex-wrap: wrap; padding: 10px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left)); gap: 10px; }
+    .marque { flex: 1; min-width: 0; }
+    .canal { order: 4; flex: 1 1 100%; }
+    .canal button { flex: 1; }
     .marque b { font-size: 17px; } .marque img { width: 38px; height: 38px; }
     .recherche { order: 3; flex-basis: 100%; }
+    .titre-ligne h1 { font-size: 23px; }
+    .tiroir { width: 100%; }
+    .tiroir-corps { padding-bottom: 24px; }
+    .tiroir .totaux { padding-bottom: calc(18px + env(safe-area-inset-bottom)); }
+    .deux { grid-template-columns: 1fr; }
     .btn-panier .mt { display: none; }
     .corps { padding-left: 16px; padding-right: 16px; }
-    .barre-filtres { flex-wrap: nowrap; overflow-x: auto; }
-    .barre-filtres .lib, .sep { display: none; }
-    .menu-d { position: fixed; left: 12px; right: 12px; top: auto; bottom: 90px; }
-    .tri { margin-left: 0; }
+    /* iOS : 16 px minimum dans les champs pour éviter le zoom automatique */
+    input, select, textarea { font-size: 16px !important; }
     .grille { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .produit-in { padding: 10px; gap: 8px; }
     .produit h3 { font-size: 15px; }
@@ -183,7 +244,7 @@
 </style>
 </head>
 <body>
-<div class="exemple">Maquette v3 pour présentation — produits et prix d’exemple · <a href="index.html">Retour au sommaire</a></div>
+<div class="exemple">Maquette v3.1 pour présentation — produits et prix d’exemple · <a href="index.html">Retour au sommaire</a></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-feuille" viewBox="0 0 64 64"><path d="M14 50C14 26 30 12 52 12c0 24-14 40-38 38z M14 50 36 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -227,6 +288,11 @@
     <span class="sep" aria-hidden="true"></span>
     <div class="tri"><label for="tri" class="lib">Trier</label><select id="tri"><option value="pop">Populaires</option><option value="prix">Prix croissant</option><option value="nom">Nom A–Z</option></select></div>
   </div>
+  <div class="filtres-compact">
+    <button class="btn btn-secondaire" type="button" id="ouvrir-filtres"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Filtres<span class="compte" id="nb-filtres" hidden></span></button>
+    <label class="sr" for="tri-m">Trier</label>
+    <select id="tri-m"><option value="pop">Populaires</option><option value="prix">Prix croissant</option><option value="nom">Nom A–Z</option></select>
+  </div>
   <div class="actifs" id="actifs" aria-live="polite"></div>
 </section>
   <section aria-labelledby="t-res"><div class="grille" id="grille"></div></section>
@@ -251,9 +317,18 @@
 </div>
 
 <div class="voile" id="voile"></div>
+<section class="feuille" id="feuille" role="dialog" aria-modal="true" aria-labelledby="t-feuille">
+  <div class="poignee" aria-hidden="true"></div>
+  <div class="feuille-tete"><h2 id="t-feuille">Filtres</h2><button class="x" type="button" id="fermer-filtres" aria-label="Fermer les filtres">×</button></div>
+  <div class="feuille-corps" id="feuille-corps"></div>
+  <div class="feuille-pied">
+    <button class="btn btn-secondaire" type="button" id="effacer-f">Tout effacer</button>
+    <button class="btn btn-primaire" type="button" id="voir-res">Voir les produits</button>
+  </div>
+</section>
 <aside class="tiroir" id="tiroir" role="dialog" aria-modal="true" aria-labelledby="t-tiroir">
   <div class="tiroir-tete">
-    <div><h2 id="t-tiroir">Finaliser la commande</h2><div class="etapes"><b>1. Panier</b>›<b>2. Réception et paiement</b>›<span>3. Confirmation</span></div></div>
+    <div><h2 id="t-tiroir">Finaliser la commande</h2><div class="etapes">Étape 2 sur 3 · <b>Réception et paiement</b></div></div>
     <button class="x" type="button" id="fermer" aria-label="Fermer">×</button>
   </div>
   <div class="tiroir-corps">
@@ -467,7 +542,17 @@ function avis(txt) {
   clearTimeout(tAvis); tAvis = setTimeout(() => a.classList.remove('vu'), 2200);
 }
 
-function tout() { rendreFiltres(); rendreGrille(); }
+function rendreFeuille() {
+  const titres = { cat: 'Catégorie', dispo: 'Disponibilité', cons: 'Conservation', unite: 'Vendu en' };
+  document.getElementById('feuille-corps').innerHTML = ['cat', 'dispo', 'cons', 'unite'].map(f =>
+    `<fieldset class="groupe-f" style="border:0;margin:0;padding-left:0;padding-right:0"><h3>${titres[f]}</h3><div class="puces-f">${optionsF[f]().map(([v, l, n]) =>
+      `<label><input type="checkbox" data-f="${f}" value="${v}" ${etat[f].has(v) ? 'checked' : ''}> ${l}${n !== undefined ? ` <span class="n">${n}</span>` : ''}</label>`).join('')}</div></fieldset>`).join('');
+  const nf = ['cat', 'dispo', 'cons', 'unite'].reduce((a, f) => a + etat[f].size, 0), c = document.getElementById('nb-filtres');
+  c.hidden = !nf; c.textContent = nf;
+  const n = filtrer().length;
+  document.getElementById('voir-res').textContent = `Voir ${n} produit${n > 1 ? 's' : ''}`;
+}
+function tout() { rendreFiltres(); rendreGrille(); rendreFeuille(); }
 
 // Bascule détail / gros
 document.querySelector('.canal').addEventListener('click', e => {
@@ -495,8 +580,15 @@ document.getElementById('actifs').addEventListener('click', e => {
   if (e.target.id === 'effacer') { ['cat', 'dispo', 'cons', 'unite'].forEach(f => etat[f].clear()); tout(); return; }
   const b = e.target.closest('.puce'); if (!b) return; etat[b.dataset.f].delete(b.dataset.v); tout();
 });
-document.getElementById('q').addEventListener('input', e => { etat.q = e.target.value.trim().toLowerCase(); rendreGrille(); });
-document.getElementById('tri').addEventListener('change', e => { etat.tri = e.target.value; rendreGrille(); });
+document.getElementById('q').addEventListener('input', e => { etat.q = e.target.value.trim().toLowerCase(); rendreGrille(); rendreFeuille(); });
+['tri', 'tri-m'].forEach(id => document.getElementById(id).addEventListener('change', e => { etat.tri = e.target.value; document.getElementById('tri').value = document.getElementById('tri-m').value = etat.tri; rendreGrille(); }));
+document.getElementById('feuille-corps').addEventListener('change', e => { const t = e.target; t.checked ? etat[t.dataset.f].add(t.value) : etat[t.dataset.f].delete(t.value); tout(); });
+const ouvrirF = () => { document.body.classList.add('filtres-ouverts'); document.getElementById('fermer-filtres').focus(); };
+const fermerF = () => document.body.classList.remove('filtres-ouverts');
+document.getElementById('ouvrir-filtres').addEventListener('click', ouvrirF);
+document.getElementById('fermer-filtres').addEventListener('click', fermerF);
+document.getElementById('voir-res').addEventListener('click', () => { fermerF(); document.getElementById('t-res').scrollIntoView({ behavior: 'smooth' }); });
+document.getElementById('effacer-f').addEventListener('click', () => { ['cat', 'dispo', 'cons', 'unite'].forEach(f => etat[f].clear()); tout(); });
 
 // Cartes produit
 document.getElementById('grille').addEventListener('change', e => {
@@ -530,7 +622,7 @@ document.getElementById('t-lignes').addEventListener('click', surLignes);
 
 // Tiroir de finalisation
 const ouvrir = () => { fermerMenus(); document.body.classList.add('tiroir-ouvert'); document.getElementById('fermer').focus(); };
-const fermer = () => document.body.classList.remove('tiroir-ouvert');
+const fermer = () => document.body.classList.remove('tiroir-ouvert', 'filtres-ouverts');
 ['commander', 'm-voir', 'btn-panier'].forEach(id => document.getElementById(id).addEventListener('click', ouvrir));
 document.getElementById('fermer').addEventListener('click', fermer);
 document.getElementById('voile').addEventListener('click', fermer);
