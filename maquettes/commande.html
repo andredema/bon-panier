@@ -9,92 +9,145 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
 <style>
-  .entete { background: var(--vert); color: var(--manioc); position: sticky; top: 0; z-index: 10; }
-  .entete-in { max-width: 1280px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-  .marque { display: flex; align-items: center; gap: 12px; color: var(--manioc); text-decoration: none; }
-  .marque img { width: 52px; height: 52px; }
-  .marque b { font-family: var(--titre); font-size: 22px; display: block; line-height: 1; }
-  .marque span { font-size: 11px; letter-spacing: .22em; font-weight: 700; }
-  .recherche { flex: 1; min-width: 220px; position: relative; }
+  /* En-tête */
+  .entete { background: var(--vert); color: var(--manioc); position: sticky; top: 0; z-index: 30; }
+  .entete-in { max-width: 1320px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .marque { display: flex; align-items: center; gap: 10px; color: var(--manioc); text-decoration: none; }
+  .marque img { width: 48px; height: 48px; }
+  .marque b { font-family: var(--titre); font-size: 21px; display: block; line-height: 1; }
+  .marque span { font-size: 10.5px; letter-spacing: .22em; font-weight: 700; }
+  .recherche { flex: 1; min-width: 200px; position: relative; }
   .recherche input { width: 100%; min-height: 44px; border-radius: 10px; border: 0; padding: 0 16px 0 42px; background: var(--manioc); color: var(--encre); }
   .recherche svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); }
+  .canal { display: inline-flex; background: rgba(247,242,232,.14); border-radius: 12px; padding: 4px; }
+  .canal button { min-height: 38px; padding: 0 16px; border: 0; border-radius: 9px; background: transparent; color: var(--manioc); font-weight: 800; cursor: pointer; }
+  .canal button[aria-pressed="true"] { background: var(--manioc); color: var(--vert); }
   .btn-panier { background: var(--osier); color: var(--encre); }
+  .btn-panier:hover { color: var(--encre); background: #E0A847; }
   .btn-panier .pastille { background: var(--encre); color: var(--manioc); border-radius: 999px; padding: 0 8px; font-size: 13px; }
 
-  .bandeau { max-width: 1280px; margin: 0 auto; padding: 28px 24px 8px; display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: end; }
-  .bandeau h1 { font-size: clamp(30px, 4vw, 44px); color: var(--vert); }
-  .bandeau p { margin: 8px 0 0; color: var(--texte-2); max-width: 560px; }
-  .infos { display: flex; gap: 10px; flex-wrap: wrap; }
-  .info { background: var(--blanc); border: 1px solid var(--ligne); border-radius: 10px; padding: 8px 14px; font-size: 14px; }
-  .info b { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-3); }
+  .bandeau-gros { background: var(--bleu-pale); color: #123E61; }
+  .bandeau-gros div { max-width: 1320px; margin: 0 auto; padding: 10px 24px; font-size: 14px; }
 
-  .corps > section { min-width: 0; }
-  .corps { max-width: 1280px; margin: 0 auto; padding: 16px 24px 120px; display: grid; grid-template-columns: 1fr 360px; gap: 28px; align-items: start; }
-  .categories { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 18px; }
-  .categories button { min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--ligne); background: var(--blanc); color: var(--encre); font-weight: 700; white-space: nowrap; cursor: pointer; }
-  .categories button[aria-pressed="true"] { background: var(--vert); border-color: var(--vert); color: var(--blanc); }
-  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+  /* Disposition */
+  .corps { max-width: 1320px; margin: 0 auto; padding: 24px 24px 120px; display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 28px; align-items: start; }
+
+  /* Panneau de filtres regroupés */
+  .filtres { position: sticky; top: 96px; padding: 18px; display: flex; flex-direction: column; gap: 4px; max-height: calc(100vh - 120px); overflow: auto; }
+  .filtres-tete { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .filtres-tete h2 { font-size: 18px; }
+  .lien-btn { background: none; border: 0; color: var(--vert); font-weight: 700; text-decoration: underline; cursor: pointer; padding: 8px 0; }
+  .groupe { border-top: 1px solid var(--ligne); padding: 12px 0; }
+  .groupe legend, .groupe h3 { font-family: var(--corps); font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-3); margin-bottom: 6px; padding: 0; }
+  .groupe fieldset { border: 0; margin: 0; padding: 0; }
+  .opt { display: flex; align-items: center; gap: 10px; min-height: 36px; font-size: 14.5px; cursor: pointer; border-radius: 8px; padding: 0 6px; }
+  .opt:hover { background: var(--manioc); }
+  .opt input { width: 18px; height: 18px; accent-color: var(--vert); margin: 0; }
+  .opt .nb { margin-left: auto; font-size: 12.5px; color: var(--texte-3); }
+  .fermer-filtres { display: none; }
+  .puces-u { display: flex; flex-wrap: wrap; gap: 6px; }
+  .puces-u label { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1.5px solid var(--ligne); border-radius: 999px; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+  .puces-u label:has(input:checked) { border-color: var(--vert); background: var(--vert-pale); color: var(--vert); }
+  .puces-u input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .puces-u label:has(input:focus-visible) { outline: 2px solid var(--vert); outline-offset: 2px; }
+  .achat .btn { padding: 0 10px; min-width: 0; }
+
+  /* Barre de résultats */
+  .resultats { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+  .resultats h1 { font-size: 26px; }
+  .resultats p { margin: 2px 0 0; color: var(--texte-3); font-size: 14px; }
+  .tri { display: flex; gap: 10px; align-items: center; }
+  .tri select { min-height: 40px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 10px; background: var(--blanc); }
+  .btn-filtres { display: none; }
+  .actifs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; min-height: 0; }
+  .puce { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 6px 0 12px; border-radius: 999px; background: var(--vert-pale); color: var(--vert); font-size: 13px; font-weight: 700; border: 0; cursor: pointer; }
+  .puce span { font-size: 16px; line-height: 1; padding: 0 4px; }
+
+  /* Cartes produit */
+  .grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 16px; }
   .produit { display: flex; flex-direction: column; overflow: hidden; }
-  .photo { aspect-ratio: 4 / 3; display: grid; place-items: center; position: relative; }
-  .photo .badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
-  .photo small { position: absolute; bottom: 8px; right: 10px; font-size: 11px; color: rgba(30,27,22,.55); }
+  .photo { aspect-ratio: 16 / 10; display: grid; place-items: center; position: relative; }
+  .photo .badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .e-preco { background: var(--osier-pale); color: #7A4F0E; }
+  .e-preco::before { display: none; }
   .produit-in { padding: 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .produit .marque-p { font-size: 11.5px; font-weight: 800; color: var(--texte-3); letter-spacing: .1em; }
   .produit h3 { font-size: 17px; }
-  .produit .marque-p { font-size: 12px; font-weight: 700; color: var(--texte-3); letter-spacing: .1em; }
-  .unites { display: flex; gap: 6px; flex-wrap: wrap; }
-  .unites label { cursor: pointer; }
-  .unites input { position: absolute; opacity: 0; }
-  .unites span { display: inline-block; padding: 4px 10px; border-radius: 8px; border: 1.5px solid var(--ligne); font-size: 13px; font-weight: 600; }
-  .unites input:checked + span { border-color: var(--vert); background: var(--vert-pale); color: var(--vert); }
-  .unites input:focus-visible + span { outline: 2px solid var(--vert); outline-offset: 2px; }
-  .prix-ligne { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-  .prix { font-family: var(--titre); font-size: 22px; font-weight: 800; }
-  .prix small { font-family: var(--corps); font-size: 12px; font-weight: 500; color: var(--texte-3); }
-  .ajouter { min-width: 44px; }
-  .produit.indispo .ajouter { background: #D9D2C3; color: var(--texte-2); cursor: not-allowed; }
+  .format { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 700; color: var(--texte-2); }
+  .format select { min-height: 42px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 10px; background: var(--blanc); font-weight: 600; color: var(--encre); }
+  .prix-ligne { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .prix { font-family: var(--titre); font-size: 24px; font-weight: 800; }
+  .prix-unit { font-size: 12.5px; color: var(--texte-3); }
+  .mini-note { font-size: 12.5px; color: var(--texte-2); margin: -4px 0 0; }
+  .note-preco { font-size: 12.5px; background: var(--osier-pale); border-radius: 8px; padding: 6px 10px; margin: 0; }
+  .achat { display: grid; grid-template-columns: auto 1fr; gap: 8px; margin-top: auto; }
+  .pas { display: inline-flex; align-items: center; border: 1.5px solid var(--ligne); border-radius: 10px; }
+  .pas button { width: 40px; height: 42px; border: 0; background: none; font-size: 18px; font-weight: 800; cursor: pointer; color: var(--encre); }
+  .pas output { min-width: 44px; text-align: center; font-weight: 800; font-size: 14px; }
+  .btn-preco { background: var(--osier); color: var(--encre); }
+  .btn-preco:hover { background: #E0A847; color: var(--encre); }
+  .vide-res { padding: 48px; text-align: center; color: var(--texte-3); }
 
-  .panier { position: sticky; top: 96px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-  .panier h2 { font-size: 22px; }
-  .lignes { display: flex; flex-direction: column; gap: 12px; max-height: 280px; overflow: auto; }
-  .ligne { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 14px; }
-  .ligne .qte { display: flex; align-items: center; gap: 6px; }
-  .ligne .qte button { width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid var(--ligne); background: var(--blanc); cursor: pointer; font-weight: 800; }
-  .vide { color: var(--texte-3); font-size: 14px; }
-  fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-  legend { font-weight: 800; font-size: 14px; margin-bottom: 8px; }
+  /* Tiroir panier */
+  .voile { position: fixed; inset: 0; background: rgba(30,27,22,.45); z-index: 40; display: none; }
+  body:not(.panier-ouvert) .tiroir { visibility: hidden; }
+  .tiroir { position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: var(--blanc); z-index: 50; transform: translateX(100%); transition: transform .2s; display: flex; flex-direction: column; }
+  body.panier-ouvert .voile { display: block; }
+  body.panier-ouvert .tiroir { transform: none; }
+  .tiroir-tete { padding: 18px 20px; border-bottom: 1px solid var(--ligne); display: flex; justify-content: space-between; align-items: center; }
+  .tiroir-tete h2 { font-size: 22px; }
+  .x { width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); background: var(--blanc); font-size: 20px; cursor: pointer; }
+  .etapes { display: flex; gap: 8px; padding: 12px 20px 0; font-size: 13px; font-weight: 700; color: var(--texte-3); }
+  .etapes span[aria-current="step"] { color: var(--vert); }
+  .tiroir-corps { flex: 1; overflow: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
+  .lignes { display: flex; flex-direction: column; gap: 12px; }
+  .ligne { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; font-size: 14px; padding-bottom: 12px; border-bottom: 1px solid #F0EADF; }
+  .ligne small { color: var(--texte-3); }
+  .ligne .pas button { width: 34px; height: 34px; }
+  .ligne .pas output { min-width: 36px; }
+  .sep-preco { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #7A4F0E; }
+  fieldset.choix-f { border: 0; padding: 0; margin: 0; }
+  fieldset.choix-f legend { font-weight: 800; font-size: 14px; margin-bottom: 8px; }
   .choix { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .choix label { border: 1.5px solid var(--ligne); border-radius: 10px; padding: 10px; cursor: pointer; font-size: 14px; display: flex; gap: 8px; align-items: flex-start; }
   .choix label:has(input:checked) { border-color: var(--vert); background: var(--vert-pale); }
   .choix small { display: block; color: var(--texte-3); font-size: 12px; }
-  select, .champ input { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 12px; background: var(--blanc); width: 100%; }
   .champ { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; }
-  .totaux { border-top: 1px solid var(--ligne); padding-top: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+  .champ input, .champ select { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 12px; background: var(--blanc); }
+  .deux { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tiroir-pied { border-top: 1px solid var(--ligne); padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .totaux { display: flex; flex-direction: column; gap: 3px; font-size: 14px; }
   .totaux div { display: flex; justify-content: space-between; }
-  .totaux .total { font-size: 18px; font-weight: 800; }
-  .note-interac { background: var(--osier-pale); border-radius: 10px; padding: 10px 12px; font-size: 13px; }
-  .consent { font-size: 13px; display: flex; gap: 8px; align-items: flex-start; }
+  .totaux .total { font-size: 19px; font-weight: 800; }
+  .consent { font-size: 12.5px; display: flex; gap: 8px; align-items: flex-start; }
+  .vide { color: var(--texte-3); font-size: 14px; }
 
   .barre-mobile { display: none; }
+  footer { text-align: center; color: var(--texte-3); font-size: 13px; padding: 24px; }
+
   @media (max-width: 900px) {
-    .corps { grid-template-columns: 1fr; }
-    .panier { position: static; }
-    .barre-mobile { display: flex; position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px; background: var(--blanc); border-top: 1px solid var(--ligne); gap: 12px; align-items: center; justify-content: space-between; z-index: 20; }
-    .entete-in, .bandeau, .corps { padding-left: 16px; padding-right: 16px; }
-    .marque b { font-size: 18px; }
+    .entete-in { padding: 10px 16px; gap: 10px; }
+    .marque b { font-size: 17px; } .marque img { width: 40px; height: 40px; }
+    .recherche { order: 3; flex-basis: 100%; }
+    .corps { grid-template-columns: 1fr; padding: 16px 16px 110px; }
+    .filtres { position: fixed; left: 0; right: 0; bottom: 0; top: auto; max-height: 80vh; border-radius: 18px 18px 0 0; z-index: 50; transform: translateY(100%); transition: transform .2s; }
+    body.filtres-ouverts .filtres { transform: none; }
+    .filtres { visibility: hidden; } body.filtres-ouverts .filtres { visibility: visible; }
+    body.filtres-ouverts .voile { display: block; }
+    .fermer-filtres { display: flex; }
+    .btn-filtres { display: inline-flex; }
     .grille { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .photo { aspect-ratio: 16 / 10; }
-    .photo svg { width: 48px; height: 48px; }
-    .photo small { display: none; }
     .produit-in { padding: 10px; gap: 8px; }
     .produit h3 { font-size: 15px; }
-    .unites span { font-size: 12px; padding: 3px 8px; }
-    .prix { font-size: 18px; }
+    .prix { font-size: 19px; }
+    .achat { grid-template-columns: 1fr; }
+    .pas { justify-content: space-between; }
+    .barre-mobile { display: flex; position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px; background: var(--blanc); border-top: 1px solid var(--ligne); gap: 12px; align-items: center; justify-content: space-between; z-index: 20; }
   }
-  footer { text-align: center; color: var(--texte-3); font-size: 13px; padding: 24px; }
 </style>
 </head>
 <body>
-<div class="exemple">Maquette pour présentation — produits et prix d’exemple · <a href="index.html">Retour au sommaire</a></div>
+<div class="exemple">Maquette v2 pour présentation — produits et prix d’exemple · <a href="index.html">Retour au sommaire</a></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-feuille" viewBox="0 0 64 64"><path d="M14 50C14 26 30 12 52 12c0 24-14 40-38 38z M14 50 36 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -102,166 +155,262 @@
   <symbol id="i-poisson" viewBox="0 0 64 64"><path d="M8 32c8-12 22-16 34-10l12-8v36l-12-8C30 48 16 44 8 32z M20 30v.1" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></symbol>
   <symbol id="i-bouteille" viewBox="0 0 64 64"><path d="M26 6h12v10c6 4 8 9 8 16v22c0 3-2 5-5 5H23c-3 0-5-2-5-5V32c0-7 2-12 8-16z M18 36h28" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></symbol>
   <symbol id="i-piment" viewBox="0 0 64 64"><path d="M40 14c-2-4 0-8 4-8 M40 14c8 2 12 10 8 18-6 14-22 24-38 24 12-8 18-20 20-30 2-8 6-14 10-12z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+  <symbol id="i-plantain" viewBox="0 0 64 64"><path d="M12 22c8 22 28 30 44 22-4-2-6-6-6-6-14 6-28 0-34-16z M50 38l6-4" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></symbol>
 </svg>
 
 <header class="entete">
   <div class="entete-in">
-    <a class="marque" href="#">
-      <img src="assets/icone-porteuse.svg" alt="">
-      <div><b>Le Bon Panier</b><span>ÉPICERIE AFRICAINE</span></div>
-    </a>
+    <a class="marque" href="#"><img src="assets/icone-porteuse.svg" alt=""><div><b>Le Bon Panier</b><span>ÉPICERIE AFRICAINE</span></div></a>
     <div class="recherche">
       <label for="q" class="sr">Rechercher un produit</label>
       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="#4A4033" stroke-width="2"/><path d="m20 20-4-4" stroke="#4A4033" stroke-width="2" stroke-linecap="round"/></svg>
       <input id="q" type="search" placeholder="Rechercher : ndolé, gari, water leaf…">
     </div>
-    <a class="btn btn-panier" href="#panier">Panier <span class="pastille num" id="compteur">0</span></a>
+    <div class="canal" role="group" aria-label="Type d’achat">
+      <button type="button" data-canal="detail" aria-pressed="true">Détail</button>
+      <button type="button" data-canal="gros" aria-pressed="false">En gros</button>
+    </div>
+    <button class="btn btn-panier" type="button" id="ouvrir-panier">Panier <span class="pastille num" id="compteur">0</span></button>
   </div>
 </header>
-
-<section class="bandeau">
-  <div>
-    <h1>Commandez en ligne, passez prendre en magasin.</h1>
-    <p>Choisissez vos produits, nous préparons votre commande et vous avisons par courriel quand elle est prête.</p>
-  </div>
-  <div class="infos">
-    <div class="info"><b>Ramassage</b>840, avenue du Marché, Saint-Lin–Laurentides</div>
-    <div class="info"><b>Heures</b>[Heures d’ouverture]</div>
-  </div>
-</section>
+<div class="bandeau-gros" id="bandeau-gros" hidden><div><b>Achat en gros :</b> formats en sac, carton, caisse et bidon, avec quantités minimales. Pour les restaurants, épiceries et grandes familles.</div></div>
 
 <main class="corps">
-  <section aria-labelledby="titre-catalogue">
-    <h2 id="titre-catalogue" class="sr">Catalogue</h2>
-    <div class="categories" role="group" aria-label="Catégories" id="categories"></div>
+  <aside class="filtres carte" id="filtres" aria-labelledby="t-filtres">
+    <div class="filtres-tete">
+      <h2 id="t-filtres">Filtres</h2>
+      <button class="lien-btn" type="button" id="effacer">Tout effacer</button>
+    </div>
+    <div class="groupe">
+      <fieldset><legend>Catégorie</legend><div id="f-cat"></div></fieldset>
+    </div>
+    <div class="groupe">
+      <fieldset><legend>Disponibilité</legend>
+        <label class="opt"><input type="checkbox" data-f="dispo" value="stock"> En stock<span class="nb" id="nb-stock"></span></label>
+        <label class="opt"><input type="checkbox" data-f="dispo" value="preco"> En précommande<span class="nb" id="nb-preco"></span></label>
+      </fieldset>
+    </div>
+    <div class="groupe">
+      <fieldset><legend>Conservation</legend>
+        <label class="opt"><input type="checkbox" data-f="cons" value="surgele"> Surgelé</label>
+        <label class="opt"><input type="checkbox" data-f="cons" value="sec"> Sec et frais</label>
+      </fieldset>
+    </div>
+    <div class="groupe">
+      <fieldset><legend>Vendu en</legend><div id="f-unite" class="puces-u"></div></fieldset>
+    </div>
+    <button class="btn btn-primaire fermer-filtres" type="button" id="appliquer">Voir les produits</button>
+  </aside>
+
+  <section aria-labelledby="t-res">
+    <div class="resultats">
+      <div><h1 id="t-res">Tous les produits</h1><p id="nb-res"></p></div>
+      <div class="tri">
+        <button class="btn btn-secondaire btn-filtres" type="button" id="ouvrir-filtres">Filtres <span id="nb-actifs"></span></button>
+        <label for="tri" class="sr">Trier</label>
+        <select id="tri"><option value="pop">Populaires</option><option value="prix">Prix croissant</option><option value="nom">Nom A–Z</option></select>
+      </div>
+    </div>
+    <div class="actifs" id="actifs" aria-live="polite"></div>
     <div class="grille" id="grille"></div>
   </section>
+</main>
 
-  <aside class="panier carte" id="panier" aria-labelledby="titre-panier">
-    <h2 id="titre-panier">Votre panier</h2>
-    <div class="lignes" id="lignes"><p class="vide">Votre panier est vide. Ajoutez des produits avec le bouton +.</p></div>
+<div class="barre-mobile">
+  <span><b class="num" id="tt-m">0,00 $</b> · <span id="nb-m">0</span> article(s)</span>
+  <button class="btn btn-primaire" type="button" id="ouvrir-panier-m">Voir le panier</button>
+</div>
 
-    <fieldset>
-      <legend>Mode de réception</legend>
+<div class="voile" id="voile"></div>
+<aside class="tiroir" id="tiroir" aria-labelledby="t-panier" role="dialog" aria-modal="true">
+  <div class="tiroir-tete"><h2 id="t-panier">Votre panier</h2><button class="x" type="button" id="fermer-panier" aria-label="Fermer le panier">×</button></div>
+  <div class="tiroir-corps">
+    <div class="lignes" id="lignes"></div>
+
+    <fieldset class="choix-f"><legend>Réception</legend>
       <div class="choix">
-        <label><input type="radio" name="mode" value="ramassage" checked> <span>Ramassage<small>Gratuit</small></span></label>
-        <label><input type="radio" name="mode" value="livraison"> <span>Livraison<small>[Zone et frais]</small></span></label>
+        <label><input type="radio" name="mode" checked> <span>Ramassage<small>Gratuit · 840, av. du Marché</small></span></label>
+        <label><input type="radio" name="mode"> <span>Livraison<small>[Zone et frais]</small></span></label>
       </div>
     </fieldset>
-
-    <div class="champ">
-      <label for="creneau">Créneau souhaité</label>
-      <select id="creneau">
-        <option>Demain, 10 h – 12 h</option>
-        <option>Demain, 14 h – 16 h</option>
-        <option>Samedi, 10 h – 12 h</option>
-      </select>
-    </div>
-
-    <fieldset>
-      <legend>Paiement</legend>
+    <div class="champ"><label for="creneau">Créneau</label>
+      <select id="creneau"><option>Demain, 10 h – 12 h</option><option>Demain, 14 h – 16 h</option><option>Samedi, 10 h – 12 h</option></select></div>
+    <fieldset class="choix-f"><legend>Paiement</legend>
       <div class="choix">
-        <label><input type="radio" name="paiement" checked> <span>Virement Interac</span></label>
-        <label><input type="radio" name="paiement"> <span>Au ramassage</span></label>
+        <label><input type="radio" name="paiement" checked> <span>Virement Interac<small>Instructions par courriel</small></span></label>
+        <label><input type="radio" name="paiement"> <span>Au ramassage<small>Comptant ou débit</small></span></label>
       </div>
-      <p class="note-interac">Après la commande, vous recevez l’adresse courriel et le message à indiquer dans votre virement Interac.</p>
     </fieldset>
-
     <div class="champ"><label for="nom">Nom</label><input id="nom" autocomplete="name"></div>
-    <div class="champ"><label for="tel">Téléphone</label><input id="tel" type="tel" autocomplete="tel"></div>
-    <div class="champ"><label for="courriel">Courriel</label><input id="courriel" type="email" autocomplete="email"></div>
-
+    <div class="deux">
+      <div class="champ"><label for="tel">Téléphone</label><input id="tel" type="tel" autocomplete="tel"></div>
+      <div class="champ"><label for="courriel">Courriel</label><input id="courriel" type="email" autocomplete="email"></div>
+    </div>
+  </div>
+  <div class="tiroir-pied">
     <div class="totaux">
       <div><span>Sous-total</span><span class="num" id="st">0,00 $</span></div>
       <div><span>Taxes (produits taxables)</span><span class="num" id="tx">0,00 $</span></div>
       <div class="total"><span>Total</span><span class="num" id="tt">0,00 $</span></div>
     </div>
-
     <label class="consent"><input type="checkbox"> <span>J’accepte que mes coordonnées servent au traitement de ma commande, selon la <a href="#">politique de confidentialité</a>.</span></label>
     <button class="btn btn-primaire" type="button">Envoyer ma commande</button>
-  </aside>
-</main>
-
-<div class="barre-mobile">
-  <span><b class="num" id="tt-m">0,00 $</b> · <span id="nb-m">0</span> article(s)</span>
-  <a class="btn btn-primaire" href="#panier">Voir le panier</a>
-</div>
+  </div>
+</aside>
 
 <footer>Le Bon Panier · Épicerie africaine · 840, avenue du Marché, Saint-Lin–Laurentides</footer>
 
 <script>
 const fmt = n => n.toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
-const cats = ['Tout', 'Légumes-feuilles surgelés', 'Farines et féculents', 'Poissons séchés', 'Huiles et condiments', 'Épices', 'Boissons'];
 const teintes = {
   'Légumes-feuilles surgelés': ['#E4EDE6', '#1F4D2E', 'i-feuille'],
   'Farines et féculents': ['#F6E8CF', '#7A4F0E', 'i-sac'],
+  'Fruits et légumes': ['#F6E8CF', '#7A4F0E', 'i-plantain'],
   'Poissons séchés': ['#E1ECF5', '#1F5A8A', 'i-poisson'],
   'Huiles et condiments': ['#F5E1DA', '#8A3420', 'i-bouteille'],
   'Épices': ['#F5E1DA', '#8A3420', 'i-piment'],
   'Boissons': ['#EEE6F7', '#5B3A8A', 'i-bouteille']
 };
+// Unités de vente configurables : sac, unité, L, kg, g
+// Chaque format : canal (detail|gros), unité de vente, libellé, contenu (pour le prix au kg / au L), prix, minimum, pas
 const produits = [
-  { id: 1, nom: 'Water Leaf', marque: 'DJM', cat: 'Légumes-feuilles surgelés', surgele: true, unites: [['Boule 500 g', 3.99], ['Carton 50 × 500 g', 175.00]] },
-  { id: 2, nom: 'Feuilles de ndolé', marque: 'DJM', cat: 'Légumes-feuilles surgelés', surgele: true, unites: [['Boule 500 g', 4.49], ['Carton 50 × 500 g', 199.00]] },
-  { id: 3, nom: 'Feuilles de manioc pilées', marque: '', cat: 'Légumes-feuilles surgelés', surgele: true, unites: [['Sac 1 kg', 6.49]] },
-  { id: 4, nom: 'Gari jaune', marque: '', cat: 'Farines et féculents', unites: [['Sac 1 kg', 6.99], ['Sac 5 kg', 29.99]] },
-  { id: 5, nom: 'Farine de plantain', marque: '', cat: 'Farines et féculents', unites: [['Sac 1 kg', 7.49]] },
-  { id: 6, nom: 'Couscous de manioc', marque: '', cat: 'Farines et féculents', rupture: true, unites: [['Sac 1 kg', 5.99]] },
-  { id: 7, nom: 'Machoiron fumé', marque: '', cat: 'Poissons séchés', unites: [['Pièce', 12.99]] },
-  { id: 8, nom: 'Crevettes séchées', marque: '', cat: 'Poissons séchés', unites: [['Sachet 100 g', 5.49]] },
-  { id: 9, nom: 'Huile de palme rouge', marque: '', cat: 'Huiles et condiments', unites: [['Bouteille 1 L', 8.49]] },
-  { id: 10, nom: 'Piment rouge moulu', marque: '', cat: 'Épices', unites: [['Pot 100 g', 3.99]] },
-  { id: 11, nom: 'Graines de njansang', marque: '', cat: 'Épices', unites: [['Sachet 100 g', 4.99]] },
-  { id: 12, nom: 'Malta', marque: '', cat: 'Boissons', taxable: true, unites: [['Bouteille 330 ml', 2.29], ['Caisse de 24', 49.99]] }
+  { id: 1, nom: 'Water Leaf', marque: 'DJM', cat: 'Légumes-feuilles surgelés', surgele: true, stock: 38, pop: 1, formats: [
+    { c: 'detail', u: 'unité', lib: 'Boule de 500 g', kg: .5, prix: 3.99 },
+    { c: 'gros', u: 'unité', lib: 'Carton de 50 boules (25 kg)', kg: 25, prix: 175.00 } ] },
+  { id: 2, nom: 'Feuilles de ndolé', marque: 'DJM', cat: 'Légumes-feuilles surgelés', surgele: true, stock: 120, pop: 2, formats: [
+    { c: 'detail', u: 'unité', lib: 'Boule de 500 g', kg: .5, prix: 4.49 },
+    { c: 'gros', u: 'unité', lib: 'Carton de 50 boules (25 kg)', kg: 25, prix: 199.00 } ] },
+  { id: 3, nom: 'Gari jaune', cat: 'Farines et féculents', stock: 64, pop: 3, formats: [
+    { c: 'detail', u: 'sac', lib: 'Sac de 1 kg', kg: 1, prix: 6.99 },
+    { c: 'detail', u: 'sac', lib: 'Sac de 5 kg', kg: 5, prix: 29.99 },
+    { c: 'detail', u: 'kg', lib: 'Au poids (vrac)', kg: 1, prix: 6.49, pas: .5 },
+    { c: 'gros', u: 'sac', lib: 'Sac de 25 kg', kg: 25, prix: 129.00, min: 2 } ] },
+  { id: 4, nom: 'Couscous de manioc', cat: 'Farines et féculents', stock: 0, arrivage: '6 novembre', pop: 6, formats: [
+    { c: 'detail', u: 'sac', lib: 'Sac de 1 kg', kg: 1, prix: 5.99 },
+    { c: 'gros', u: 'sac', lib: 'Sac de 25 kg', kg: 25, prix: 119.00, min: 2 } ] },
+  { id: 5, nom: 'Plantain mûr', cat: 'Fruits et légumes', stock: 0, arrivage: '4 novembre', pop: 4, formats: [
+    { c: 'detail', u: 'kg', lib: 'Au poids', kg: 1, prix: 2.99, pas: .5 },
+    { c: 'gros', u: 'unité', lib: 'Caisse de 18 kg', kg: 18, prix: 34.90 } ] },
+  { id: 6, nom: 'Machoiron fumé', cat: 'Poissons séchés', stock: 22, pop: 5, formats: [
+    { c: 'detail', u: 'unité', lib: 'La pièce (≈ 350 g)', kg: .35, prix: 12.99 },
+    { c: 'detail', u: 'kg', lib: 'Au poids', kg: 1, prix: 36.90, pas: .5 },
+    { c: 'gros', u: 'kg', lib: 'Carton de 10 kg', kg: 10, prix: 349.00 } ] },
+  { id: 7, nom: 'Crevettes séchées', cat: 'Poissons séchés', stock: 9, pop: 7, formats: [
+    { c: 'detail', u: 'g', lib: 'Sachet de 100 g', kg: .1, prix: 5.49 },
+    { c: 'detail', u: 'g', lib: 'Sachet de 250 g', kg: .25, prix: 12.49 },
+    { c: 'gros', u: 'sac', lib: 'Sac de 1 kg', kg: 1, prix: 42.00, min: 2 } ] },
+  { id: 8, nom: 'Huile de palme rouge', cat: 'Huiles et condiments', stock: 6, pop: 8, formats: [
+    { c: 'detail', u: 'L', lib: 'Bouteille de 1 L', l: 1, prix: 8.49 },
+    { c: 'detail', u: 'L', lib: 'Bidon de 5 L', l: 5, prix: 36.99 },
+    { c: 'gros', u: 'L', lib: 'Bidon de 20 L', l: 20, prix: 129.00 } ] },
+  { id: 9, nom: 'Piment rouge moulu', cat: 'Épices', stock: 40, pop: 9, formats: [
+    { c: 'detail', u: 'g', lib: 'Pot de 100 g', kg: .1, prix: 3.99 },
+    { c: 'gros', u: 'sac', lib: 'Sac de 1 kg', kg: 1, prix: 24.90 } ] },
+  { id: 10, nom: 'Graines de njansang', cat: 'Épices', stock: 25, pop: 10, formats: [
+    { c: 'detail', u: 'g', lib: 'Sachet de 100 g', kg: .1, prix: 4.99 },
+    { c: 'gros', u: 'sac', lib: 'Sac de 1 kg', kg: 1, prix: 39.00 } ] },
+  { id: 11, nom: 'Malta', cat: 'Boissons', taxable: true, stock: 96, pop: 11, formats: [
+    { c: 'detail', u: 'unité', lib: 'Bouteille de 330 ml', l: .33, prix: 2.29 },
+    { c: 'gros', u: 'unité', lib: 'Caisse de 24 bouteilles', l: 7.92, prix: 49.99 } ] }
 ];
-let filtre = 'Tout';
-const panier = {};
+const unites = ['sac', 'unité', 'L', 'kg', 'g'];
+const libUnite = { sac: 'Sac', 'unité': 'Unité', L: 'Litre (L)', kg: 'Kilogramme (kg)', g: 'Gramme (g)' };
+const etat = { canal: 'detail', cat: 'Tout', dispo: new Set(), cons: new Set(), unite: new Set(), q: '', tri: 'pop' };
+const choixFormat = {}, qte = {};
+const panier = [];
 
-function rendreCategories() {
-  document.getElementById('categories').innerHTML = cats.map(c =>
-    `<button type="button" aria-pressed="${c === filtre}" data-c="${c}">${c}</button>`).join('');
+const formatsDe = p => p.formats.filter(f => f.c === etat.canal);
+const prixUnitaire = f => f.kg ? `soit ${fmt(f.prix / f.kg)}/kg` : f.l ? `soit ${fmt(f.prix / f.l)}/L` : '';
+const pasDe = f => f.pas || 1;
+const affQte = (n, f) => f.u === 'kg' ? n.toLocaleString('fr-CA') + ' kg' : String(n);
+
+function filtrer() {
+  return produits.filter(p => {
+    if (!formatsDe(p).length) return false;
+    if (etat.cat !== 'Tout' && p.cat !== etat.cat) return false;
+    if (etat.q && !(p.nom + ' ' + (p.marque || '')).toLowerCase().includes(etat.q)) return false;
+    if (etat.dispo.size) { const d = p.stock > 0 ? 'stock' : 'preco'; if (!etat.dispo.has(d)) return false; }
+    if (etat.cons.size) { const c = p.surgele ? 'surgele' : 'sec'; if (!etat.cons.has(c)) return false; }
+    if (etat.unite.size && !formatsDe(p).some(f => etat.unite.has(f.u))) return false;
+    return true;
+  }).sort((a, b) => etat.tri === 'nom' ? a.nom.localeCompare(b.nom) : etat.tri === 'prix' ? formatsDe(a)[0].prix - formatsDe(b)[0].prix : a.pop - b.pop);
 }
+
+function rendreFiltres() {
+  const cats = ['Tout', ...Object.keys(teintes)];
+  document.getElementById('f-cat').innerHTML = cats.map(c => {
+    const n = c === 'Tout' ? produits.length : produits.filter(p => p.cat === c).length;
+    return `<label class="opt"><input type="radio" name="cat" value="${c}" ${etat.cat === c ? 'checked' : ''}> ${c === 'Tout' ? 'Toutes les catégories' : c}<span class="nb">${n}</span></label>`;
+  }).join('');
+  document.getElementById('f-unite').innerHTML = unites.map(u =>
+    `<label><input type="checkbox" data-f="unite" value="${u}" ${etat.unite.has(u) ? 'checked' : ''}> ${u}</label>`).join('');
+  document.getElementById('nb-stock').textContent = produits.filter(p => p.stock > 0).length;
+  document.getElementById('nb-preco').textContent = produits.filter(p => p.stock <= 0).length;
+}
+
+function rendreActifs() {
+  const puces = [];
+  if (etat.cat !== 'Tout') puces.push(['cat', etat.cat, etat.cat]);
+  etat.dispo.forEach(v => puces.push(['dispo', v, v === 'stock' ? 'En stock' : 'En précommande']));
+  etat.cons.forEach(v => puces.push(['cons', v, v === 'surgele' ? 'Surgelé' : 'Sec et frais']));
+  etat.unite.forEach(v => puces.push(['unite', v, 'Vendu en ' + v]));
+  document.getElementById('actifs').innerHTML = puces.map(([f, v, l]) =>
+    `<button class="puce" type="button" data-f="${f}" data-v="${v}" aria-label="Retirer le filtre ${l}">${l}<span aria-hidden="true">×</span></button>`).join('');
+  document.getElementById('nb-actifs').textContent = puces.length ? `(${puces.length})` : '';
+}
+
 function rendreGrille() {
-  const q = document.getElementById('q').value.trim().toLowerCase();
-  const liste = produits.filter(p => (filtre === 'Tout' || p.cat === filtre) && (!q || p.nom.toLowerCase().includes(q)));
+  const liste = filtrer();
+  document.getElementById('t-res').textContent = etat.cat === 'Tout' ? (etat.canal === 'gros' ? 'Achat en gros' : 'Tous les produits') : etat.cat;
+  document.getElementById('nb-res').textContent = `${liste.length} produit${liste.length > 1 ? 's' : ''} · prix ${etat.canal === 'gros' ? 'de gros' : 'au détail'}`;
+  if (!liste.length) { document.getElementById('grille').innerHTML = '<p class="vide-res carte">Aucun produit ne correspond à ces filtres.</p>'; return; }
   document.getElementById('grille').innerHTML = liste.map(p => {
     const [fond, encre, icone] = teintes[p.cat];
-    const badges = (p.surgele ? '<span class="etiquette e-surgele">Surgelé</span>' : '') + (p.rupture ? '<span class="etiquette e-rupture">Rupture</span>' : '');
-    const unites = p.unites.map((u, i) => `<label><input type="radio" name="u${p.id}" value="${i}" ${i === 0 ? 'checked' : ''}><span>${u[0]}</span></label>`).join('');
-    return `<article class="produit carte ${p.rupture ? 'indispo' : ''}">
+    const fs = formatsDe(p), i = Math.min(choixFormat[p.id + etat.canal] || 0, fs.length - 1), f = fs[i];
+    const preco = p.stock <= 0;
+    const q = qte[p.id + etat.canal + i] || (f.min || pasDe(f));
+    const badges = (p.surgele ? '<span class="etiquette e-surgele">Surgelé</span>' : '') + (preco ? '<span class="etiquette e-preco">Précommande</span>' : '');
+    const select = fs.length > 1
+      ? `<label class="format">Format<select data-id="${p.id}">${fs.map((x, j) => `<option value="${j}" ${j === i ? 'selected' : ''}>${x.lib} — ${fmt(x.prix)}</option>`).join('')}</select></label>`
+      : `<div class="format">Format<span style="font-size:14px;color:var(--encre)">${f.lib}</span></div>`;
+    return `<article class="produit carte">
       <div class="photo" style="background:${fond};color:${encre}">
         <div class="badges">${badges}</div>
-        <svg width="72" height="72" aria-hidden="true"><use href="#${icone}"/></svg>
-        <small>photo du produit</small>
+        <svg width="64" height="64" aria-hidden="true"><use href="#${icone}"/></svg>
       </div>
       <div class="produit-in">
         <div>${p.marque ? `<div class="marque-p">${p.marque}</div>` : ''}<h3>${p.nom}</h3></div>
-        <div class="unites" role="radiogroup" aria-label="Format">${unites}</div>
-        <div class="prix-ligne">
-          <span class="prix num" id="prix${p.id}">${fmt(p.unites[0][1])}</span>
-          <button class="btn btn-primaire ajouter" type="button" data-id="${p.id}" ${p.rupture ? 'disabled' : ''} aria-label="Ajouter ${p.nom} au panier">+</button>
+        ${select}
+        <div class="prix-ligne"><span class="prix num">${fmt(f.prix)}${f.pas ? '<small style="font-size:14px">/kg</small>' : ''}</span><span class="prix-unit num">${f.pas ? '' : prixUnitaire(f)}</span></div>
+        ${f.min ? `<p class="mini-note">Minimum ${f.min} ${f.u === 'sac' ? 'sacs' : 'unités'}</p>` : ''}
+        ${preco ? `<p class="note-preco">Arrivage prévu le ${p.arrivage}. Commandez maintenant, on vous avise à l’arrivée.</p>` : ''}
+        <div class="achat">
+          <div class="pas" role="group" aria-label="Quantité">
+            <button type="button" data-q="${p.id}" data-d="-1" aria-label="Diminuer">−</button>
+            <output class="num">${affQte(q, f)}</output>
+            <button type="button" data-q="${p.id}" data-d="1" aria-label="Augmenter">+</button>
+          </div>
+          <button class="btn ${preco ? 'btn-preco' : 'btn-primaire'}" type="button" data-add="${p.id}">${preco ? 'Précommander' : 'Ajouter'}</button>
         </div>
       </div>
     </article>`;
   }).join('');
 }
-function uniteChoisie(id) {
-  const r = document.querySelector(`input[name="u${id}"]:checked`);
-  return r ? Number(r.value) : 0;
-}
+
 function rendrePanier() {
-  const cles = Object.keys(panier).filter(k => panier[k] > 0);
   let st = 0, tx = 0, nb = 0;
-  const html = cles.map(k => {
-    const [id, ui] = k.split('-').map(Number);
-    const p = produits.find(x => x.id === id), u = p.unites[ui], q = panier[k];
-    const m = u[1] * q; st += m; nb += q;
-    if (p.taxable) tx += m * 0.05 + m * 0.09975;
+  const ligne = (l, k) => {
+    const p = produits.find(x => x.id === l.id), m = l.f.prix * l.q; st += m; nb += 1;
+    if (p.taxable) tx += m * 0.14975;
     return `<div class="ligne"><b>${p.nom}</b><span class="num">${fmt(m)}</span>
-      <span style="color:var(--texte-3)">${u[0]}</span>
-      <span class="qte"><button type="button" data-k="${k}" data-d="-1" aria-label="Retirer un">−</button><span class="num">${q}</span><button type="button" data-k="${k}" data-d="1" aria-label="Ajouter un">+</button></span></div>`;
-  }).join('');
-  document.getElementById('lignes').innerHTML = html || '<p class="vide">Votre panier est vide. Ajoutez des produits avec le bouton +.</p>';
+      <small>${l.f.lib} · ${l.f.c === 'gros' ? 'gros' : 'détail'}</small>
+      <div class="pas" role="group" aria-label="Quantité"><button type="button" data-k="${k}" data-d="-1" aria-label="Retirer">−</button><output class="num">${affQte(l.q, l.f)}</output><button type="button" data-k="${k}" data-d="1" aria-label="Ajouter">+</button></div></div>`;
+  };
+  const dispo = panier.map((l, k) => [l, k]).filter(([l]) => produits.find(x => x.id === l.id).stock > 0);
+  const preco = panier.map((l, k) => [l, k]).filter(([l]) => produits.find(x => x.id === l.id).stock <= 0);
+  let html = dispo.map(([l, k]) => ligne(l, k)).join('');
+  if (preco.length) html += '<div class="sep-preco">Précommandes — préparées à l’arrivage</div>' + preco.map(([l, k]) => ligne(l, k)).join('');
+  document.getElementById('lignes').innerHTML = html || '<p class="vide">Votre panier est vide.</p>';
   document.getElementById('st').textContent = fmt(st);
   document.getElementById('tx').textContent = fmt(tx);
   document.getElementById('tt').textContent = fmt(st + tx);
@@ -269,28 +418,65 @@ function rendrePanier() {
   document.getElementById('nb-m').textContent = nb;
   document.getElementById('compteur').textContent = nb;
 }
-document.getElementById('categories').addEventListener('click', e => {
+
+function tout() { rendreFiltres(); rendreActifs(); rendreGrille(); }
+
+document.querySelector('.canal').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
-  filtre = b.dataset.c; rendreCategories(); rendreGrille();
+  etat.canal = b.dataset.canal;
+  document.querySelectorAll('.canal button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  document.getElementById('bandeau-gros').hidden = etat.canal !== 'gros';
+  tout();
 });
-document.getElementById('q').addEventListener('input', rendreGrille);
+document.getElementById('filtres').addEventListener('change', e => {
+  const t = e.target;
+  if (t.name === 'cat') etat.cat = t.value;
+  else if (t.dataset.f) { const s = etat[t.dataset.f]; t.checked ? s.add(t.value) : s.delete(t.value); }
+  rendreActifs(); rendreGrille();
+});
+document.getElementById('actifs').addEventListener('click', e => {
+  const b = e.target.closest('.puce'); if (!b) return;
+  if (b.dataset.f === 'cat') etat.cat = 'Tout'; else etat[b.dataset.f].delete(b.dataset.v);
+  tout();
+});
+document.getElementById('effacer').addEventListener('click', () => { etat.cat = 'Tout'; etat.dispo.clear(); etat.cons.clear(); etat.unite.clear(); document.querySelectorAll('#filtres input[type=checkbox]').forEach(c => c.checked = false); tout(); });
+document.getElementById('q').addEventListener('input', e => { etat.q = e.target.value.trim().toLowerCase(); rendreGrille(); });
+document.getElementById('tri').addEventListener('change', e => { etat.tri = e.target.value; rendreGrille(); });
 document.getElementById('grille').addEventListener('change', e => {
-  const m = e.target.name && e.target.name.match(/^u(\d+)$/); if (!m) return;
-  const p = produits.find(x => x.id === Number(m[1]));
-  document.getElementById('prix' + p.id).textContent = fmt(p.unites[Number(e.target.value)][1]);
+  const s = e.target.closest('select[data-id]'); if (!s) return;
+  choixFormat[s.dataset.id + etat.canal] = Number(s.value); rendreGrille();
 });
 document.getElementById('grille').addEventListener('click', e => {
-  const b = e.target.closest('.ajouter'); if (!b || b.disabled) return;
-  const id = Number(b.dataset.id), k = id + '-' + uniteChoisie(id);
-  panier[k] = (panier[k] || 0) + 1; rendrePanier();
+  const bq = e.target.closest('button[data-q]'), ba = e.target.closest('button[data-add]');
+  const id = Number((bq || ba || {}).dataset?.q || (ba || {}).dataset?.add); if (!id) return;
+  const p = produits.find(x => x.id === id), fs = formatsDe(p), i = Math.min(choixFormat[id + etat.canal] || 0, fs.length - 1), f = fs[i], cle = id + etat.canal + i;
+  const q = qte[cle] || (f.min || pasDe(f));
+  if (bq) { qte[cle] = Math.max(f.min || pasDe(f), q + Number(bq.dataset.d) * pasDe(f)); rendreGrille(); return; }
+  const ex = panier.find(l => l.id === id && l.f === f);
+  ex ? ex.q += q : panier.push({ id, f, q });
+  rendrePanier();
+  ba.textContent = 'Ajouté ✓'; setTimeout(rendreGrille, 900);
 });
 document.getElementById('lignes').addEventListener('click', e => {
   const b = e.target.closest('button[data-k]'); if (!b) return;
-  panier[b.dataset.k] = Math.max(0, panier[b.dataset.k] + Number(b.dataset.d)); rendrePanier();
+  const l = panier[Number(b.dataset.k)]; l.q = Math.round((l.q + Number(b.dataset.d) * pasDe(l.f)) * 10) / 10;
+  if (l.q < (l.f.min || pasDe(l.f))) panier.splice(Number(b.dataset.k), 1);
+  rendrePanier();
 });
+const ouvrir = () => document.body.classList.add('panier-ouvert');
+const fermer = () => document.body.classList.remove('panier-ouvert', 'filtres-ouverts');
+document.getElementById('ouvrir-panier').addEventListener('click', ouvrir);
+document.getElementById('ouvrir-panier-m').addEventListener('click', ouvrir);
+document.getElementById('fermer-panier').addEventListener('click', fermer);
+document.getElementById('voile').addEventListener('click', fermer);
+document.getElementById('ouvrir-filtres').addEventListener('click', () => document.body.classList.add('filtres-ouverts'));
+document.getElementById('appliquer').addEventListener('click', fermer);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fermer(); });
+
 // Panier de démonstration
-panier['1-1'] = 1; panier['4-0'] = 2; panier['12-0'] = 6;
-rendreCategories(); rendreGrille(); rendrePanier();
+panier.push({ id: 1, f: produits[0].formats[0], q: 4 }, { id: 3, f: produits[2].formats[0], q: 2 }, { id: 5, f: produits[4].formats[0], q: 1.5 }, { id: 11, f: produits[10].formats[0], q: 6 });
+if (location.hash === '#panier') ouvrir();
+tout(); rendrePanier();
 </script>
 </body>
 </html>

@@ -8,193 +8,192 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
 <style>
-  body { background: #F3EFE6; }
-  .app { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
-  .menu { background: var(--vert); color: var(--manioc); padding: 20px 14px; display: flex; flex-direction: column; gap: 24px; position: sticky; top: 0; height: 100vh; }
-  .menu .marque { display: flex; gap: 10px; align-items: center; padding: 0 6px; }
-  .menu .marque img { width: 44px; height: 44px; }
-  .menu .marque b { font-family: var(--titre); font-size: 18px; display: block; line-height: 1.05; }
-  .menu .marque span { font-size: 11px; opacity: .85; }
-  .menu nav { display: flex; flex-direction: column; gap: 2px; }
-  .menu nav a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: var(--manioc); text-decoration: none; font-weight: 600; font-size: 15px; }
-  .menu nav a:hover { background: rgba(247,242,232,.1); }
-  .menu nav a[aria-current="page"] { background: var(--manioc); color: var(--vert); }
-  .menu nav a .compte { margin-left: auto; background: var(--osier); color: var(--encre); border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 800; }
-  .menu .pied { margin-top: auto; font-size: 13px; padding: 12px; border-top: 1px solid rgba(247,242,232,.2); }
-  .menu svg { flex: none; }
-
-  .contenu { padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 24px; min-width: 0; }
-  .barre { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .barre h1 { font-size: 30px; }
-  .barre p { margin: 2px 0 0; color: var(--texte-3); }
-  .barre .actions { display: flex; gap: 10px; flex-wrap: wrap; }
-
   .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .kpi { padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
-  .kpi .lib { font-size: 13px; font-weight: 700; color: var(--texte-3); text-transform: uppercase; letter-spacing: .06em; }
+  .kpi { padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--encre); }
+  .kpi:hover { border-color: var(--vert); color: var(--encre); }
+  .kpi .lib { font-size: 12.5px; font-weight: 700; color: var(--texte-3); text-transform: uppercase; letter-spacing: .06em; }
   .kpi .val { font-family: var(--titre); font-size: 32px; font-weight: 800; line-height: 1.1; }
   .kpi .det { font-size: 13px; color: var(--texte-2); }
-  .kpi.alerte { border-color: #E9B8A9; background: #FFF8F5; }
-  .kpi.alerte .val { color: var(--terre); }
+  .kpi.accent { background: #FFF9EE; border-color: #EBCB91; }
+  .rangee { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(300px, 1fr); gap: 16px; align-items: start; }
 
-  .rangee { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); gap: 16px; align-items: start; }
-  .bloc { padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-  .bloc-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .bloc h2 { font-size: 19px; }
-  .filtres { display: flex; gap: 6px; flex-wrap: wrap; }
-  .filtres button { min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1.5px solid var(--ligne); background: var(--blanc); font-weight: 700; font-size: 13px; cursor: pointer; color: var(--encre); }
-  .filtres button[aria-pressed="true"] { background: var(--encre); border-color: var(--encre); color: var(--blanc); }
-  .defile { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-3); font-weight: 700; padding: 8px 10px; border-bottom: 1px solid var(--ligne); white-space: nowrap; }
-  td { padding: 12px 10px; border-bottom: 1px solid #F0EADF; white-space: nowrap; }
-  tr:last-child td { border-bottom: 0; }
-  td.droite, th.droite { text-align: right; }
+  /* Filtres regroupés */
+  .outils-cmd { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: space-between; }
+  .pop { position: relative; }
+  .panneau { position: absolute; right: 0; top: calc(100% + 8px); width: 320px; padding: 16px; z-index: 20; display: none; flex-direction: column; gap: 12px; box-shadow: 0 8px 24px rgba(30,27,22,.14); }
+  .pop.ouvert .panneau { display: flex; }
+  .panneau fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+  .panneau legend { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-3); margin-bottom: 4px; }
+  .panneau .ligne-opt { display: flex; gap: 8px; flex-wrap: wrap; }
+  .panneau label { display: inline-flex; gap: 6px; align-items: center; min-height: 36px; padding: 0 10px; border: 1.5px solid var(--ligne); border-radius: 8px; font-size: 13.5px; cursor: pointer; }
+  .panneau label:has(input:checked) { border-color: var(--vert); background: var(--vert-pale); color: var(--vert); font-weight: 700; }
+  .panneau input { accent-color: var(--vert); }
+  .panneau .pied-p { display: flex; justify-content: space-between; }
+  .lien-btn { background: none; border: 0; color: var(--vert); font-weight: 700; text-decoration: underline; cursor: pointer; }
+  .actifs { display: flex; gap: 6px; flex-wrap: wrap; }
+  .actifs:empty { display: none; }
+  .puce { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 6px 0 10px; border-radius: 999px; background: var(--vert-pale); color: var(--vert); font-size: 12.5px; font-weight: 700; border: 0; cursor: pointer; }
+  td { white-space: nowrap; }
   td a { font-weight: 700; }
-  td small.mode { display: block; font-size: 12px; color: var(--texte-3); }
-  .pro { font-size: 11px; font-weight: 800; color: var(--bleu); background: var(--bleu-pale); border-radius: 6px; padding: 1px 6px; margin-left: 6px; }
-  .mini { min-height: 36px; padding: 0 12px; font-size: 13px; }
+  td small { display: block; font-size: 12px; color: var(--texte-3); }
+  .tag-preco { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 800; color: #7A4F0E; background: var(--osier-pale); border-radius: 6px; padding: 1px 6px; }
+  .suivant { min-width: 128px; }
 
-  .alerte-ligne { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid #F0EADF; align-items: center; }
-  .alerte-ligne:last-child { border-bottom: 0; }
+  .stock-ligne { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid #F0EADF; align-items: center; }
+  .stock-ligne:last-child { border-bottom: 0; }
+  .stock-ligne small { color: var(--texte-3); font-size: 13px; }
   .jauge { grid-column: 1 / -1; height: 6px; border-radius: 999px; background: #F0EADF; overflow: hidden; }
   .jauge i { display: block; height: 100%; background: var(--osier); }
-  .jauge i.vide { background: var(--terre); }
-  .alerte-ligne small { color: var(--texte-3); font-size: 13px; }
 
-  .arrivage { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #F0EADF; }
+  .arrivage { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #F0EADF; align-items: center; }
   .arrivage:last-child { border-bottom: 0; }
   .date { flex: none; width: 52px; text-align: center; border-radius: 10px; background: var(--osier-pale); padding: 6px 0; }
   .date b { display: block; font-family: var(--titre); font-size: 22px; line-height: 1; }
   .date span { font-size: 12px; font-weight: 700; text-transform: uppercase; }
   .arrivage p { margin: 0; font-size: 14px; }
   .arrivage small { color: var(--texte-3); }
-
+  .arrivage .btn { margin-left: auto; }
   .graph svg { width: 100%; height: auto; display: block; }
-  .legende { font-size: 13px; color: var(--texte-3); }
-
-  @media (max-width: 1100px) { .kpis { grid-template-columns: repeat(2, 1fr); } .rangee { grid-template-columns: 1fr; } }
-  @media (max-width: 760px) {
-    .app { grid-template-columns: 1fr; }
-    .menu { position: static; height: auto; padding: 12px; gap: 12px; }
-    .menu nav { flex-direction: row; overflow-x: auto; }
-    .menu nav a { white-space: nowrap; }
-    .menu .pied { display: none; }
-    .contenu { padding: 16px; }
-    .kpis { grid-template-columns: 1fr 1fr; }
-    .kpi .val { font-size: 26px; }
-  }
+  @media (max-width: 1150px) { .kpis { grid-template-columns: repeat(2, 1fr); } .rangee { grid-template-columns: 1fr; } }
+  @media (max-width: 760px) { .kpi .val { font-size: 26px; } .panneau { width: min(320px, 90vw); } }
 </style>
 </head>
 <body>
-<div class="exemple">Maquette pour présentation — données d’exemple · <a href="index.html">Retour au sommaire</a></div>
+<div class="exemple">Maquette v2 pour présentation — données d’exemple · <a href="index.html">Retour au sommaire</a></div>
 <div class="app">
   <aside class="menu">
     <div class="marque"><img src="assets/icone-porteuse.svg" alt=""><div><b>Le Bon Panier</b><span>Gestion</span></div></div>
     <nav aria-label="Menu principal">
-      <a href="#" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Accueil</a>
-      <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-2 9H8L6 3H3 M9 20h.01 M18 20h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Commandes<span class="compte">6</span></a>
-      <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Catalogue et stock<span class="compte">4</span></a>
-      <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z M14 10h4l3 3v3h-7 M7 19a2 2 0 1 0 0-.1 M17 19a2 2 0 1 0 0-.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Arrivages</a>
+      <a href="tableau-de-bord.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Accueil</a>
+      <a href="#commandes"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-2 9H8L6 3H3 M9 20h.01 M18 20h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Commandes<span class="compte">6</span></a>
+      <a href="arrivage.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z M14 10h4l3 3v3h-7 M7 19a2 2 0 1 0 0-.1 M17 19a2 2 0 1 0 0-.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Entrée en stock</a>
+      <a href="produit.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Produits et formats</a>
       <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a4 4 0 1 0 0-.1 M2 21c0-4 3-6 7-6s7 2 7 6 M17 7a3 3 0 0 1 0 6 M22 21c0-3-2-5-4-5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Clients</a>
       <a href="facture.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z M9 12h7 M9 16h7 M9 8h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>Factures</a>
       <a href="rapport-mensuel.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10 M10 20V4 M16 20v-7 M22 20H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Rapports</a>
-      <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M12 2v3 M12 19v3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M2 12h3 M19 12h3 M4.9 19.1 7 17 M17 7l2.1-2.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Équipe et réglages</a>
+      <a href="produit.html#unites"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M12 2v3 M12 19v3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M2 12h3 M19 12h3 M4.9 19.1 7 17 M17 7l2.1-2.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Réglages</a>
     </nav>
     <div class="pied">Connecté : <b>Gérant</b><br>Lundi 2 novembre 2026</div>
   </aside>
 
   <main class="contenu">
     <div class="barre">
-      <div>
-        <h1>Bonjour</h1>
-        <p>Voici l’état de l’épicerie aujourd’hui.</p>
-      </div>
+      <div><h1>Bonjour</h1><p>Lundi 2 novembre · voici l’état de l’épicerie.</p></div>
       <div class="actions">
-        <a class="btn btn-secondaire" href="#">+ Saisir un arrivage</a>
-        <a class="btn btn-primaire" href="#">+ Nouvelle commande</a>
+        <a class="btn btn-secondaire" href="#">+ Commande au comptoir</a>
+        <a class="btn btn-primaire" href="arrivage.html">Entrée en stock</a>
       </div>
     </div>
 
     <section class="kpis" aria-label="Indicateurs du jour">
-      <div class="kpi carte"><span class="lib">Ventes du jour</span><span class="val num">1 284,50 $</span><span class="det">19 commandes · panier moyen 67,61 $</span></div>
-      <div class="kpi carte"><span class="lib">Commandes à traiter</span><span class="val num">6</span><span class="det">3 reçues · 2 confirmées · 1 en préparation</span></div>
-      <div class="kpi carte"><span class="lib">Interac en attente</span><span class="val num">412,60 $</span><span class="det">3 factures à rapprocher</span></div>
-      <div class="kpi carte alerte"><span class="lib">Stock bas</span><span class="val num">4</span><span class="det">dont 1 produit en rupture</span></div>
+      <a class="kpi carte" href="rapport-mensuel.html"><span class="lib">Ventes du jour</span><span class="val num">1 284,50 $</span><span class="det">Détail 842,10 $ · Gros 442,40 $</span></a>
+      <a class="kpi carte" href="#commandes"><span class="lib">Commandes à traiter</span><span class="val num">6</span><span class="det">3 reçues · 2 confirmées · 1 en préparation</span></a>
+      <a class="kpi carte accent" href="#stock"><span class="lib">Précommandes à servir</span><span class="val num">9</span><span class="det">2 produits · arrivages les 4 et 6 nov.</span></a>
+      <a class="kpi carte" href="facture.html"><span class="lib">Interac en attente</span><span class="val num">412,60 $</span><span class="det">3 factures à rapprocher</span></a>
     </section>
 
     <div class="rangee">
-      <section class="bloc carte" aria-labelledby="t-cmd">
-        <div class="bloc-tete">
-          <h2 id="t-cmd">Commandes du jour</h2>
-          <div class="filtres" role="group" aria-label="Filtrer par statut">
-            <button type="button" aria-pressed="true">Toutes</button>
-            <button type="button" aria-pressed="false">Reçues</button>
-            <button type="button" aria-pressed="false">Confirmées</button>
-            <button type="button" aria-pressed="false">En préparation</button>
-            <button type="button" aria-pressed="false">Prêtes</button>
+      <section class="bloc carte" id="commandes" aria-labelledby="t-cmd">
+        <div class="bloc-tete"><h2 id="t-cmd">Commandes</h2><a href="#">Toutes les commandes</a></div>
+        <div class="outils-cmd">
+          <div class="segment" role="group" aria-label="Statut" id="statuts">
+            <button type="button" data-s="tout" aria-pressed="true">Toutes<span class="n">7</span></button>
+            <button type="button" data-s="recue" aria-pressed="false">Reçues<span class="n">3</span></button>
+            <button type="button" data-s="confirmee" aria-pressed="false">Confirmées<span class="n">2</span></button>
+            <button type="button" data-s="preparation" aria-pressed="false">En préparation<span class="n">1</span></button>
+            <button type="button" data-s="prete" aria-pressed="false">Prêtes<span class="n">1</span></button>
+          </div>
+          <div class="pop" id="pop">
+            <button class="btn btn-secondaire mini" type="button" id="btn-filtres" aria-expanded="false" aria-controls="panneau">Filtres <span id="nb-f"></span></button>
+            <div class="panneau carte" id="panneau">
+              <fieldset><legend>Canal</legend><div class="ligne-opt"><label><input type="checkbox" data-f="canal" value="detail"> Détail</label><label><input type="checkbox" data-f="canal" value="gros"> Gros</label></div></fieldset>
+              <fieldset><legend>Réception</legend><div class="ligne-opt"><label><input type="checkbox" data-f="mode" value="ramassage"> Ramassage</label><label><input type="checkbox" data-f="mode" value="livraison"> Livraison</label></div></fieldset>
+              <fieldset><legend>Créneau</legend><div class="ligne-opt"><label><input type="checkbox" data-f="jour" value="auj"> Aujourd’hui</label><label><input type="checkbox" data-f="jour" value="demain"> Demain</label></div></fieldset>
+              <fieldset><legend>Contenu</legend><div class="ligne-opt"><label><input type="checkbox" data-f="preco" value="oui"> Avec précommande</label></div></fieldset>
+              <div class="pied-p"><button class="lien-btn" type="button" id="effacer-f">Tout effacer</button><button class="btn btn-primaire mini" type="button" id="fermer-f">Appliquer</button></div>
+            </div>
           </div>
         </div>
+        <div class="actifs" id="actifs"></div>
         <div class="defile">
           <table>
-            <thead><tr><th>N°</th><th>Client</th><th>Créneau</th><th class="droite">Total</th><th>Statut</th><th><span class="sr">Action</span></th></tr></thead>
-            <tbody>
-              <tr><td><a href="#">#1048</a></td><td>Aminata K.</td><td>Auj. 14 h<small class="mode">Ramassage</small></td><td class="droite num">64,20 $</td><td><span class="etiquette e-recue">Reçue</span></td><td><button class="btn btn-primaire mini" type="button">Confirmer</button></td></tr>
-              <tr><td><a href="#">#1047</a></td><td>Resto [Nom]<span class="pro">PRO</span></td><td>Demain 10 h<small class="mode">Livraison</small></td><td class="droite num">412,80 $</td><td><span class="etiquette e-recue">Reçue</span></td><td><button class="btn btn-primaire mini" type="button">Confirmer</button></td></tr>
-              <tr><td><a href="#">#1046</a></td><td>Jean-Paul M.</td><td>Auj. 16 h<small class="mode">Ramassage</small></td><td class="droite num">21,47 $</td><td><span class="etiquette e-recue">Reçue</span></td><td><button class="btn btn-primaire mini" type="button">Confirmer</button></td></tr>
-              <tr><td><a href="#">#1045</a></td><td>Fatou D.</td><td>Auj. 12 h<small class="mode">Ramassage</small></td><td class="droite num">98,35 $</td><td><span class="etiquette e-confirmee">Confirmée</span></td><td><button class="btn btn-secondaire mini" type="button">Préparer</button></td></tr>
-              <tr><td><a href="#">#1044</a></td><td>Épicerie [Nom]<span class="pro">PRO</span></td><td>Demain 14 h<small class="mode">Livraison</small></td><td class="droite num">350,00 $</td><td><span class="etiquette e-confirmee">Confirmée</span></td><td><button class="btn btn-secondaire mini" type="button">Préparer</button></td></tr>
-              <tr><td><a href="#">#1043</a></td><td>Brice T.</td><td>Auj. 11 h<small class="mode">Ramassage</small></td><td class="droite num">57,90 $</td><td><span class="etiquette e-preparation">En préparation</span></td><td><button class="btn btn-secondaire mini" type="button">Marquer prête</button></td></tr>
-              <tr><td><a href="#">#1042</a></td><td>Clarisse N.</td><td>Auj. 10 h<small class="mode">Ramassage</small></td><td class="droite num">132,15 $</td><td><span class="etiquette e-prete">Prête</span></td><td><button class="btn btn-secondaire mini" type="button">Remettre</button></td></tr>
+            <thead><tr><th>N°</th><th>Client</th><th>Canal</th><th>Créneau</th><th class="droite">Total</th><th>Statut</th><th><span class="sr">Action</span></th></tr></thead>
+            <tbody id="lignes">
+              <tr data-s="recue" data-canal="detail" data-mode="ramassage" data-jour="auj" data-preco="oui"><td><a href="#">#1049</a></td><td>Mireille A.<span class="tag-preco">Précommande</span></td><td><span class="etiquette e-detail">Détail</span></td><td>Auj. 17 h<small>Ramassage</small></td><td class="droite num">38,46 $</td><td><span class="etiquette e-recue">Reçue</span></td><td><button class="btn btn-primaire mini suivant" type="button">Confirmer</button></td></tr>
+              <tr data-s="recue" data-canal="gros" data-mode="livraison" data-jour="demain" data-preco="non"><td><a href="#">#1047</a></td><td>Resto [Nom]</td><td><span class="etiquette e-gros">Gros</span></td><td>Demain 10 h<small>Livraison</small></td><td class="droite num">412,80 $</td><td><span class="etiquette e-recue">Reçue</span></td><td><button class="btn btn-primaire mini suivant" type="button">Confirmer</button></td></tr>
+              <tr data-s="recue" data-canal="detail" data-mode="ramassage" data-jour="auj" data-preco="non"><td><a href="#">#1046</a></td><td>Jean-Paul M.</td><td><span class="etiquette e-detail">Détail</span></td><td>Auj. 16 h<small>Ramassage</small></td><td class="droite num">21,47 $</td><td><span class="etiquette e-recue">Reçue</span></td><td><button class="btn btn-primaire mini suivant" type="button">Confirmer</button></td></tr>
+              <tr data-s="confirmee" data-canal="detail" data-mode="ramassage" data-jour="auj" data-preco="non"><td><a href="#">#1045</a></td><td>Fatou D.</td><td><span class="etiquette e-detail">Détail</span></td><td>Auj. 12 h<small>Ramassage</small></td><td class="droite num">98,35 $</td><td><span class="etiquette e-confirmee">Confirmée</span></td><td><button class="btn btn-primaire mini suivant" type="button">Préparer</button></td></tr>
+              <tr data-s="confirmee" data-canal="gros" data-mode="livraison" data-jour="demain" data-preco="oui"><td><a href="#">#1044</a></td><td>Épicerie [Nom]<span class="tag-preco">Précommande</span></td><td><span class="etiquette e-gros">Gros</span></td><td>Demain 14 h<small>Livraison</small></td><td class="droite num">350,00 $</td><td><span class="etiquette e-confirmee">Confirmée</span></td><td><button class="btn btn-primaire mini suivant" type="button">Préparer</button></td></tr>
+              <tr data-s="preparation" data-canal="detail" data-mode="ramassage" data-jour="auj" data-preco="non"><td><a href="#">#1043</a></td><td>Brice T.</td><td><span class="etiquette e-detail">Détail</span></td><td>Auj. 11 h<small>Ramassage</small></td><td class="droite num">57,90 $</td><td><span class="etiquette e-preparation">En préparation</span></td><td><button class="btn btn-primaire mini suivant" type="button">Marquer prête</button></td></tr>
+              <tr data-s="prete" data-canal="detail" data-mode="ramassage" data-jour="auj" data-preco="non"><td><a href="#">#1042</a></td><td>Clarisse N.</td><td><span class="etiquette e-detail">Détail</span></td><td>Auj. 10 h<small>Ramassage</small></td><td class="droite num">132,15 $</td><td><span class="etiquette e-prete">Prête</span></td><td><button class="btn btn-primaire mini suivant" type="button">Remettre</button></td></tr>
             </tbody>
           </table>
+          <p class="note" id="aucune" hidden style="padding:16px 0">Aucune commande ne correspond à ces filtres.</p>
         </div>
       </section>
 
-      <section class="bloc carte" aria-labelledby="t-stock">
-        <div class="bloc-tete"><h2 id="t-stock">Alertes de stock</h2><a href="#">Tout le stock</a></div>
+      <section class="bloc carte" id="stock" aria-labelledby="t-stock">
+        <div class="bloc-tete"><h2 id="t-stock">Stock et précommandes</h2><a class="btn btn-primaire mini" href="arrivage.html">Entrée en stock</a></div>
         <div>
-          <div class="alerte-ligne"><div><b>Couscous de manioc 1 kg</b><br><small>0 sac · seuil 20</small></div><span class="etiquette e-rupture">Rupture</span><div class="jauge"><i class="vide" style="width:2%"></i></div></div>
-          <div class="alerte-ligne"><div><b>Water Leaf DJM</b><br><small>38 boules · seuil 50 · lot 016</small></div><a class="btn btn-secondaire mini" href="#">Arrivage</a><div class="jauge"><i style="width:76%"></i></div></div>
-          <div class="alerte-ligne"><div><b>Huile de palme rouge 1 L</b><br><small>6 bouteilles · seuil 12</small></div><a class="btn btn-secondaire mini" href="#">Arrivage</a><div class="jauge"><i style="width:50%"></i></div></div>
-          <div class="alerte-ligne"><div><b>Crevettes séchées 100 g</b><br><small>9 sachets · seuil 15</small></div><a class="btn btn-secondaire mini" href="#">Arrivage</a><div class="jauge"><i style="width:60%"></i></div></div>
+          <div class="stock-ligne"><div><b>Couscous de manioc</b><br><small>0 sac en stock · 4 précommandes · arrivage le 6 nov.</small></div><span class="etiquette e-preco">Précommande</span></div>
+          <div class="stock-ligne"><div><b>Plantain mûr</b><br><small>0 kg en stock · 5 précommandes (7,5 kg) · arrivage le 4 nov.</small></div><span class="etiquette e-preco">Précommande</span></div>
+          <div class="stock-ligne"><div><b>Water Leaf DJM</b><br><small>38 boules · seuil 50 · lot 016</small></div><a class="btn btn-secondaire mini" href="arrivage.html">Réapprovisionner</a><div class="jauge"><i style="width:76%"></i></div></div>
+          <div class="stock-ligne"><div><b>Huile de palme rouge</b><br><small>6 L · seuil 12 L</small></div><a class="btn btn-secondaire mini" href="arrivage.html">Réapprovisionner</a><div class="jauge"><i style="width:50%"></i></div></div>
         </div>
+        <p class="note">Un produit à 0 passe automatiquement en précommande ; les précommandes sont servies à l’entrée en stock.</p>
       </section>
     </div>
 
     <div class="rangee">
       <section class="bloc carte graph" aria-labelledby="t-ventes">
-        <div class="bloc-tete"><h2 id="t-ventes">Ventes des 7 derniers jours</h2><span class="legende">Avant taxes · samedi reste le jour le plus fort</span></div>
+        <div class="bloc-tete"><h2 id="t-ventes">Ventes des 7 derniers jours</h2><span class="note">Avant taxes · samedi reste le jour le plus fort</span></div>
         <svg id="graph" viewBox="0 0 640 240" role="img" aria-label="Ventes quotidiennes du 27 octobre au 2 novembre, de 760 $ à 1 920 $, sommet le samedi 31 octobre"></svg>
       </section>
-
       <section class="bloc carte" aria-labelledby="t-arr">
-        <div class="bloc-tete"><h2 id="t-arr">Prochains arrivages</h2></div>
+        <div class="bloc-tete"><h2 id="t-arr">Arrivages attendus</h2></div>
         <div>
-          <div class="arrivage"><div class="date"><b>4</b><span>nov</span></div><div><p><b>DJM — Water Leaf et ndolé</b></p><small>10 cartons attendus · lot 017 · garder à −18 °C</small></div></div>
-          <div class="arrivage"><div class="date"><b>6</b><span>nov</span></div><div><p><b>[Fournisseur] — farines et gari</b></p><small>Gari 1 kg ×40 · Couscous de manioc ×30</small></div></div>
-          <div class="arrivage"><div class="date"><b>10</b><span>nov</span></div><div><p><b>[Fournisseur] — huiles et épices</b></p><small>Huile de palme 1 L ×24 · Njansang ×20</small></div></div>
+          <div class="arrivage"><div class="date"><b>4</b><span>nov</span></div><div><p><b>DJM — Water Leaf et ndolé</b></p><small>10 cartons · + plantain 3 caisses</small></div><a class="btn btn-secondaire mini" href="arrivage.html">Recevoir</a></div>
+          <div class="arrivage"><div class="date"><b>6</b><span>nov</span></div><div><p><b>[Fournisseur] — farines</b></p><small>Couscous de manioc 30 sacs · Gari 40 sacs</small></div><a class="btn btn-secondaire mini" href="arrivage.html">Recevoir</a></div>
         </div>
       </section>
     </div>
   </main>
 </div>
 <script>
+  // Graphique des ventes
   const jours = [['mar. 27', 910], ['mer. 28', 1120], ['jeu. 29', 980], ['ven. 30', 1460], ['sam. 31', 1920], ['dim. 1', 760], ['auj.', 1284.5]];
-  const g = document.getElementById('graph'), H = 170, base = 200, max = 2000, bw = 52, pas = 84, x0 = 64;
+  const H = 170, base = 200, max = 2000, bw = 52, pas = 84, x0 = 64;
   let s = '';
-  [0, 500, 1000, 1500, 2000].forEach(v => {
-    const y = base - v / max * H;
-    s += `<line x1="${x0 - 12}" x2="620" y1="${y}" y2="${y}" stroke="#ECE5D8"/><text x="${x0 - 18}" y="${y + 4}" text-anchor="end" font-size="12" fill="#6B5F4F">${v.toLocaleString('fr-CA')} $</text>`;
-  });
-  jours.forEach(([j, v], i) => {
-    const h = v / max * H, x = x0 + i * pas, auj = i === jours.length - 1;
-    s += `<rect x="${x}" y="${base - h}" width="${bw}" height="${h}" rx="6" fill="${auj ? '#D49A3A' : '#1F4D2E'}"/>`;
-    s += `<text x="${x + bw / 2}" y="${base - h - 8}" text-anchor="middle" font-size="12" font-weight="700" fill="#1E1B16">${Math.round(v).toLocaleString('fr-CA')}</text>`;
-    s += `<text x="${x + bw / 2}" y="${base + 20}" text-anchor="middle" font-size="12" fill="#4A4033" font-weight="${auj ? 800 : 500}">${j}</text>`;
-  });
-  g.innerHTML = s;
+  [0, 500, 1000, 1500, 2000].forEach(v => { const y = base - v / max * H; s += `<line x1="${x0 - 12}" x2="620" y1="${y}" y2="${y}" stroke="#ECE5D8"/><text x="${x0 - 18}" y="${y + 4}" text-anchor="end" font-size="12" fill="#6B5F4F">${v.toLocaleString('fr-CA')} $</text>`; });
+  jours.forEach(([j, v], i) => { const h = v / max * H, x = x0 + i * pas, auj = i === jours.length - 1;
+    s += `<rect x="${x}" y="${base - h}" width="${bw}" height="${h}" rx="6" fill="${auj ? '#D49A3A' : '#1F4D2E'}"/><text x="${x + bw / 2}" y="${base - h - 8}" text-anchor="middle" font-size="12" font-weight="700" fill="#1E1B16">${Math.round(v).toLocaleString('fr-CA')}</text><text x="${x + bw / 2}" y="${base + 20}" text-anchor="middle" font-size="12" fill="#4A4033" font-weight="${auj ? 800 : 500}">${j}</text>`; });
+  document.getElementById('graph').innerHTML = s;
+
+  // Filtres regroupés des commandes
+  const etat = { s: 'tout', canal: new Set(), mode: new Set(), jour: new Set(), preco: new Set() };
+  const libs = { detail: 'Détail', gros: 'Gros', ramassage: 'Ramassage', livraison: 'Livraison', auj: 'Aujourd’hui', demain: 'Demain', oui: 'Avec précommande' };
+  function appliquer() {
+    let n = 0;
+    document.querySelectorAll('#lignes tr').forEach(tr => {
+      const ok = (etat.s === 'tout' || tr.dataset.s === etat.s) && ['canal', 'mode', 'jour', 'preco'].every(k => !etat[k].size || etat[k].has(tr.dataset[k]));
+      tr.hidden = !ok; if (ok) n++;
+    });
+    document.getElementById('aucune').hidden = n > 0;
+    const puces = [];
+    ['canal', 'mode', 'jour', 'preco'].forEach(k => etat[k].forEach(v => puces.push(`<button class="puce" type="button" data-k="${k}" data-v="${v}" aria-label="Retirer ${libs[v]}">${libs[v]} ×</button>`)));
+    document.getElementById('actifs').innerHTML = puces.join('');
+    document.getElementById('nb-f').textContent = puces.length ? `(${puces.length})` : '';
+  }
+  document.getElementById('statuts').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; etat.s = b.dataset.s; document.querySelectorAll('#statuts button').forEach(x => x.setAttribute('aria-pressed', x === b)); appliquer(); });
+  const pop = document.getElementById('pop'), bf = document.getElementById('btn-filtres');
+  bf.addEventListener('click', () => { const o = pop.classList.toggle('ouvert'); bf.setAttribute('aria-expanded', o); });
+  document.getElementById('fermer-f').addEventListener('click', () => { pop.classList.remove('ouvert'); bf.setAttribute('aria-expanded', false); });
+  document.getElementById('panneau').addEventListener('change', e => { const t = e.target; t.checked ? etat[t.dataset.f].add(t.value) : etat[t.dataset.f].delete(t.value); appliquer(); });
+  document.getElementById('effacer-f').addEventListener('click', () => { ['canal', 'mode', 'jour', 'preco'].forEach(k => etat[k].clear()); document.querySelectorAll('#panneau input').forEach(i => i.checked = false); appliquer(); });
+  document.getElementById('actifs').addEventListener('click', e => { const b = e.target.closest('.puce'); if (!b) return; etat[b.dataset.k].delete(b.dataset.v); const i = document.querySelector(`#panneau input[data-f="${b.dataset.k}"][value="${b.dataset.v}"]`); if (i) i.checked = false; appliquer(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') pop.classList.remove('ouvert'); });
 </script>
 </body>
 </html>

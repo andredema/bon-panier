@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Produit et formats de vente — Le Bon Panier</title>
+<link rel="icon" href="assets/icone-porteuse.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .disposition { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; align-items: start; }
+  .col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .infos { display: grid; grid-template-columns: 120px 1fr 1fr; gap: 12px; align-items: end; }
+  .photo-p { grid-row: span 2; width: 120px; height: 120px; border-radius: 14px; background: var(--osier-pale); color: #7A4F0E; display: grid; place-items: center; text-align: center; font-size: 12px; border: 2px dashed #E3C78F; }
+  .bascules { display: flex; gap: 20px; flex-wrap: wrap; }
+  .bascule { display: flex; gap: 10px; align-items: center; font-size: 14px; cursor: pointer; }
+  .bascule input { appearance: none; width: 42px; height: 24px; border-radius: 999px; background: #D9D2C3; position: relative; cursor: pointer; margin: 0; flex: none; }
+  .bascule input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: left .15s; }
+  .bascule input:checked { background: var(--vert); }
+  .bascule input:checked::after { left: 21px; }
+  .bascule input:focus-visible { outline: 2px solid var(--vert); outline-offset: 2px; }
+  .base { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .explic { background: var(--manioc); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; }
+  .formats td { padding: 8px 6px; vertical-align: middle; }
+  .formats th { padding: 8px 6px; }
+  .formats select, .formats input { min-height: 40px; border-radius: 8px; border: 1.5px solid var(--ligne); padding: 0 8px; background: var(--blanc); width: 100%; font-size: 14px; }
+  .formats .w-canal select { min-width: 92px; } .formats .w-p input { min-width: 84px; } .formats .w-canal { width: 104px; } .formats .w-u { width: 96px; } .formats .w-n { width: 84px; } .formats .w-p { width: 96px; } .formats .w-min { width: 70px; }
+  .calc { font-size: 13px; color: var(--texte-2); white-space: nowrap; }
+  .ajout-l { align-self: flex-start; }
+  .groupe-canal { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--texte-3); background: #FBF8F2; }
+  .unites-g { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+  .unite-c { border: 1.5px solid var(--ligne); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .unite-c b { font-size: 15px; }
+  .unite-c small { color: var(--texte-3); font-size: 12.5px; }
+  .apercu { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .carte-p { overflow: hidden; }
+  .carte-p .ph { aspect-ratio: 16/10; background: var(--osier-pale); display: grid; place-items: center; color: #7A4F0E; }
+  .carte-p .in { padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .carte-p .px { font-family: var(--titre); font-size: 22px; font-weight: 800; }
+  .carte-p small { color: var(--texte-3); }
+  .opt-liste { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; }
+  .opt-liste div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px solid #F0EADF; padding: 4px 0; }
+  @media (max-width: 1150px) { .disposition { grid-template-columns: 1fr; } .apercu { position: static; } }
+  @media (max-width: 760px) { .infos, .base { grid-template-columns: 1fr; } .photo-p { grid-row: auto; } }
+</style>
+</head>
+<body>
+<div class="exemple">Maquette v2 pour présentation — données d’exemple · <a href="index.html">Retour au sommaire</a></div>
+<div class="app">
+  <aside class="menu">
+    <div class="marque"><img src="assets/icone-porteuse.svg" alt=""><div><b>Le Bon Panier</b><span>Gestion</span></div></div>
+    <nav aria-label="Menu principal">
+      <a href="tableau-de-bord.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Accueil</a>
+      <a href="tableau-de-bord.html#commandes"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-2 9H8L6 3H3 M9 20h.01 M18 20h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Commandes<span class="compte">6</span></a>
+      <a href="arrivage.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z M14 10h4l3 3v3h-7 M7 19a2 2 0 1 0 0-.1 M17 19a2 2 0 1 0 0-.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Entrée en stock</a>
+      <a href="produit.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Produits et formats</a>
+      <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a4 4 0 1 0 0-.1 M2 21c0-4 3-6 7-6s7 2 7 6 M17 7a3 3 0 0 1 0 6 M22 21c0-3-2-5-4-5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Clients</a>
+      <a href="facture.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z M9 12h7 M9 16h7 M9 8h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>Factures</a>
+      <a href="rapport-mensuel.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10 M10 20V4 M16 20v-7 M22 20H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Rapports</a>
+      <a href="#unites"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M12 2v3 M12 19v3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M2 12h3 M19 12h3 M4.9 19.1 7 17 M17 7l2.1-2.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Réglages</a>
+    </nav>
+    <div class="pied">Connecté : <b>Gérant</b><br>Lundi 2 novembre 2026</div>
+  </aside>
+
+  <main class="contenu">
+    <div class="barre">
+      <div><p style="margin:0"><a href="#">Produits</a> › Farines et féculents</p><h1>Gari jaune</h1></div>
+      <div class="actions"><a class="btn btn-secondaire" href="#">Annuler</a><button class="btn btn-primaire" type="button">Enregistrer</button></div>
+    </div>
+
+    <div class="disposition">
+      <div class="col">
+        <section class="bloc carte" aria-labelledby="t-info">
+          <h2 id="t-info">Informations</h2>
+          <div class="infos">
+            <div class="photo-p">+ Ajouter<br>une photo</div>
+            <div class="champ"><label for="nom">Nom affiché</label><input id="nom" value="Gari jaune"></div>
+            <div class="champ"><label for="cat">Catégorie</label><select id="cat"><option>Farines et féculents</option><option>Légumes-feuilles surgelés</option><option>Fruits et légumes</option><option>Poissons séchés</option><option>Huiles et condiments</option><option>Épices</option><option>Boissons</option></select></div>
+            <div class="champ"><label for="marque">Marque</label><input id="marque" placeholder="ex. DJM"></div>
+            <div class="champ"><label for="code">Code-barres</label><input id="code" placeholder="Scanner ou saisir"></div>
+          </div>
+          <div class="bascules">
+            <label class="bascule"><input type="checkbox"> Surgelé (−18 °C)</label>
+            <label class="bascule"><input type="checkbox"> Taxable (TPS/TVQ)</label>
+            <label class="bascule"><input type="checkbox" checked> Visible en ligne</label>
+            <label class="bascule"><input type="checkbox" checked> Accepter les précommandes à 0</label>
+          </div>
+        </section>
+
+        <section class="bloc carte" aria-labelledby="t-stock">
+          <h2 id="t-stock">Stock</h2>
+          <div class="base">
+            <div class="champ"><label for="base">Unité de stock</label><select id="base"><option value="kg" selected>Kilogramme (kg)</option><option value="g">Gramme (g)</option><option value="L">Litre (L)</option><option value="unité">Unité</option><option value="sac">Sac</option></select></div>
+            <div class="champ"><label for="seuil">Seuil d’alerte</label><input id="seuil" value="20" inputmode="decimal"></div>
+          </div>
+          <p class="explic">Le stock est compté en <b id="base-lib">kg</b>. Chaque format ci-dessous indique combien il retire du stock : vendre un sac de 25 kg retire 25 kg, vendre un sac de 1 kg retire 1 kg. Un seul stock, aucun écart entre détail et gros.</p>
+        </section>
+
+        <section class="bloc carte" aria-labelledby="t-formats">
+          <div class="bloc-tete"><h2 id="t-formats">Formats de vente</h2><span class="note">Détail et gros, chacun avec son unité et son prix</span></div>
+          <div class="defile">
+            <table class="formats">
+              <thead><tr><th>Canal</th><th>Vendu en</th><th>Nom pour le client</th><th>Contenu</th><th>Prix</th><th>Min.</th><th>Prix au <span class="lib-base">kg</span></th><th><span class="sr">Retirer</span></th></tr></thead>
+              <tbody id="lignes"></tbody>
+            </table>
+          </div>
+          <button class="btn btn-secondaire ajout-l" type="button" id="ajouter">+ Ajouter un format</button>
+        </section>
+
+        <section class="bloc carte" id="unites" aria-labelledby="t-unites">
+          <div class="bloc-tete"><h2 id="t-unites">Réglages · unités de vente</h2><span class="note">Valables pour tous les produits</span></div>
+          <div class="unites-g">
+            <div class="unite-c"><label class="bascule"><input type="checkbox" checked> <b>Sac</b></label><small>Contenu en kg ou g (sac de 1 kg, 5 kg, 25 kg)</small></div>
+            <div class="unite-c"><label class="bascule"><input type="checkbox" checked> <b>Unité</b></label><small>À la pièce : boule, bouteille, carton, caisse</small></div>
+            <div class="unite-c"><label class="bascule"><input type="checkbox" checked> <b>Litre (L)</b></label><small>Huiles, boissons ; décimales permises</small></div>
+            <div class="unite-c"><label class="bascule"><input type="checkbox" checked> <b>Kilogramme (kg)</b></label><small>Vente au poids ; pas de 0,5 kg</small></div>
+            <div class="unite-c"><label class="bascule"><input type="checkbox" checked> <b>Gramme (g)</b></label><small>Sachets et vrac ; pas de 100 g</small></div>
+            <div class="unite-c" style="border-style:dashed;justify-content:center;align-items:center"><button class="btn btn-secondaire mini" type="button">+ Nouvelle unité</button><small>ex. carton, botte, douzaine</small></div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="apercu" aria-labelledby="t-apercu">
+        <h2 id="t-apercu" style="font-size:18px">Aperçu sur la page de commande</h2>
+        <div class="segment" role="group" aria-label="Aperçu du canal" id="seg-apercu">
+          <button type="button" data-c="detail" aria-pressed="true">Détail</button>
+          <button type="button" data-c="gros" aria-pressed="false">En gros</button>
+        </div>
+        <div class="carte carte-p">
+          <div class="ph"><svg width="56" height="56" viewBox="0 0 64 64" aria-hidden="true"><path d="M20 18h24l-4-8H24zM18 18c-6 8-8 18-6 30 1 4 4 6 8 6h24c4 0 7-2 8-6 2-12 0-22-6-30z M24 34h16" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+          <div class="in"><b style="font-size:17px">Gari jaune</b><div class="opt-liste" id="apercu-liste"></div></div>
+        </div>
+        <p class="note">Le client ne voit que les formats du canal choisi (Détail ou En gros) en haut de la page.</p>
+      </aside>
+    </div>
+  </main>
+</div>
+<script>
+const fmt = n => n.toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+const facteurs = { kg: { kg: 1, g: .001 }, g: { kg: 1000, g: 1 }, L: { L: 1 }, 'unité': {}, sac: {} };
+const formats = [
+  { c: 'detail', u: 'sac', nom: 'Sac de 1 kg', n: 1, nu: 'kg', prix: 6.99, min: 1 },
+  { c: 'detail', u: 'sac', nom: 'Sac de 5 kg', n: 5, nu: 'kg', prix: 29.99, min: 1 },
+  { c: 'detail', u: 'kg', nom: 'Vrac au poids', n: 1, nu: 'kg', prix: 6.49, min: 0.5 },
+  { c: 'gros', u: 'sac', nom: 'Sac de 25 kg', n: 25, nu: 'kg', prix: 129.00, min: 2 }
+];
+let apercu = 'detail';
+const base = () => document.getElementById('base').value;
+function prixBase(f) {
+  const fac = (facteurs[base()] || {})[f.nu];
+  return fac ? fmt(f.prix / (f.n * fac)) : '—';
+}
+function rendre() {
+  const opts = (arr, v) => arr.map(([val, lib]) => `<option value="${val}" ${val === v ? 'selected' : ''}>${lib}</option>`).join('');
+  let html = '';
+  ['detail', 'gros'].forEach(c => {
+    html += `<tr><td colspan="8" class="groupe-canal">${c === 'detail' ? 'Détail' : 'En gros'}</td></tr>`;
+    formats.forEach((f, i) => { if (f.c !== c) return;
+      html += `<tr>
+        <td class="w-canal"><select data-i="${i}" data-k="c" aria-label="Canal">${opts([['detail', 'Détail'], ['gros', 'Gros']], f.c)}</select></td>
+        <td class="w-u"><select data-i="${i}" data-k="u" aria-label="Vendu en">${opts([['sac', 'Sac'], ['unité', 'Unité'], ['L', 'L'], ['kg', 'kg'], ['g', 'g']], f.u)}</select></td>
+        <td><input data-i="${i}" data-k="nom" value="${f.nom}" aria-label="Nom pour le client"></td>
+        <td><div style="display:flex;gap:4px"><input class="w-n" data-i="${i}" data-k="n" value="${String(f.n).replace('.', ',')}" inputmode="decimal" aria-label="Quantité contenue"><select data-i="${i}" data-k="nu" aria-label="Unité du contenu" style="width:64px">${opts([['kg', 'kg'], ['g', 'g'], ['L', 'L']], f.nu)}</select></div></td>
+        <td class="w-p"><input data-i="${i}" data-k="prix" value="${f.prix.toFixed(2).replace('.', ',')}" inputmode="decimal" aria-label="Prix"></td>
+        <td class="w-min"><input data-i="${i}" data-k="min" value="${String(f.min).replace('.', ',')}" inputmode="decimal" aria-label="Minimum"></td>
+        <td class="calc num">${prixBase(f)}</td>
+        <td><button class="btn btn-secondaire mini" type="button" data-suppr="${i}" aria-label="Retirer ${f.nom}">×</button></td></tr>`;
+    });
+  });
+  document.getElementById('lignes').innerHTML = html;
+  document.querySelectorAll('.lib-base').forEach(e => e.textContent = base());
+  document.getElementById('base-lib').textContent = base();
+  document.getElementById('apercu-liste').innerHTML = formats.filter(f => f.c === apercu).map(f =>
+    `<div><span>${f.nom}${f.min > 1 ? ` <small>(min. ${f.min})</small>` : ''}</span><b class="num">${fmt(f.prix)}${f.u === 'kg' ? '/kg' : ''}</b></div>`).join('') || '<small>Aucun format pour ce canal.</small>';
+}
+document.getElementById('lignes').addEventListener('change', e => {
+  const t = e.target, i = t.dataset.i; if (i === undefined) return;
+  const f = formats[i], k = t.dataset.k;
+  f[k] = ['n', 'prix', 'min'].includes(k) ? (parseFloat(t.value.replace(',', '.')) || 0) : t.value;
+  rendre();
+});
+document.getElementById('lignes').addEventListener('click', e => { const b = e.target.closest('button[data-suppr]'); if (!b) return; formats.splice(Number(b.dataset.suppr), 1); rendre(); });
+document.getElementById('ajouter').addEventListener('click', () => { formats.push({ c: 'detail', u: 'sac', nom: 'Nouveau format', n: 1, nu: 'kg', prix: 0, min: 1 }); rendre(); });
+document.getElementById('base').addEventListener('change', rendre);
+document.getElementById('seg-apercu').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; apercu = b.dataset.c; document.querySelectorAll('#seg-apercu button').forEach(x => x.setAttribute('aria-pressed', x === b)); rendre(); });
+rendre();
+</script>
+</body>
+</html>

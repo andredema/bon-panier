@@ -14,21 +14,25 @@
   .hero img { width: 180px; height: 180px; }
   .hero p.sur { margin: 0; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; opacity: .85; }
   .hero h1 { font-size: clamp(32px, 5vw, 52px); margin: 8px 0 12px; }
-  .hero p { margin: 0; max-width: 560px; font-size: 17px; }
-  .cadre { max-width: 1120px; margin: 0 auto; padding: 40px 24px 56px; display: flex; flex-direction: column; gap: 32px; }
-  .cadre h2 { font-size: 26px; }
+  .hero p { margin: 0; max-width: 580px; font-size: 17px; }
+  .cadre { max-width: 1120px; margin: 0 auto; padding: 40px 24px 56px; display: flex; flex-direction: column; gap: 36px; }
+  .cadre h2 { font-size: 26px; margin-bottom: 6px; }
+  .groupe-t { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--texte-3); margin: 18px 0 10px; }
   .ecrans { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
-  .ecran { padding: 22px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: var(--encre); transition: border-color .15s; }
+  .ecran { padding: 22px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: var(--encre); }
   .ecran:hover { border-color: var(--vert); color: var(--encre); }
-  .ecran .n { font-family: var(--titre); font-size: 14px; font-weight: 800; color: var(--osier); }
+  .ecran .n { font-family: var(--titre); font-size: 14px; font-weight: 800; color: #9A5E1C; }
   .ecran h3 { font-size: 21px; }
   .ecran p { margin: 0; color: var(--texte-2); font-size: 15px; }
-  .ecran span.lien { margin-top: auto; font-weight: 800; color: var(--vert); }
+  .ecran .lien { margin-top: auto; font-weight: 800; color: var(--vert); }
+  .nouveau { display: inline-block; font-size: 11px; font-weight: 800; background: var(--osier-pale); color: #7A4F0E; border-radius: 6px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; font-family: var(--corps); }
+  .points { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .point { padding: 16px 18px; }
+  .point b { display: block; margin-bottom: 4px; }
+  .point span { color: var(--texte-2); font-size: 14.5px; }
   .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
   .pastille { border-radius: 12px; height: 72px; }
   .palette div { font-size: 14px; }
-  .forfait { padding: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
-  .forfait b { display: block; font-family: var(--titre); font-size: 26px; }
   footer { text-align: center; color: var(--texte-3); font-size: 13px; padding: 24px; }
 </style>
 </head>
@@ -37,9 +41,9 @@
   <div class="hero-in">
     <img src="assets/logo-porteuse.svg" alt="Logo Le Bon Panier : porteuse avec un panier de produits sur la tête">
     <div>
-      <p class="sur">Proposition Zenviko · novembre 2026</p>
+      <p class="sur">Proposition Zenviko · maquettes v2 · novembre 2026</p>
       <h1>L’application Le Bon Panier</h1>
-      <p>Une page de commande pour vos clients et un tableau de bord pour gérer commandes, stock, arrivages, factures et rapports comptables.</p>
+      <p>Une page de commande au détail et en gros pour vos clients, et un espace de gestion pour les commandes, le stock, les arrivages, les factures et les rapports comptables.</p>
     </div>
   </div>
 </section>
@@ -47,12 +51,35 @@
 <main class="cadre">
   <section>
     <h2>Les écrans</h2>
-    <p style="color:var(--texte-2)">Cliquez sur un écran pour l’ouvrir. Les produits, prix et chiffres sont des exemples.</p>
+    <p style="color:var(--texte-2);margin:0">Cliquez sur un écran pour l’ouvrir. Les produits, prix et chiffres sont des exemples.</p>
+
+    <p class="groupe-t">Pour les clients</p>
     <div class="ecrans">
-      <a class="ecran carte" href="commande.html"><span class="n">01 · Clients</span><h3>Page de commande</h3><p>Catalogue avec unités (boule, carton), panier, ramassage ou livraison, paiement Interac.</p><span class="lien">Ouvrir →</span></a>
-      <a class="ecran carte" href="tableau-de-bord.html"><span class="n">02 · Équipe</span><h3>Tableau de bord</h3><p>Ventes du jour, commandes à traiter, alertes de stock, prochains arrivages.</p><span class="lien">Ouvrir →</span></a>
-      <a class="ecran carte" href="facture.html"><span class="n">03 · Comptabilité</span><h3>Facture client</h3><p>N° continu, lots, produits détaxés et taxables, TPS et TVQ, instructions Interac.</p><span class="lien">Ouvrir →</span></a>
-      <a class="ecran carte" href="rapport-mensuel.html"><span class="n">04 · Comptabilité</span><h3>Rapport mensuel</h3><p>Rapport de taxes, ventes par catégorie, comptes clients, inventaire valorisé, journal des ventes.</p><span class="lien">Ouvrir →</span></a>
+      <a class="ecran carte" href="commande.html"><span class="n">01</span><h3>Page de commande</h3><p>Choix Détail ou En gros, filtres regroupés, formats en sac, unité, L, kg ou g, précommande des produits épuisés, panier en tiroir.</p><span class="lien">Ouvrir →</span></a>
+    </div>
+
+    <p class="groupe-t">Pour l’équipe</p>
+    <div class="ecrans">
+      <a class="ecran carte" href="tableau-de-bord.html"><span class="n">02</span><h3>Tableau de bord</h3><p>Commandes filtrées par statut, canal et créneau ; précommandes à servir ; stock bas.</p><span class="lien">Ouvrir →</span></a>
+      <a class="ecran carte" href="arrivage.html"><span class="n">03</span><h3>Entrée en stock <span class="nouveau">Nouveau</span></h3><p>Scanner, choisir le format reçu, la quantité : le stock et les précommandes se mettent à jour.</p><span class="lien">Ouvrir →</span></a>
+      <a class="ecran carte" href="produit.html"><span class="n">04</span><h3>Produits et formats <span class="nouveau">Nouveau</span></h3><p>Formats de détail et de gros, unité de vente, contenu, prix, minimum ; réglage des unités.</p><span class="lien">Ouvrir →</span></a>
+    </div>
+
+    <p class="groupe-t">Documents comptables</p>
+    <div class="ecrans">
+      <a class="ecran carte" href="facture.html"><span class="n">05</span><h3>Facture client</h3><p>N° continu, lots, formats, produits détaxés et taxables, TPS et TVQ, instructions Interac.</p><span class="lien">Ouvrir →</span></a>
+      <a class="ecran carte" href="rapport-mensuel.html"><span class="n">06</span><h3>Rapport mensuel</h3><p>Rapport de taxes, ventes détail et gros, catégories, comptes clients, inventaire, journal des ventes.</p><span class="lien">Ouvrir →</span></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Ce qui change dans la version 2</h2>
+    <div class="points" style="margin-top:12px">
+      <div class="point carte"><b>Détail ou en gros</b><span>Un bouton en haut de la page de commande change les formats et les prix affichés.</span></div>
+      <div class="point carte"><b>Unités configurables</b><span>Sac, unité, L, kg, g ; chaque format indique ce qu’il retire du stock.</span></div>
+      <div class="point carte"><b>Précommande</b><span>Un produit épuisé reste commandable ; la précommande est servie à l’arrivage.</span></div>
+      <div class="point carte"><b>Filtres regroupés</b><span>Un seul panneau de filtres, avec les filtres actifs visibles et effaçables.</span></div>
+      <div class="point carte"><b>Entrée en stock rapide</b><span>Trois gestes par produit, conversion automatique des cartons et des sacs.</span></div>
     </div>
   </section>
 
@@ -65,16 +92,6 @@
       <div><div class="pastille" style="background:#F7F2E8;border:1px solid var(--ligne)"></div>Manioc · #F7F2E8</div>
     </div>
     <p style="color:var(--texte-2)">Titres : Bricolage Grotesque · Textes et chiffres : Manrope</p>
-  </section>
-
-  <section>
-    <h2>Forfait recommandé : Standard</h2>
-    <div class="forfait carte" style="margin-top:16px">
-      <div><b class="num">1 890 $</b>installation, une fois</div>
-      <div><b class="num">79 $ / mois</b>hébergement, sécurité, sauvegardes, mises à jour, support</div>
-      <div><b>6 à 8 semaines</b>de la démonstration à la mise en ligne</div>
-    </div>
-    <p style="color:var(--texte-3);font-size:13px">Montants avant taxes. Nom de domaine en sus (environ 15 à 30 $ par an).</p>
   </section>
 </main>
 <footer>Zenviko — Développement web et soutien informatique · Ottawa-Gatineau</footer>

@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrée en stock — Le Bon Panier</title>
+<link rel="icon" href="assets/icone-porteuse.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/admin.css">
+<style>
+  .etapes-entree { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .etape { display: flex; gap: 12px; align-items: center; padding: 12px 16px; font-size: 14px; }
+  .etape b.n { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--vert); color: var(--blanc); display: grid; place-items: center; font-size: 14px; }
+  .disposition { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+  .entete-bon { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 12px; }
+  .ajout { display: flex; flex-direction: column; gap: 10px; }
+  .scan { position: relative; }
+  .scan input { width: 100%; min-height: 56px; border-radius: 12px; border: 2px solid var(--vert); padding: 0 16px 0 52px; font-size: 17px; background: var(--blanc); }
+  .scan svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); }
+  .rapides { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--texte-3); }
+  .rapides button { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--ligne); background: var(--blanc); font-weight: 700; font-size: 13px; cursor: pointer; color: var(--encre); }
+  .rapides button:hover { border-color: var(--vert); }
+  .ligne-arr { border: 1.5px solid var(--ligne); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: var(--blanc); }
+  .ligne-arr .haut { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .ligne-arr h3 { font-size: 18px; }
+  .ligne-arr .haut small { color: var(--texte-3); font-size: 13px; }
+  .champs { display: grid; grid-template-columns: minmax(0,1.5fr) auto minmax(0,.7fr) minmax(0,1fr) minmax(0,.8fr); gap: 10px; align-items: end; }
+  .champs .champ input:not([data-k="q"]), .champs .champ select { width: 100%; min-width: 0; }
+  .resultat { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; font-size: 14px; background: var(--manioc); border-radius: 10px; padding: 10px 12px; }
+  .resultat .fleche { font-weight: 800; color: var(--vert); }
+  .resultat .preco { color: #7A4F0E; font-weight: 700; }
+  .suppr { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid var(--ligne); background: var(--blanc); cursor: pointer; font-size: 18px; color: var(--texte-2); }
+  .resume { position: sticky; top: 24px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .resume h2 { font-size: 20px; }
+  .resume dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 8px; font-size: 14px; }
+  .resume dt { color: var(--texte-2); }
+  .resume dd { margin: 0; font-weight: 800; text-align: right; }
+  .preco-box { background: var(--osier-pale); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; }
+  .preco-box b { display: block; margin-bottom: 4px; }
+  .preco-box ul { margin: 0; padding-left: 18px; }
+  .check { display: flex; gap: 8px; align-items: flex-start; font-size: 13.5px; }
+  .check input { width: 18px; height: 18px; accent-color: var(--vert); margin-top: 2px; }
+  @media (max-width: 1150px) { .disposition { grid-template-columns: 1fr; } .resume { position: static; } }
+  @media (max-width: 860px) { .champs { grid-template-columns: 1fr 1fr; } .entete-bon, .etapes-entree { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="exemple">Maquette v2 pour présentation — données d’exemple · <a href="index.html">Retour au sommaire</a></div>
+<div class="app">
+  <aside class="menu">
+    <div class="marque"><img src="assets/icone-porteuse.svg" alt=""><div><b>Le Bon Panier</b><span>Gestion</span></div></div>
+    <nav aria-label="Menu principal">
+      <a href="tableau-de-bord.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 4l9 7v9H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Accueil</a>
+      <a href="tableau-de-bord.html#commandes"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h15l-2 9H8L6 3H3 M9 20h.01 M18 20h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Commandes<span class="compte">6</span></a>
+      <a href="arrivage.html" aria-current="page"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3z M14 10h4l3 3v3h-7 M7 19a2 2 0 1 0 0-.1 M17 19a2 2 0 1 0 0-.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Entrée en stock</a>
+      <a href="produit.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4v10l-8 4-8-4z M4 7l8 4 8-4 M12 11v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Produits et formats</a>
+      <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a4 4 0 1 0 0-.1 M2 21c0-4 3-6 7-6s7 2 7 6 M17 7a3 3 0 0 1 0 6 M22 21c0-3-2-5-4-5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Clients</a>
+      <a href="facture.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z M9 12h7 M9 16h7 M9 8h3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>Factures</a>
+      <a href="rapport-mensuel.html"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10 M10 20V4 M16 20v-7 M22 20H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Rapports</a>
+      <a href="produit.html#unites"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z M12 2v3 M12 19v3 M4.9 4.9l2.1 2.1 M17 17l2.1 2.1 M2 12h3 M19 12h3 M4.9 19.1 7 17 M17 7l2.1-2.1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Réglages</a>
+    </nav>
+    <div class="pied">Connecté : <b>Employé</b><br>Mercredi 4 novembre 2026</div>
+  </aside>
+
+  <main class="contenu">
+    <div class="barre">
+      <div><h1>Entrée en stock</h1><p>Recevoir un arrivage en quelques gestes : produit, format reçu, quantité.</p></div>
+      <div class="actions"><a class="btn btn-secondaire" href="tableau-de-bord.html">Annuler</a></div>
+    </div>
+
+    <div class="etapes-entree" aria-label="Comment ça marche">
+      <div class="etape carte"><b class="n">1</b>Scannez ou cherchez le produit</div>
+      <div class="etape carte"><b class="n">2</b>Choisissez le format reçu et la quantité</div>
+      <div class="etape carte"><b class="n">3</b>Validez : stock et précommandes à jour</div>
+    </div>
+
+    <div class="disposition">
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <section class="bloc carte" aria-labelledby="t-bon">
+          <h2 id="t-bon">Bon de réception</h2>
+          <div class="entete-bon">
+            <div class="champ"><label for="fourn">Fournisseur</label><select id="fourn"><option>DJM — Aubin Frank Lamegui</option><option>[Fournisseur farines]</option><option>[Fournisseur huiles et épices]</option></select></div>
+            <div class="champ"><label for="date-r">Date de réception</label><input id="date-r" type="date" value="2026-11-04"></div>
+            <div class="champ"><label for="bl">N° bon de livraison</label><input id="bl" placeholder="Facultatif"></div>
+          </div>
+        </section>
+
+        <section class="bloc carte" aria-labelledby="t-ajout">
+          <h2 id="t-ajout">Ajouter un produit</h2>
+          <div class="ajout">
+            <div class="scan">
+              <label for="recherche" class="sr">Scanner un code-barres ou rechercher un produit</label>
+              <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14 M6 5v14 M10 5v14 M13 5v14 M17 5v14 M21 5v14" stroke="#1F4D2E" stroke-width="2"/></svg>
+              <input id="recherche" placeholder="Scanner le code-barres ou taper le nom du produit">
+            </div>
+            <div class="rapides">Attendus aujourd’hui :
+              <button type="button" data-ajout="ndole">+ Ndolé DJM</button>
+              <button type="button" data-ajout="gari">+ Gari jaune</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="bloc carte" aria-labelledby="t-lignes">
+          <div class="bloc-tete"><h2 id="t-lignes">Produits reçus</h2><span class="note" id="nb-lignes"></span></div>
+          <div id="lignes" style="display:flex;flex-direction:column;gap:12px"></div>
+        </section>
+      </div>
+
+      <aside class="resume carte" aria-labelledby="t-resume">
+        <h2 id="t-resume">Résumé de l’arrivage</h2>
+        <dl id="resume"></dl>
+        <div class="preco-box" id="preco-box"></div>
+        <label class="check"><input type="checkbox" checked> Aviser par courriel les clients dont la précommande est prête</label>
+        <label class="check"><input type="checkbox" checked> Imprimer les étiquettes de lot</label>
+        <button class="btn btn-primaire" type="button" id="valider">Valider l’entrée en stock</button>
+        <p class="note">Chaque entrée est enregistrée avec la date, l’employé, le fournisseur et le n° de lot (traçabilité).</p>
+      </aside>
+    </div>
+  </main>
+</div>
+<script>
+const fmt = n => n.toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+const nb = n => n.toLocaleString('fr-CA', { maximumFractionDigits: 1 });
+// Catalogue : unité de stock + formats d'achat (conversion vers l'unité de stock)
+const catalogue = {
+  waterleaf: { nom: 'Water Leaf', marque: 'DJM', stockU: 'boules', stock: 38, preco: 0, formats: [['Carton de 50 boules', 50], ['Boule de 500 g', 1]] },
+  ndole: { nom: 'Feuilles de ndolé', marque: 'DJM', stockU: 'boules', stock: 120, preco: 0, formats: [['Carton de 50 boules', 50], ['Boule de 500 g', 1]] },
+  plantain: { nom: 'Plantain mûr', stockU: 'kg', stock: 0, preco: 7.5, precoClients: 5, formats: [['Caisse de 18 kg', 18], ['kg (au poids)', 1]] },
+  couscous: { nom: 'Couscous de manioc', stockU: 'sacs de 1 kg', stock: 0, preco: 4, precoClients: 4, formats: [['Carton de 10 sacs de 1 kg', 10], ['Sac de 25 kg (vente en gros)', 25], ['Sac de 1 kg', 1]] },
+  gari: { nom: 'Gari jaune', stockU: 'kg', stock: 64, preco: 0, formats: [['Sac de 25 kg', 25], ['Sac de 5 kg', 5], ['Sac de 1 kg', 1]] }
+};
+const lignes = [
+  { p: 'waterleaf', f: 0, q: 10, lot: '017', dlc: '', cout: '' },
+  { p: 'plantain', f: 0, q: 3, lot: '', dlc: '', cout: '' },
+  { p: 'couscous', f: 0, q: 3, lot: '', dlc: '', cout: '' }
+];
+function rendre() {
+  const box = document.getElementById('lignes');
+  box.innerHTML = lignes.map((l, i) => {
+    const p = catalogue[l.p], ajout = l.q * p.formats[l.f][1], apres = p.stock + ajout, servis = Math.min(p.preco, apres);
+    return `<article class="ligne-arr">
+      <div class="haut"><div>${p.marque ? `<small>${p.marque}</small>` : ''}<h3>${p.nom}</h3><small>Stock actuel : ${nb(p.stock)} ${p.stockU}${p.preco ? ` · ${p.precoClients} précommandes (${nb(p.preco)} ${p.stockU})` : ''}</small></div>
+        <button class="suppr" type="button" data-suppr="${i}" aria-label="Retirer ${p.nom}">×</button></div>
+      <div class="champs">
+        <div class="champ"><label for="f${i}">Format reçu</label><select id="f${i}" data-i="${i}" data-k="f">${p.formats.map((f, j) => `<option value="${j}" ${j === l.f ? 'selected' : ''}>${f[0]}</option>`).join('')}</select></div>
+        <div class="champ"><span id="lq${i}">Quantité</span><div class="pas" role="group" aria-labelledby="lq${i}"><button type="button" data-i="${i}" data-d="-1" aria-label="Diminuer">−</button><input data-i="${i}" data-k="q" inputmode="decimal" value="${l.q}" aria-labelledby="lq${i}"><button type="button" data-i="${i}" data-d="1" aria-label="Augmenter">+</button></div></div>
+        <div class="champ"><label for="lot${i}">N° de lot</label><input id="lot${i}" data-i="${i}" data-k="lot" value="${l.lot}" placeholder="ex. 017"></div>
+        <div class="champ"><label for="dlc${i}">Date limite</label><input id="dlc${i}" type="date" data-i="${i}" data-k="dlc" value="${l.dlc}"></div>
+        <div class="champ"><label for="c${i}">Coût / format</label><input id="c${i}" data-i="${i}" data-k="cout" inputmode="decimal" value="${l.cout}" placeholder="Facultatif"></div>
+      </div>
+      <div class="resultat"><span>+ ${nb(ajout)} ${p.stockU}</span><span class="fleche">Stock : ${nb(p.stock)} → ${nb(apres)}</span>${servis ? `<span class="preco">${p.precoClients} précommande${p.precoClients > 1 ? 's' : ''} servie${p.precoClients > 1 ? 's' : ''} (${nb(servis)} ${p.stockU}) · ${nb(apres - servis)} disponibles à la vente</span>` : ''}</div>
+    </article>`;
+  }).join('') || '<p class="note">Aucun produit. Scannez ou cherchez un produit ci-dessus.</p>';
+  document.getElementById('nb-lignes').textContent = `${lignes.length} produit${lignes.length > 1 ? 's' : ''}`;
+  let cout = 0, unites = 0; const precos = [];
+  lignes.forEach(l => { const p = catalogue[l.p]; unites += l.q; const c = parseFloat(String(l.cout).replace(',', '.')); if (!isNaN(c)) cout += c * l.q; if (p.preco) precos.push(`${p.nom} : ${p.precoClients} clients`); });
+  document.getElementById('resume').innerHTML = `<dt>Produits</dt><dd>${lignes.length}</dd><dt>Colis reçus</dt><dd>${nb(unites)}</dd><dt>Coût total saisi</dt><dd class="num">${fmt(cout)}</dd>`;
+  document.getElementById('preco-box').innerHTML = precos.length ? `<b>${precos.length} produit${precos.length > 1 ? 's' : ''} en précommande seront servis</b><ul>${precos.map(x => `<li>${x}</li>`).join('')}</ul>` : '<b>Aucune précommande en attente</b>';
+}
+document.getElementById('lignes').addEventListener('click', e => {
+  const d = e.target.closest('button[data-d]'), s = e.target.closest('button[data-suppr]');
+  if (d) { const l = lignes[d.dataset.i]; l.q = Math.max(1, l.q + Number(d.dataset.d)); rendre(); }
+  if (s) { lignes.splice(Number(s.dataset.suppr), 1); rendre(); }
+});
+document.getElementById('lignes').addEventListener('change', e => {
+  const t = e.target, i = t.dataset.i; if (i === undefined) return;
+  const l = lignes[i]; if (t.dataset.k === 'f') l.f = Number(t.value); else if (t.dataset.k === 'q') l.q = Math.max(1, parseFloat(t.value.replace(',', '.')) || 1); else l[t.dataset.k] = t.value;
+  rendre();
+});
+document.querySelector('.rapides').addEventListener('click', e => {
+  const b = e.target.closest('button[data-ajout]'); if (!b) return;
+  lignes.push({ p: b.dataset.ajout, f: 0, q: 1, lot: '', dlc: '', cout: '' }); b.remove(); rendre();
+});
+document.getElementById('valider').addEventListener('click', e => { e.target.textContent = 'Entrée enregistrée ✓'; });
+rendre();
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Le Bon Panier — maquettes de l'application
+# Le Bon Panier — maquettes de l'application (v2)
 
 Maquettes HTML pour la présentation au client de l'application de commande et de gestion de l'épicerie africaine Le Bon Panier (Saint-Lin–Laurentides).
 
@@ -9,13 +9,22 @@ Ouvrir `maquettes/index.html` dans un navigateur. Aucune installation n'est requ
 | Fichier | Écran |
 | --- | --- |
 | `maquettes/index.html` | Sommaire de la présentation |
-| `maquettes/commande.html` | Page de commande client (panier fonctionnel, adaptée au téléphone) |
-| `maquettes/tableau-de-bord.html` | Tableau de bord de gestion |
+| `maquettes/commande.html` | Page de commande : Détail / En gros, filtres regroupés, formats, précommande, panier en tiroir |
+| `maquettes/tableau-de-bord.html` | Tableau de bord : commandes, précommandes à servir, stock |
+| `maquettes/arrivage.html` | Entrée en stock rapide (format reçu, conversion, précommandes servies) |
+| `maquettes/produit.html` | Produit et formats de vente ; réglage des unités (sac, unité, L, kg, g) |
 | `maquettes/facture.html` | Facture client (imprimable en PDF) |
 | `maquettes/rapport-mensuel.html` | Rapport mensuel et documents comptables |
 | `maquettes/assets/` | Logo « La porteuse », icône, styles communs |
 
-Les produits, prix, noms de clients et chiffres sont des **exemples**. Les champs entre crochets (`[N° TPS]`, `[Heures d'ouverture]`…) sont à compléter avec l'épicerie.
+Les produits, prix, noms de clients et chiffres sont des **exemples**. Les champs entre crochets (`[N° TPS]`, `[Zone et frais]`…) sont à compléter avec l'épicerie.
+
+## Principes de la v2
+
+- **Détail ou en gros** : chaque produit a des formats par canal, avec prix et minimum.
+- **Unités configurables** : sac, unité, L, kg, g ; un seul stock par produit, chaque format indique ce qu'il retire.
+- **Précommande** : un produit à 0 reste commandable ; la commande est servie à l'entrée en stock.
+- **Filtres regroupés** : un panneau unique, filtres actifs en puces effaçables.
 
 ## Identité
 

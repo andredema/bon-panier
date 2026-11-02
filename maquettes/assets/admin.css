@@ -1,0 +1,54 @@
+/* Le Bon Panier — gabarit commun des écrans de gestion */
+body { background: #F3EFE6; }
+.app { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; }
+.menu { background: var(--vert); color: var(--manioc); padding: 20px 14px; display: flex; flex-direction: column; gap: 24px; position: sticky; top: 0; height: 100vh; overflow: auto; }
+.menu .marque { display: flex; gap: 10px; align-items: center; padding: 0 6px; }
+.menu .marque img { width: 44px; height: 44px; }
+.menu .marque b { font-family: var(--titre); font-size: 18px; display: block; line-height: 1.05; }
+.menu .marque span { font-size: 11px; opacity: .85; }
+.menu nav { display: flex; flex-direction: column; gap: 2px; }
+.menu nav a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: var(--manioc); text-decoration: none; font-weight: 600; font-size: 15px; }
+.menu nav a:hover { background: rgba(247,242,232,.1); color: var(--manioc); }
+.menu nav a[aria-current="page"] { background: var(--manioc); color: var(--vert); }
+.menu nav a .compte { margin-left: auto; background: var(--osier); color: var(--encre); border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 800; }
+.menu .sous { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .7; padding: 12px 12px 4px; font-weight: 700; }
+.menu .pied { margin-top: auto; font-size: 13px; padding: 12px; border-top: 1px solid rgba(247,242,232,.2); }
+.menu svg { flex: none; }
+.contenu { padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.barre { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.barre h1 { font-size: 30px; }
+.barre p { margin: 2px 0 0; color: var(--texte-3); }
+.barre .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.bloc { padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.bloc-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bloc h2 { font-size: 19px; }
+.note { font-size: 13px; color: var(--texte-3); margin: 0; }
+.champ { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--texte-2); }
+.champ input, .champ select { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 12px; background: var(--blanc); color: var(--encre); font-weight: 500; }
+.champ input:focus, .champ select:focus { outline: 2px solid var(--vert); outline-offset: 1px; }
+.mini { min-height: 36px; padding: 0 12px; font-size: 13px; }
+.pas { display: inline-flex; align-items: center; border: 1.5px solid var(--ligne); border-radius: 10px; background: var(--blanc); }
+.pas button { width: 40px; height: 42px; border: 0; background: none; font-size: 18px; font-weight: 800; cursor: pointer; color: var(--encre); }
+.pas input { width: 56px; border: 0; text-align: center; font-weight: 800; font-size: 15px; min-height: 40px; background: transparent; }
+.segment { display: inline-flex; background: #EDE6D8; border-radius: 10px; padding: 3px; }
+.segment button { min-height: 34px; padding: 0 12px; border: 0; border-radius: 8px; background: none; font-weight: 700; font-size: 13px; cursor: pointer; color: var(--texte-2); white-space: nowrap; }
+.segment button[aria-pressed="true"] { background: var(--blanc); color: var(--encre); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.segment button .n { display: inline-block; margin-left: 4px; font-size: 11.5px; color: var(--texte-3); }
+.e-preco { background: var(--osier-pale); color: #7A4F0E; }
+.e-gros { background: var(--bleu-pale); color: var(--bleu); }
+.e-gros::before, .e-detail::before { display: none; }
+.e-detail { background: #ECEAE6; color: #4A4033; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-3); font-weight: 700; padding: 8px 10px; border-bottom: 1px solid var(--ligne); white-space: nowrap; }
+td { padding: 12px 10px; border-bottom: 1px solid #F0EADF; }
+tr:last-child td { border-bottom: 0; }
+.droite { text-align: right; }
+.defile { overflow-x: auto; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; }
+  .menu { position: static; height: auto; padding: 12px; gap: 12px; }
+  .menu nav { flex-direction: row; overflow-x: auto; }
+  .menu nav a { white-space: nowrap; }
+  .menu .pied, .menu .sous { display: none; }
+  .contenu { padding: 16px; }
+}
