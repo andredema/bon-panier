@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facture F-2026-0412 — Le Bon Panier</title>
+<link rel="icon" href="assets/icone-porteuse.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  body { background: #E9E3D7; }
+  .outils { max-width: 816px; margin: 24px auto 0; padding: 0 16px; display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+  .page { max-width: 816px; margin: 16px auto 48px; background: var(--blanc); padding: 56px 64px; box-shadow: 0 1px 3px rgba(0,0,0,.12); font-size: 13.5px; }
+  .tete { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; padding-bottom: 24px; border-bottom: 3px solid var(--vert); }
+  .emetteur { display: flex; gap: 16px; align-items: center; }
+  .emetteur img { width: 92px; height: 92px; }
+  .emetteur h1 { font-size: 24px; color: var(--vert); }
+  .emetteur p { margin: 4px 0 0; color: var(--texte-2); line-height: 1.45; }
+  .doc { text-align: right; }
+  .doc h2 { font-size: 30px; letter-spacing: .04em; }
+  .doc dl { margin: 8px 0 0; display: grid; grid-template-columns: auto auto; gap: 2px 12px; justify-content: end; }
+  .doc dt { color: var(--texte-3); }
+  .doc dd { margin: 0; font-weight: 700; }
+  .parties { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px 0; }
+  .parties h3 { font-family: var(--corps); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--texte-3); margin-bottom: 6px; }
+  .parties p { margin: 0; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--manioc); text-align: left; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--texte-2); padding: 10px; }
+  td { padding: 12px 10px; border-bottom: 1px solid var(--ligne); vertical-align: top; }
+  .d { text-align: right; }
+  td small { color: var(--texte-3); display: block; }
+  .code { display: inline-block; width: 22px; text-align: center; border-radius: 4px; font-size: 11px; font-weight: 800; }
+  .code-d { background: var(--vert-pale); color: var(--vert); }
+  .code-t { background: var(--osier-pale); color: #7A4F0E; }
+  .bas { display: grid; grid-template-columns: 1fr 300px; gap: 32px; padding-top: 20px; }
+  .totaux { display: flex; flex-direction: column; }
+  .totaux div { display: flex; justify-content: space-between; padding: 6px 0; }
+  .totaux .grand { border-top: 2px solid var(--encre); margin-top: 6px; padding-top: 10px; font-family: var(--titre); font-size: 22px; font-weight: 800; }
+  .paiement { background: var(--osier-pale); border-radius: 10px; padding: 16px; line-height: 1.5; }
+  .paiement h3 { font-family: var(--corps); font-size: 13px; margin-bottom: 6px; }
+  .statut { display: inline-block; margin-top: 10px; border: 2px solid var(--terre); color: var(--terre); font-weight: 800; letter-spacing: .1em; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+  .legende { font-size: 12px; color: var(--texte-3); margin-top: 10px; }
+  .pied { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--ligne); font-size: 12px; color: var(--texte-3); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  @media (max-width: 700px) {
+    .page { padding: 28px 20px; }
+    .tete, .parties, .bas { grid-template-columns: 1fr; display: grid; }
+    .doc { text-align: left; }
+    .doc dl { justify-content: start; }
+    .defile { overflow-x: auto; }
+  }
+  @media print {
+    body { background: #fff; }
+    .exemple, .outils { display: none; }
+    .page { box-shadow: none; margin: 0; max-width: none; padding: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="exemple">Maquette pour présentation — facture d’exemple · <a href="index.html">Retour au sommaire</a></div>
+<div class="outils">
+  <a class="btn btn-secondaire" href="tableau-de-bord.html">← Tableau de bord</a>
+  <button class="btn btn-secondaire" type="button" onclick="window.print()">Imprimer / PDF</button>
+  <button class="btn btn-primaire" type="button">Envoyer par courriel</button>
+</div>
+
+<article class="page">
+  <header class="tete">
+    <div class="emetteur">
+      <img src="assets/logo-porteuse.svg" alt="Logo Le Bon Panier">
+      <div>
+        <h1>Épicerie africaine Le Bon Panier</h1>
+        <p>840, avenue du Marché<br>Saint-Lin–Laurentides (Québec)<br>[Téléphone] · [Courriel]</p>
+      </div>
+    </div>
+    <div class="doc">
+      <h2>FACTURE</h2>
+      <dl>
+        <dt>N°</dt><dd class="num">F-2026-0412</dd>
+        <dt>Date</dt><dd>2 novembre 2026</dd>
+        <dt>Commande</dt><dd class="num">#1047</dd>
+        <dt>Échéance</dt><dd>16 novembre 2026</dd>
+      </dl>
+    </div>
+  </header>
+
+  <section class="parties">
+    <div>
+      <h3>Facturé à</h3>
+      <p><b>[Nom du restaurant client]</b><br>[Adresse du client]<br>[Ville] (Québec) [Code postal]<br>[Courriel du client]</p>
+    </div>
+    <div>
+      <h3>Livraison</h3>
+      <p>Livraison le 3 novembre 2026, 10 h – 12 h<br>Produits surgelés transportés à −18 °C</p>
+    </div>
+  </section>
+
+  <div class="defile">
+    <table>
+      <thead><tr><th>Produit</th><th>Lot</th><th class="d">Qté</th><th class="d">Prix unit.</th><th>Taxe</th><th class="d">Montant</th></tr></thead>
+      <tbody>
+        <tr><td><b>DJM Water Leaf</b><small>Carton 50 boules × 500 g · surgelé</small></td><td class="num">016</td><td class="d num">1</td><td class="d num">175,00 $</td><td><span class="code code-d">D</span></td><td class="d num">175,00 $</td></tr>
+        <tr><td><b>Gari jaune</b><small>Sac 1 kg</small></td><td class="num">—</td><td class="d num">4</td><td class="d num">6,99 $</td><td><span class="code code-d">D</span></td><td class="d num">27,96 $</td></tr>
+        <tr><td><b>Huile de palme rouge</b><small>Bouteille 1 L</small></td><td class="num">—</td><td class="d num">2</td><td class="d num">8,49 $</td><td><span class="code code-d">D</span></td><td class="d num">16,98 $</td></tr>
+        <tr><td><b>Malta</b><small>Bouteille 330 ml</small></td><td class="num">—</td><td class="d num">12</td><td class="d num">2,29 $</td><td><span class="code code-t">T</span></td><td class="d num">27,48 $</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="legende">D = produit alimentaire de base détaxé · T = taxable (TPS 5 % et TVQ 9,975 %)</p>
+
+  <section class="bas">
+    <div class="paiement">
+      <h3>Paiement par virement Interac</h3>
+      Envoyez <b class="num">251,53 $</b> à <b>[courriel Interac de l’épicerie]</b><br>
+      Message à indiquer : <b class="num">F-2026-0412</b><br>
+      Aussi accepté : comptant au magasin.
+      <div class="statut">À PAYER</div>
+    </div>
+    <div class="totaux num">
+      <div><span>Sous-total</span><span>247,42 $</span></div>
+      <div><span>dont détaxé</span><span>219,94 $</span></div>
+      <div><span>dont taxable</span><span>27,48 $</span></div>
+      <div><span>TPS (5 %) — n° [N° TPS]</span><span>1,37 $</span></div>
+      <div><span>TVQ (9,975 %) — n° [N° TVQ]</span><span>2,74 $</span></div>
+      <div class="grand"><span>Total</span><span>251,53 $</span></div>
+    </div>
+  </section>
+
+  <footer class="pied">
+    <span>Merci de votre confiance — Le Bon Panier</span>
+    <span>Toute correction se fait par note de crédit · Facture générée le 2 novembre 2026</span>
+  </footer>
+</article>
+</body>
+</html>

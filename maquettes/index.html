@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Bon Panier — Maquettes de l’application</title>
+<link rel="icon" href="assets/icone-porteuse.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  .hero { background: var(--vert); color: var(--manioc); }
+  .hero-in { max-width: 1120px; margin: 0 auto; padding: 56px 24px; display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+  .hero img { width: 180px; height: 180px; }
+  .hero p.sur { margin: 0; font-size: 13px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; opacity: .85; }
+  .hero h1 { font-size: clamp(32px, 5vw, 52px); margin: 8px 0 12px; }
+  .hero p { margin: 0; max-width: 560px; font-size: 17px; }
+  .cadre { max-width: 1120px; margin: 0 auto; padding: 40px 24px 56px; display: flex; flex-direction: column; gap: 32px; }
+  .cadre h2 { font-size: 26px; }
+  .ecrans { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+  .ecran { padding: 22px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: var(--encre); transition: border-color .15s; }
+  .ecran:hover { border-color: var(--vert); color: var(--encre); }
+  .ecran .n { font-family: var(--titre); font-size: 14px; font-weight: 800; color: var(--osier); }
+  .ecran h3 { font-size: 21px; }
+  .ecran p { margin: 0; color: var(--texte-2); font-size: 15px; }
+  .ecran span.lien { margin-top: auto; font-weight: 800; color: var(--vert); }
+  .palette { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .pastille { border-radius: 12px; height: 72px; }
+  .palette div { font-size: 14px; }
+  .forfait { padding: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .forfait b { display: block; font-family: var(--titre); font-size: 26px; }
+  footer { text-align: center; color: var(--texte-3); font-size: 13px; padding: 24px; }
+</style>
+</head>
+<body>
+<section class="hero">
+  <div class="hero-in">
+    <img src="assets/logo-porteuse.svg" alt="Logo Le Bon Panier : porteuse avec un panier de produits sur la tête">
+    <div>
+      <p class="sur">Proposition Zenviko · novembre 2026</p>
+      <h1>L’application Le Bon Panier</h1>
+      <p>Une page de commande pour vos clients et un tableau de bord pour gérer commandes, stock, arrivages, factures et rapports comptables.</p>
+    </div>
+  </div>
+</section>
+
+<main class="cadre">
+  <section>
+    <h2>Les écrans</h2>
+    <p style="color:var(--texte-2)">Cliquez sur un écran pour l’ouvrir. Les produits, prix et chiffres sont des exemples.</p>
+    <div class="ecrans">
+      <a class="ecran carte" href="commande.html"><span class="n">01 · Clients</span><h3>Page de commande</h3><p>Catalogue avec unités (boule, carton), panier, ramassage ou livraison, paiement Interac.</p><span class="lien">Ouvrir →</span></a>
+      <a class="ecran carte" href="tableau-de-bord.html"><span class="n">02 · Équipe</span><h3>Tableau de bord</h3><p>Ventes du jour, commandes à traiter, alertes de stock, prochains arrivages.</p><span class="lien">Ouvrir →</span></a>
+      <a class="ecran carte" href="facture.html"><span class="n">03 · Comptabilité</span><h3>Facture client</h3><p>N° continu, lots, produits détaxés et taxables, TPS et TVQ, instructions Interac.</p><span class="lien">Ouvrir →</span></a>
+      <a class="ecran carte" href="rapport-mensuel.html"><span class="n">04 · Comptabilité</span><h3>Rapport mensuel</h3><p>Rapport de taxes, ventes par catégorie, comptes clients, inventaire valorisé, journal des ventes.</p><span class="lien">Ouvrir →</span></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Identité visuelle</h2>
+    <div class="palette" style="margin-top:16px">
+      <div><div class="pastille" style="background:#1F4D2E"></div>Vert feuille · #1F4D2E</div>
+      <div><div class="pastille" style="background:#D49A3A"></div>Osier · #D49A3A</div>
+      <div><div class="pastille" style="background:#A8432A"></div>Terre · #A8432A</div>
+      <div><div class="pastille" style="background:#F7F2E8;border:1px solid var(--ligne)"></div>Manioc · #F7F2E8</div>
+    </div>
+    <p style="color:var(--texte-2)">Titres : Bricolage Grotesque · Textes et chiffres : Manrope</p>
+  </section>
+
+  <section>
+    <h2>Forfait recommandé : Standard</h2>
+    <div class="forfait carte" style="margin-top:16px">
+      <div><b class="num">1 890 $</b>installation, une fois</div>
+      <div><b class="num">79 $ / mois</b>hébergement, sécurité, sauvegardes, mises à jour, support</div>
+      <div><b>6 à 8 semaines</b>de la démonstration à la mise en ligne</div>
+    </div>
+    <p style="color:var(--texte-3);font-size:13px">Montants avant taxes. Nom de domaine en sus (environ 15 à 30 $ par an).</p>
+  </section>
+</main>
+<footer>Zenviko — Développement web et soutien informatique · Ottawa-Gatineau</footer>
+</body>
+</html>
