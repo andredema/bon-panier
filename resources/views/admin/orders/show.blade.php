@@ -79,8 +79,8 @@
       <section class="bloc carte" aria-labelledby="t-client">
         <h2 id="t-client">{{ __('orders.show.customer') }}</h2>
         <p class="infos-client">
-          <b>{{ $order->customer->name }}</b><br>
-          <a href="tel:{{ preg_replace('/[^0-9+]/', '', $order->customer->phone) }}">{{ $order->customer->phone }}</a>
+          <b><a href="{{ route('admin.customers.show', $order->customer) }}">{{ $order->customer->name }}</a></b>
+          @if ($order->customer->phone)<br><a href="tel:{{ preg_replace('/[^0-9+]/', '', $order->customer->phone) }}">{{ $order->customer->phone }}</a>@endif
           @if ($order->customer->email)<br><a href="mailto:{{ $order->customer->email }}">{{ $order->customer->email }}</a>@endif
         </p>
         <h3>{{ __('orders.show.reception') }}</h3>

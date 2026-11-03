@@ -18,3 +18,9 @@ Schedule::command('queue:work', [
     ->name('vider-file-attente');
 
 Schedule::command('queue:prune-failed', ['--hours' => 24 * 30])->daily();
+
+// Sauvegarde quotidienne de la base dans BACKUP_PATH (hors du web), 30 jours gardés
+Schedule::command('backup:database')
+    ->dailyAt(config('bonpanier.backup.at'))
+    ->withoutOverlapping(60)
+    ->name('sauvegarde-base');

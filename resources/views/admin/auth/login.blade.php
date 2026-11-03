@@ -1,28 +1,9 @@
-<!doctype html>
-<html lang="fr-CA">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#1F4D2E">
-<meta name="robots" content="noindex, nofollow">
-<title>{{ __('app.login.page_title') }} — {{ __('app.shop_name') }}</title>
-<link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-@fonts
-@vite(['resources/css/admin.css'])
-</head>
-<body>
-<main class="connexion">
-  <div class="carte">
-    <div class="marque">
-      <img src="{{ asset('images/icone-porteuse.svg') }}" alt="" width="56" height="56">
-      <div><b>{{ __('app.shop_name') }}</b><span>{{ __('app.admin_tagline') }}</span></div>
-    </div>
-    <h1>{{ __('app.login.title') }}</h1>
+@extends('layouts.auth')
 
-    @if ($errors->any())
-      <div class="alerte alerte-erreur" role="alert" id="email-erreur">{{ $errors->first() }}</div>
-    @endif
+@section('title', __('app.login.page_title'))
+@section('heading', __('app.login.title'))
 
+@section('form')
     <form method="POST" action="{{ route('login.store') }}" novalidate>
       @csrf
       <div class="champ">
@@ -36,8 +17,6 @@
       </div>
       <label class="case"><input type="checkbox" name="remember" value="1"> {{ __('app.login.remember') }}</label>
       <button class="btn btn-primaire" type="submit">{{ __('app.login.submit') }}</button>
+      <p class="lien-aide"><a href="{{ route('password.request') }}">{{ __('app.reset.forgot_link') }}</a></p>
     </form>
-  </div>
-</main>
-</body>
-</html>
+@endsection

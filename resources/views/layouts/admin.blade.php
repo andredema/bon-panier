@@ -17,7 +17,7 @@
             'count' => \App\Models\Order::whereIn('status', ['recue', 'confirmee', 'en_preparation'])->count()],
         ['key' => 'stock', 'route' => 'admin.receipts.create', 'active' => ['admin.receipts.*', 'admin.arrivals.*', 'admin.suppliers.*', 'admin.preorders.*']],
         ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
-        ['key' => 'customers', 'route' => null],
+        ['key' => 'customers', 'route' => 'admin.customers.index', 'active' => 'admin.customers.*'],
         ['key' => 'invoices', 'route' => 'admin.invoices.index', 'active' => ['admin.invoices.*', 'admin.payments.*']],
         ['key' => 'reports', 'route' => auth()->user()->isManager() ? 'admin.reports.index' : null, 'active' => 'admin.reports.*'],
     ];

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\Auth\PasswordResetController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CounterOrderController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExpectedArrivalController;
 use App\Http\Controllers\Admin\InvoiceController;
@@ -24,6 +26,12 @@ Route::prefix('gestion')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('connexion', [LoginController::class, 'create'])->name('login');
         Route::post('connexion', [LoginController::class, 'store'])->name('login.store');
+
+        // Mot de passe oublié
+        Route::get('mot-de-passe', [PasswordResetController::class, 'request'])->name('password.request');
+        Route::post('mot-de-passe', [PasswordResetController::class, 'email'])->middleware('throttle:6,10')->name('password.email');
+        Route::get('mot-de-passe/{token}', [PasswordResetController::class, 'reset'])->name('password.reset');
+        Route::post('mot-de-passe/nouveau', [PasswordResetController::class, 'update'])->middleware('throttle:6,10')->name('password.update');
     });
 
     Route::middleware(['auth', 'role'])->name('admin.')->group(function () {
@@ -79,6 +87,13 @@ Route::prefix('gestion')->group(function () {
             ->only(['index', 'store', 'update'])
             ->parameters(['fournisseurs' => 'supplier'])
             ->names('suppliers');
+
+        // Clients : toute l'équipe consulte et corrige ; export et effacement (Loi 25) réservés au gérant
+        Route::get('clients', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('clients/{customer}', [CustomerController::class, 'show'])->whereNumber('customer')->name('customers.show');
+        Route::put('clients/{customer}', [CustomerController::class, 'update'])->whereNumber('customer')->name('customers.update');
+        Route::get('clients/{customer}/export', [CustomerController::class, 'export'])->middleware('role:gerant')->name('customers.export');
+        Route::post('clients/{customer}/effacer', [CustomerController::class, 'erase'])->middleware('role:gerant')->name('customers.erase');
 
         Route::get('lots/{lot}/ajuster', [StockAdjustmentController::class, 'create'])->name('adjustments.create');
         Route::post('lots/{lot}/ajuster', [StockAdjustmentController::class, 'store'])->name('adjustments.store');

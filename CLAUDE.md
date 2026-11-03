@@ -89,6 +89,7 @@ npm run build                   # avant le déploiement
 PHP=php83 bash scripts/build-release.sh   # archive à déposer sur PlanetHoster (dist/)
 php artisan test
 php artisan users:create        # créer un compte de l’équipe
+php artisan backup:database     # sauvegarde de la base dans BACKUP_PATH (lancée chaque jour par le cron)
 ```
 
 ## Questions encore ouvertes (ne pas inventer de réponse)

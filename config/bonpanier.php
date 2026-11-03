@@ -52,4 +52,11 @@ return [
         'invoice.wholesale_issued_at' => ['type' => 'enum', 'options' => ['handover', 'confirmation'], 'default' => 'handover', 'group' => 'rules', 'open_question' => true],
         'catalog.employees_can_edit' => ['type' => 'bool', 'default' => false, 'group' => 'rules', 'open_question' => true],
     ],
+
+    // Sauvegarde quotidienne de la base (cron) : dossier hors du web, ex. /home/compte/backups
+    'backup' => [
+        'path' => env('BACKUP_PATH') ?: storage_path('app/backups'),
+        'keep_days' => (int) (env('BACKUP_KEEP_DAYS') ?: 30),
+        'at' => env('BACKUP_AT') ?: '03:15',
+    ],
 ];

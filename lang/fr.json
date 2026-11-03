@@ -6,5 +6,10 @@
     "Too Many Requests": "Trop de requêtes",
     "Server Error": "Erreur du serveur",
     "Service Unavailable": "Service temporairement indisponible",
-    "Payment Required": "Paiement requis"
+    "Payment Required": "Paiement requis",
+    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Si le bouton « :actionText » ne fonctionne pas, copiez cette adresse dans votre navigateur :",
+    "All rights reserved.": "Tous droits réservés.",
+    "Hello!": "Bonjour,",
+    "Regards,": "Merci,",
+    "Whoops!": "Oups !"
 }

@@ -39,6 +39,26 @@ return [
         'page_title' => 'Connexion',
     ],
 
+    'reset' => [
+        'forgot_link' => 'Mot de passe oublié ?',
+        'forgot_title' => 'Mot de passe oublié',
+        'forgot_intro' => 'Indiquez le courriel de votre compte : si un compte actif y correspond, vous recevrez un lien pour choisir un nouveau mot de passe.',
+        'send' => 'Recevoir le lien',
+        'back' => 'Retour à la connexion',
+        'new_title' => 'Nouveau mot de passe',
+        'new_password' => 'Nouveau mot de passe',
+        'confirm' => 'Confirmer le mot de passe',
+        'rule' => '10 caractères minimum.',
+        'save' => 'Enregistrer le mot de passe',
+        'mail_subject' => 'Réinitialiser votre mot de passe — Le Bon Panier',
+        'mail_greeting' => 'Bonjour :name,',
+        'mail_intro' => 'Vous avez demandé à changer le mot de passe de votre compte de l’espace de gestion.',
+        'mail_action' => 'Choisir un nouveau mot de passe',
+        'mail_expire' => 'Ce lien est valable :minutes minutes.',
+        'mail_ignore' => 'Si vous n’avez rien demandé, ignorez ce courriel : votre mot de passe reste le même.',
+        'mail_salutation' => 'L’équipe du Bon Panier',
+    ],
+
     'dashboard' => [
         'greeting' => 'Bonjour :name',
         'intro' => ':date · voici l’état de l’épicerie.',
