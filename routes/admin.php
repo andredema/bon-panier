@@ -3,8 +3,11 @@
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ExpectedArrivalController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\StockReceiptController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +28,23 @@ Route::prefix('gestion')->group(function () {
             ->except(['show'])
             ->parameters(['produits' => 'product'])
             ->names('products');
+
+        // Stock : toute l'équipe reçoit les arrivages
+        Route::get('entrees', [StockReceiptController::class, 'index'])->name('receipts.index');
+        Route::get('entrees/nouvelle', [StockReceiptController::class, 'create'])->name('receipts.create');
+        Route::get('entrees/produits', [StockReceiptController::class, 'products'])->name('receipts.products');
+        Route::post('entrees', [StockReceiptController::class, 'store'])->name('receipts.store');
+        Route::get('entrees/{receipt}', [StockReceiptController::class, 'show'])->whereNumber('receipt')->name('receipts.show');
+        Route::get('entrees/{receipt}/etiquettes', [StockReceiptController::class, 'labels'])->whereNumber('receipt')->name('receipts.labels');
+
+        Route::get('arrivages', [ExpectedArrivalController::class, 'index'])->name('arrivals.index');
+        Route::post('arrivages', [ExpectedArrivalController::class, 'store'])->name('arrivals.store');
+        Route::patch('arrivages/{arrival}/annuler', [ExpectedArrivalController::class, 'cancel'])->name('arrivals.cancel');
+
+        Route::resource('fournisseurs', SupplierController::class)
+            ->only(['index', 'store', 'update'])
+            ->parameters(['fournisseurs' => 'supplier'])
+            ->names('suppliers');
 
         Route::middleware('role:gerant')->group(function () {
             Route::get('reglages', [SettingsController::class, 'edit'])->name('settings.edit');

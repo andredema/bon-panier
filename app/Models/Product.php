@@ -59,6 +59,22 @@ class Product extends Model
             ->orderBy('sort_order')->orderBy('id');
     }
 
+    public function lots(): HasMany
+    {
+        return $this->hasMany(Lot::class);
+    }
+
+    public function expectedArrivals(): HasMany
+    {
+        return $this->hasMany(ExpectedArrival::class);
+    }
+
+    /** Prochain arrivage attendu (aujourd'hui ou plus tard), ou nul. */
+    public function nextArrival(): ?ExpectedArrival
+    {
+        return $this->expectedArrivals()->open()->whereDate('expected_on', '>=', today())->orderBy('expected_on')->first();
+    }
+
     public function scopeVisible(Builder $q): void
     {
         $q->where('is_visible', true);

@@ -11,6 +11,7 @@ use App\Models\SaleFormat;
 use App\Models\Unit;
 use App\Services\Catalog\ProductPhoto;
 use App\Services\Catalog\SaleFormatRules;
+use App\Services\Stock\StockLevels;
 use App\Support\Format;
 use App\Support\Quantity;
 use Illuminate\Http\RedirectResponse;
@@ -23,7 +24,7 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    public function __construct(private ProductPhoto $photos) {}
+    public function __construct(private ProductPhoto $photos, private StockLevels $levels) {}
 
     public function index(Request $request): View
     {
@@ -47,6 +48,7 @@ class ProductController extends Controller
 
         return view('admin.products.index', [
             'products' => $products,
+            'onHand' => $this->levels->onHandByProduct($products->pluck('id')),
             'categories' => Category::ordered()->get(),
             'q' => $q,
             'categoryId' => $categoryId,
@@ -109,6 +111,12 @@ class ProductController extends Controller
             'stockUnitLocked' => $product->exists && $product->formats->isNotEmpty(),
             'formatRows' => $this->formatRows($product),
             'history' => $product->exists ? $this->history($product) : collect(),
+            'stock' => $product->exists ? [
+                'on_hand' => $this->levels->onHandMilli($product),
+                'available' => $this->levels->availableMilli($product),
+                'lots' => $product->lots()->inStock()->fefo()->with('receipt.supplier')->get(),
+                'next_arrival' => $product->nextArrival(),
+            ] : null,
         ]);
     }
 

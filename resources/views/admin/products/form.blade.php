@@ -125,6 +125,33 @@
             @error('alert_threshold')<span class="erreur">{{ $message }}</span>@enderror
           </div>
         </div>
+        @if ($stock)
+          @php $su = $product->stockUnit->short_label; $fq = fn ($m) => \App\Support\Format::quantity(\App\Support\Quantity::fromMilli($m)); @endphp
+          <div class="niveaux">
+            <div><span class="lib">{{ __('stock.product.on_hand') }}</span><b class="num">{{ $fq($stock['on_hand']) }} {{ $su }}</b></div>
+            <div><span class="lib">{{ __('stock.product.available') }}</span><b class="num">{{ $fq($stock['available']) }} {{ $su }}</b></div>
+            <div>
+              <span class="lib">{{ __('stock.arrivals.title') }}</span>
+              <span>{{ $stock['next_arrival'] ? __('stock.product.next_arrival', ['date' => \App\Support\Format::date($stock['next_arrival']->expected_on)]) : __('stock.product.no_arrival') }}</span>
+            </div>
+            @if ($stock['available'] <= \App\Support\Quantity::toMilli($product->alert_threshold))
+              <span class="etiquette e-annulee">{{ $stock['available'] > 0 ? __('stock.product.below_threshold') : __('stock.product.at_zero') }}</span>
+            @endif
+          </div>
+          <details class="lots-produit" @if ($stock['lots']->isNotEmpty()) open @endif>
+            <summary>{{ __('stock.product.lots') }} ({{ $stock['lots']->count() }})</summary>
+            @forelse ($stock['lots'] as $lot)
+              <p class="note">
+                <b>{{ $lot->lot_number }}</b> — {{ __('stock.product.lot_left', ['left' => $fq(\App\Support\Quantity::toMilli($lot->remaining_qty)), 'total' => $fq(\App\Support\Quantity::toMilli($lot->converted_qty)), 'unit' => $su]) }}
+                · {{ $lot->best_before ? __('stock.receipts.label_bb', ['date' => \App\Support\Format::date($lot->best_before)]) : __('stock.receipts.col_bb').' : —' }}
+                · <a href="{{ route('admin.receipts.show', $lot->stock_receipt_id) }}">{{ $lot->receipt->number() }}</a>
+              </p>
+            @empty
+              <p class="note">{{ __('stock.product.no_lots') }}</p>
+            @endforelse
+            <a class="btn btn-secondaire mini" href="{{ route('admin.receipts.create', ['produit' => $product->id]) }}">+ {{ __('stock.product.receive') }}</a>
+          </details>
+        @endif
         <p class="explic" x-text="@js(__('catalog.products.stock_explain', ['unit' => '__U__'])).replace('__U__', stockUnit?.short_label ?? '')">{{ __('catalog.products.stock_explain', ['unit' => $product->stockUnit?->short_label]) }}</p>
       </section>
 

@@ -14,7 +14,7 @@
     $main = [
         ['key' => 'dashboard', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
         ['key' => 'orders', 'route' => null],
-        ['key' => 'stock', 'route' => null],
+        ['key' => 'stock', 'route' => 'admin.receipts.create', 'active' => ['admin.receipts.*', 'admin.arrivals.*', 'admin.suppliers.*']],
         ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
         ['key' => 'customers', 'route' => null],
         ['key' => 'invoices', 'route' => null],
@@ -60,7 +60,7 @@
         <nav aria-label="{{ $group['title'] ?? __('app.nav.label') }}">
           @isset($group['title'])<div class="sous" aria-hidden="true">{{ $group['title'] }}</div>@endisset
           @foreach ($group['items'] as $item)
-            @php $current = $item['route'] && request()->routeIs($item['active']); @endphp
+            @php $current = $item['route'] && request()->routeIs(...(array) $item['active']); @endphp
             @if ($item['route'])
               <a href="{{ route($item['route']) }}" @if ($current) aria-current="page" @endif>
             @else

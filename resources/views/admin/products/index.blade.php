@@ -39,7 +39,7 @@
           <tr>
             <th scope="col">{{ __('catalog.products.col_product') }}</th>
             <th scope="col">{{ __('catalog.products.col_category') }}</th>
-            <th scope="col">{{ __('catalog.products.col_stock_unit') }}</th>
+            <th scope="col">{{ __('stock.product.col_stock') }}</th>
             <th scope="col">{{ __('catalog.products.col_formats') }}</th>
             <th scope="col">{{ __('catalog.products.col_online') }}</th>
             <th scope="col"><span class="sr">{{ __('catalog.products.edit') }}</span></th>
@@ -57,7 +57,13 @@
                 </span>
               </td>
               <td data-lib="{{ __('catalog.products.col_category') }}">{{ $p->category->name }}</td>
-              <td data-lib="{{ __('catalog.products.col_stock_unit') }}">{{ $p->stockUnit->short_label }}</td>
+              @php $milli = $onHand->get($p->id, 0); @endphp
+              <td data-lib="{{ __('stock.product.col_stock') }}" class="num">
+                {{ \App\Support\Format::quantity(\App\Support\Quantity::fromMilli($milli)) }} {{ $p->stockUnit->short_label }}
+                @if ($milli <= \App\Support\Quantity::toMilli($p->alert_threshold))
+                  <span class="etiquette e-annulee">{{ $milli > 0 ? __('stock.product.below_threshold') : __('stock.product.at_zero') }}</span>
+                @endif
+              </td>
               <td data-lib="{{ __('catalog.products.col_formats') }}">{{ __('catalog.products.formats_summary', ['retail' => $p->retail_count, 'wholesale' => $p->wholesale_count]) }}</td>
               <td data-lib="{{ __('catalog.products.col_online') }}">
                 @if ($p->is_visible)
