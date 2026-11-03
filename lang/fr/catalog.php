@@ -185,6 +185,7 @@ return [
             'tax_tvq_rate' => 'Taux de TVQ',
             'tax_tps_number' => 'N° d’inscription TPS',
             'tax_tvq_number' => 'N° d’inscription TVQ',
+            'accounting_email' => 'Courriel du comptable (exports)',
             'interac_email' => 'Courriel pour les virements Interac',
             'wholesale_prices_visible_to' => 'Prix de gros visibles par',
             'preorder_scope' => 'Partie précommandée quand le stock ne suffit pas',

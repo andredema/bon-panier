@@ -145,6 +145,7 @@
                 <b>{{ $lot->lot_number }}</b> — {{ __('stock.product.lot_left', ['left' => $fq(\App\Support\Quantity::toMilli($lot->remaining_qty)), 'total' => $fq(\App\Support\Quantity::toMilli($lot->converted_qty)), 'unit' => $su]) }}
                 · {{ $lot->best_before ? __('stock.receipts.label_bb', ['date' => \App\Support\Format::date($lot->best_before)]) : __('stock.receipts.col_bb').' : —' }}
                 · <a href="{{ route('admin.receipts.show', $lot->stock_receipt_id) }}">{{ $lot->receipt->number() }}</a>
+                · <a href="{{ route('admin.adjustments.create', $lot) }}">{{ __('reports.adjust.link') }}<span class="sr"> {{ $lot->lot_number }}</span></a>
               </p>
             @empty
               <p class="note">{{ __('stock.product.no_lots') }}</p>

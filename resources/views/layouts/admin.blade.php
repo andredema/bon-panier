@@ -19,7 +19,7 @@
         ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
         ['key' => 'customers', 'route' => null],
         ['key' => 'invoices', 'route' => 'admin.invoices.index', 'active' => ['admin.invoices.*', 'admin.payments.*']],
-        ['key' => 'reports', 'route' => null],
+        ['key' => 'reports', 'route' => auth()->user()->isManager() ? 'admin.reports.index' : null, 'active' => 'admin.reports.*'],
     ];
     $manager = [
         ['key' => 'settings', 'route' => 'admin.settings.edit', 'active' => 'admin.settings.*'],

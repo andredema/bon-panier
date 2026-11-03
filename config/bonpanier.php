@@ -40,6 +40,8 @@ return [
         'tax.tvq_rate' => ['type' => 'rate', 'default' => 9975, 'group' => 'tax'],
         'tax.tps_number' => ['type' => 'string', 'default' => '', 'group' => 'tax'],
         'tax.tvq_number' => ['type' => 'string', 'default' => '', 'group' => 'tax'],
+        // Comptable : destinataire des exports « Tout envoyer au comptable » (question ouverte)
+        'accounting.email' => ['type' => 'string', 'default' => '', 'group' => 'tax', 'open_question' => true],
 
         // Paiement
         'interac.email' => ['type' => 'string', 'default' => '', 'group' => 'payment'],

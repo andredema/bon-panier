@@ -304,6 +304,29 @@ details > summary { cursor: pointer; font-weight: 700; min-height: 32px; }
 @media (max-width: 1100px) { .filtres-factures { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 760px) { .filtres-factures { grid-template-columns: 1fr; } }
 
+/* Rapports (maquette rapport-mensuel.html) */
+.outils-periode { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.dates-libres { display: flex; flex-direction: column; gap: 8px; }
+.dates-libres[open] { background: var(--blanc); border: 1px solid var(--ligne); border-radius: 10px; padding: 10px; }
+.grille-rapport { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.grille-rapport .plein { grid-column: 1 / -1; }
+.tableau-rapport td, .tableau-rapport th { white-space: normal; }
+.tableau-rapport .d, .grille-rapport .d { text-align: right; }
+.tableau-rapport tfoot td { font-weight: 800; border-top: 2px solid var(--encre); border-bottom: 0; }
+.barre-cat { display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr) 100px; gap: 12px; align-items: center; font-size: 14px; padding: 6px 0; }
+.barre-cat .piste { height: 14px; background: #F0EADF; border-radius: 999px; overflow: hidden; }
+.barre-cat .piste i { display: block; height: 100%; border-radius: 999px; background: var(--vert); }
+.barre-cat .piste i.tx { background: var(--osier); }
+.pay-ok { color: var(--vert); font-weight: 700; }
+.pay-non { color: var(--terre); font-weight: 700; }
+.age { font-size: 12px; font-weight: 800; border-radius: 6px; padding: 1px 8px; white-space: nowrap; }
+.age-1 { background: var(--vert-pale); color: var(--vert); }
+.age-2 { background: var(--osier-pale); color: #7A4F0E; }
+.age-3 { background: var(--terre-pale); color: #8A3420; }
+.exports { display: flex; gap: 8px; flex-wrap: wrap; }
+@media (max-width: 1100px) { .grille-rapport { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .barre-cat { grid-template-columns: minmax(0, 1fr) 90px; } .barre-cat .piste { grid-column: 1 / -1; grid-row: 2; } }
+
 /* Précommandes */
 .groupe-preco { border: 1.5px solid var(--ligne); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 .groupe-preco h3 { font-size: 17px; }

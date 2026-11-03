@@ -10,7 +10,9 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PreorderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\StockAdjustmentController;
 use App\Http\Controllers\Admin\StockReceiptController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\UnitController;
@@ -78,7 +80,15 @@ Route::prefix('gestion')->group(function () {
             ->parameters(['fournisseurs' => 'supplier'])
             ->names('suppliers');
 
+        Route::get('lots/{lot}/ajuster', [StockAdjustmentController::class, 'create'])->name('adjustments.create');
+        Route::post('lots/{lot}/ajuster', [StockAdjustmentController::class, 'store'])->name('adjustments.store');
+
         Route::middleware('role:gerant')->group(function () {
+            Route::get('rapports', [ReportController::class, 'index'])->name('reports.index');
+            Route::get('rapports/csv/{type}', [ReportController::class, 'csv'])->name('reports.csv');
+            Route::get('rapports/pdf/{type}', [ReportController::class, 'pdf'])->name('reports.pdf');
+            Route::post('rapports/envoyer', [ReportController::class, 'send'])->name('reports.send');
+
             Route::get('reglages', [SettingsController::class, 'edit'])->name('settings.edit');
             Route::put('reglages', [SettingsController::class, 'update'])->name('settings.update');
 
