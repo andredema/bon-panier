@@ -32,12 +32,12 @@ Les **maquettes HTML validées** sont dans `maquettes/` et servent de référenc
 
 ## Pile technique (choisie pour cet hébergement)
 
-- **PHP 8.3 + Laravel 11** ; **MySQL / MariaDB** (InnoDB, utf8mb4, `utf8mb4_unicode_ci`).
+- **PHP 8.3 + Laravel 13** (version prise en charge, choisie le 2 novembre 2026 ; Laravel 11 n’a plus de correctifs de sécurité) ; **MySQL / MariaDB** (InnoDB, utf8mb4, `utf8mb4_unicode_ci`).
 - Gabarits **Blade** + **Alpine.js** pour l'interactivité (panier, filtres, tiroirs). Pas de SPA.
 - CSS : reprendre les jetons de `maquettes/assets/styles.css` et `admin.css` (variables CSS). Tailwind est permis s'il reproduit fidèlement les maquettes.
 - Construction des fichiers front avec **Vite en local** ; on déploie les fichiers compilés (`public/build`), jamais `node_modules`.
 - PDF : `barryvdh/laravel-dompdf`. CSV : génération native en flux (`StreamedResponse`).
-- Authentification de l'espace de gestion : Laravel Breeze (Blade) ou équivalent léger, en français.
+- Authentification de l'espace de gestion : contrôleur léger maison (`Admin\Auth\LoginController`), sous `/gestion`, rôles `gerant` / `employe` (middleware `role`). Breeze n'est plus maintenu pour Laravel 13 et imposerait Tailwind.
 - Courriels : SMTP de PlanetHoster (variables `.env`), envoi par la file `database` vidée par cron.
 - Files d'attente : `QUEUE_CONNECTION=database`. Cache et sessions : `file` ou `database`.
 
@@ -86,7 +86,9 @@ cp .env.example .env && php artisan key:generate
 php artisan migrate --seed
 npm install && npm run dev      # en local
 npm run build                   # avant le déploiement
+PHP=php83 bash scripts/build-release.sh   # archive à déposer sur PlanetHoster (dist/)
 php artisan test
+php artisan users:create        # créer un compte de l’équipe
 ```
 
 ## Questions encore ouvertes (ne pas inventer de réponse)

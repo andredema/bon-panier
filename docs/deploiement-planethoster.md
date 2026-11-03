@@ -30,22 +30,46 @@ Le code de l'application reste **hors du dossier public** ; seul `public/` est e
 
 Dans N0C, faire pointer la **racine du document** du domaine vers `~/apps/bon-panier/public`. Si ce n'est pas possible, garder `public_html` comme racine et y placer le contenu de `public/` en adaptant `index.php`.
 
-## 4. Première mise en ligne (SSH)
+## 4. Première mise en ligne
+
+### 4.1 Méthode recommandée : l'archive prête à déposer
+
+Sur le poste de développement (Git Bash sous Windows), à la racine du dépôt :
 
 ```bash
-cd ~/apps
-git clone <adresse-du-depot> bon-panier
-cd bon-panier
-composer install --no-dev --optimize-autoloader
-cp .env.example .env
-php artisan key:generate
-# éditer .env : APP_ENV=production, APP_DEBUG=false, APP_URL, DB_*, MAIL_*, QUEUE_CONNECTION=database
-php artisan migrate --force
-php artisan storage:link
-php artisan config:cache && php artisan route:cache && php artisan view:cache
+PHP=php83 bash scripts/build-release.sh
 ```
 
-Les fichiers front (`public/build`) sont compilés **en local** (`npm run build`), puis ajoutés au dépôt ou envoyés par SFTP : on ne lance pas `npm` sur le serveur.
+Le script compile les fichiers front, installe les dépendances PHP **de production** et produit `dist/bon-panier-AAAAMMJJ-HHMM-<commit>.zip`. L'archive contient déjà `vendor/` et `public/build/` : **ni Composer ni npm ne tournent sur le serveur**. Elle ne contient ni `.env`, ni base de données, ni tests, ni maquettes.
+
+Sur PlanetHoster :
+
+1. Envoyer l'archive dans `~/apps/` (gestionnaire de fichiers N0C ou SFTP), puis la décompresser dans `~/apps/bon-panier/`.
+2. Faire pointer la racine du document du domaine vers `~/apps/bon-panier/public` (voir section 3).
+3. Par SSH :
+
+```bash
+cd ~/apps/bon-panier
+cp .env.example .env
+# éditer .env : APP_ENV=production, APP_DEBUG=false, APP_URL=https://…, SESSION_SECURE_COOKIE=true,
+#               DB_CONNECTION=mysql et DB_*, MAIL_* (SMTP PlanetHoster), LOG_LEVEL=warning
+php -v                          # doit afficher 8.3 ou plus ; sinon PHP=<chemin du php 8.3> devant la commande suivante
+bash scripts/post-deploy.sh     # clé, migrations, lien storage, caches
+php artisan users:create        # premier compte gérant (mot de passe saisi au clavier, jamais dans un fichier)
+```
+
+`.env` n'est créé qu'une fois : les mises à jour suivantes ne l'écrasent pas, puisque l'archive n'en contient pas.
+
+### 4.2 Variante : clone Git sur le serveur
+
+Possible si le dépôt est accessible depuis le serveur (clé de déploiement). Composer doit alors tourner sur le serveur, et `public/build` doit être envoyé à part (il n'est pas versionné).
+
+```bash
+cd ~/apps && git clone <adresse-du-depot> bon-panier && cd bon-panier
+composer install --no-dev --optimize-autoloader
+cp .env.example .env   # puis éditer comme ci-dessus
+bash scripts/post-deploy.sh
+```
 
 ## 5. Tâches planifiées (cron)
 
@@ -57,23 +81,22 @@ Créer dans N0C une tâche qui s'exécute **chaque minute** :
 
 Dans `routes/console.php`, le planificateur :
 
-- vide la file d'attente : `queue:work --stop-when-empty --max-time=50` chaque minute (courriels, avis de précommande) ;
-- fait une sauvegarde quotidienne de la base dans `~/backups` et garde 30 jours ;
-- envoie le rappel des factures impayées (si activé).
+- vide la file d'attente : `queue:work --stop-when-empty --max-time=50` chaque minute (courriels, avis de précommande) — **en place depuis l'étape 1** ;
+- purge les tâches en échec de plus de 30 jours — en place ;
+- fait une sauvegarde quotidienne de la base dans `~/backups` et garde 30 jours — étape 9 ;
+- envoie le rappel des factures impayées (si activé) — étape 7.
 
-À confirmer : l'intervalle minimal permis par N0C pour le cron. S'il est de 5 minutes, adapter `--max-time` en conséquence.
+À confirmer : l'intervalle minimal permis par N0C pour le cron. S'il est de 5 minutes, mettre `QUEUE_CRON_MAX_TIME=280` dans `.env` puis relancer `php artisan optimize`.
 
 ## 6. Mises à jour
 
+Avec l'archive : construire la nouvelle archive en local, la décompresser **par-dessus** `~/apps/bon-panier/` (le `.env` et `storage/` restent en place), puis :
+
 ```bash
-cd ~/apps/bon-panier
-php artisan down
-git pull
-composer install --no-dev --optimize-autoloader
-php artisan migrate --force
-php artisan config:cache && php artisan route:cache && php artisan view:cache
-php artisan up
+cd ~/apps/bon-panier && bash scripts/post-deploy.sh
 ```
+
+Le script met le site en maintenance, lance les migrations, reconstruit les caches et remet le site en ligne.
 
 ## 7. Vérifications après la mise en ligne
 

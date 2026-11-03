@@ -1,0 +1,87 @@
+/* Espace de gestion — reprend maquettes/assets/admin.css */
+@import './tokens.css';
+
+body { background: #F3EFE6; }
+.app { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; min-height: 100dvh; }
+.menu { background: var(--vert); color: var(--manioc); padding: 20px 14px; display: flex; flex-direction: column; gap: 24px; position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: auto; }
+.menu .marque { display: flex; gap: 10px; align-items: center; padding: 0 6px; color: var(--manioc); text-decoration: none; }
+.menu .marque img { width: 44px; height: 44px; }
+.menu .marque b { font-family: var(--titre); font-size: 18px; display: block; line-height: 1.05; }
+.menu .marque span { font-size: 11px; opacity: .85; }
+.menu nav { display: flex; flex-direction: column; gap: 2px; }
+.menu nav a { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; color: var(--manioc); text-decoration: none; font-weight: 600; font-size: 15px; }
+.menu nav a:hover { background: rgba(247,242,232,.1); color: var(--manioc); }
+.menu nav a:focus-visible { outline: 3px solid var(--osier); outline-offset: -3px; }
+.menu nav a[aria-current="page"] { background: var(--manioc); color: var(--vert); }
+.menu nav a[aria-disabled="true"] { opacity: .55; cursor: default; }
+.menu nav a[aria-disabled="true"]:hover { background: none; }
+.menu nav a .compte { margin-left: auto; background: var(--osier); color: var(--encre); border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 800; }
+.menu .sous { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; opacity: .7; padding: 12px 12px 4px; font-weight: 700; }
+.menu .pied { margin-top: auto; font-size: 13px; padding: 12px; border-top: 1px solid rgba(247,242,232,.2); display: flex; flex-direction: column; gap: 8px; }
+.menu .pied .lien-btn { color: var(--manioc); text-align: left; font-size: 13px; }
+.menu svg { flex: none; }
+.menu-bascule { display: none; }
+
+.contenu { padding: 24px 32px 48px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.barre { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.barre h1 { font-size: 30px; }
+.barre p { margin: 2px 0 0; color: var(--texte-3); }
+.barre .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.bloc { padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.bloc-tete { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bloc h2 { font-size: 19px; }
+.note { font-size: 13px; color: var(--texte-3); margin: 0; }
+.mini { min-height: 36px; padding: 0 12px; font-size: 13px; }
+.e-gros { background: var(--bleu-pale); color: var(--bleu); }
+.e-detail { background: #ECEAE6; color: #4A4033; }
+.e-gros::before, .e-detail::before { display: none; }
+.e-inactif { background: var(--terre-pale); color: #8A3420; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-3); font-weight: 700; padding: 8px 10px; border-bottom: 1px solid var(--ligne); white-space: nowrap; }
+td { padding: 12px 10px; border-bottom: 1px solid #F0EADF; }
+tr:last-child td { border-bottom: 0; }
+.droite { text-align: right; }
+
+.grille-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.grille-form .plein { grid-column: 1 / -1; }
+
+/* Écran de connexion */
+.connexion { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: 24px max(16px, env(safe-area-inset-left)); background: var(--vert); }
+.connexion .carte { width: min(420px, 100%); padding: 28px; display: flex; flex-direction: column; gap: 16px; }
+.connexion .marque { display: flex; align-items: center; gap: 12px; }
+.connexion .marque img { width: 56px; height: 56px; }
+.connexion .marque b { font-family: var(--titre); font-size: 22px; display: block; line-height: 1.05; }
+.connexion .marque span { font-size: 12px; color: var(--texte-3); }
+.connexion h1 { font-size: 24px; }
+.connexion form { display: flex; flex-direction: column; gap: 14px; }
+
+/* Tableaux en cartes sur téléphone : aucun défilement horizontal */
+@media (max-width: 760px) {
+  .tableau-cartes thead { display: none; }
+  .tableau-cartes, .tableau-cartes tbody, .tableau-cartes tr, .tableau-cartes td { display: block; width: 100%; }
+  .tableau-cartes tr { padding: 10px 0; border-bottom: 1px solid #F0EADF; }
+  .tableau-cartes tr:last-child { border-bottom: 0; }
+  .tableau-cartes td { border: 0; padding: 4px 0; display: flex; justify-content: space-between; gap: 12px; }
+  .tableau-cartes td::before { content: attr(data-lib); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-3); }
+  .tableau-cartes td.droite { justify-content: flex-end; }
+  .tableau-cartes td.droite::before { content: none; }
+}
+
+/* Téléphone : le menu latéral devient une barre avec un bouton « Menu » (pas de défilement horizontal) */
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .menu { position: sticky; top: 0; z-index: 30; height: auto; padding: 10px max(16px, env(safe-area-inset-right)) 10px max(16px, env(safe-area-inset-left)); gap: 0; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; overflow: visible; }
+  .menu .marque img { width: 38px; height: 38px; }
+  .menu-bascule { display: inline-flex; background: rgba(247,242,232,.14); color: var(--manioc); }
+  .menu-bascule:hover { background: rgba(247,242,232,.24); color: var(--manioc); }
+  .menu .tiroir-menu { display: none; flex-basis: 100%; flex-direction: column; gap: 12px; padding-top: 12px; max-height: calc(100dvh - 64px); overflow: auto; }
+  .menu.ouvert .tiroir-menu { display: flex; }
+  .menu .pied { margin-top: 0; }
+  .contenu { padding: 16px max(16px, env(safe-area-inset-right)) 32px max(16px, env(safe-area-inset-left)); }
+  .barre h1 { font-size: 24px; }
+  .grille-form { grid-template-columns: 1fr; }
+}
+@media (min-width: 901px) {
+  .menu .tiroir-menu { display: contents; }
+}

@@ -1,0 +1,85 @@
+/* Le Bon Panier — jetons et composants communs, repris de maquettes/assets/styles.css */
+:root {
+  --vert: #1F4D2E;
+  --vert-fonce: #143521;
+  --vert-pale: #E4EDE6;
+  --osier: #D49A3A;
+  --osier-pale: #F6E8CF;
+  --terre: #A8432A;
+  --terre-pale: #F5E1DA;
+  --manioc: #F7F2E8;
+  --kraft: #C9A97A;
+  --encre: #1E1B16;
+  --texte-2: #4A4033;
+  --texte-3: #6B5F4F;
+  --ligne: #E6DCC8;
+  --blanc: #FFFFFF;
+  --bleu: #1F5A8A;
+  --bleu-pale: #E1ECF5;
+  --rayon: 14px;
+  /* --font-titre et --font-corps viennent de @fonts (polices hébergées localement) */
+  --titre: var(--font-titre, 'Bricolage Grotesque', system-ui, sans-serif);
+  --corps: var(--font-corps, 'Manrope', system-ui, sans-serif);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body { font-family: var(--corps); color: var(--encre); background: var(--manioc); line-height: 1.5; overflow-x: hidden; }
+h1, h2, h3 { font-family: var(--titre); line-height: 1.15; margin: 0; }
+a { color: var(--vert); }
+a:hover { color: var(--vert-fonce); }
+button, input, select, textarea { font: inherit; }
+img, svg { max-width: 100%; }
+.num { font-variant-numeric: tabular-nums; }
+[x-cloak] { display: none !important; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 18px; border-radius: 10px; border: 0;
+  font-weight: 700; cursor: pointer; text-decoration: none;
+}
+.btn:focus-visible, .lien-btn:focus-visible { outline: 3px solid var(--osier); outline-offset: 2px; }
+.btn[disabled] { opacity: .55; cursor: not-allowed; }
+.btn-primaire { background: var(--vert); color: var(--blanc); }
+.btn-primaire:hover { background: var(--vert-fonce); color: var(--blanc); }
+.btn-secondaire { background: var(--blanc); color: var(--vert); border: 1.5px solid var(--vert); }
+.btn-secondaire:hover { background: var(--vert-pale); color: var(--vert); }
+.lien-btn { background: none; border: 0; padding: 0; color: var(--vert); font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 32px; }
+
+.etiquette {
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px;
+  border-radius: 999px; font-size: 12.5px; font-weight: 700; white-space: nowrap;
+}
+.etiquette::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.e-recue { background: var(--bleu-pale); color: var(--bleu); }
+.e-confirmee { background: var(--osier-pale); color: #7A4F0E; }
+.e-preparation { background: #EEE6F7; color: #5B3A8A; }
+.e-prete { background: var(--vert-pale); color: var(--vert); }
+.e-remise { background: #ECEAE6; color: #4A4033; }
+.e-annulee { background: var(--terre-pale); color: #8A3420; }
+.e-surgele { background: var(--bleu-pale); color: var(--bleu); }
+.e-surgele::before { display: none; }
+
+.carte { background: var(--blanc); border-radius: var(--rayon); border: 1px solid var(--ligne); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* Lien d'évitement : invisible jusqu'au focus clavier */
+.saut { position: absolute; left: 8px; top: -60px; z-index: 100; background: var(--encre); color: var(--manioc); padding: 10px 16px; border-radius: 10px; font-weight: 700; }
+.saut:focus { top: 8px; color: var(--manioc); }
+
+/* Champs de formulaire */
+.champ { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--texte-2); }
+.champ input, .champ select, .champ textarea { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 12px; background: var(--blanc); color: var(--encre); font-weight: 500; font-size: 15px; }
+.champ input:focus, .champ select:focus, .champ textarea:focus { outline: 2px solid var(--vert); outline-offset: 1px; }
+.champ .erreur { color: #8A3420; font-weight: 600; font-size: 13px; }
+.case { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer; }
+.case input { width: 20px; height: 20px; accent-color: var(--vert); margin: 0; }
+
+/* Messages */
+.alerte { padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; }
+.alerte-ok { background: var(--vert-pale); color: var(--vert); }
+.alerte-erreur { background: var(--terre-pale); color: #8A3420; }
+
+/* iOS : 16 px minimum dans les champs, sinon Safari zoome */
+@media (pointer: coarse), (max-width: 760px) {
+  input, select, textarea { font-size: 16px !important; }
+}
