@@ -14,7 +14,7 @@
     $main = [
         ['key' => 'dashboard', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
         ['key' => 'orders', 'route' => null],
-        ['key' => 'stock', 'route' => 'admin.receipts.create', 'active' => ['admin.receipts.*', 'admin.arrivals.*', 'admin.suppliers.*']],
+        ['key' => 'stock', 'route' => 'admin.receipts.create', 'active' => ['admin.receipts.*', 'admin.arrivals.*', 'admin.suppliers.*', 'admin.preorders.*']],
         ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
         ['key' => 'customers', 'route' => null],
         ['key' => 'invoices', 'route' => null],

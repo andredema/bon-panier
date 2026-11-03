@@ -63,6 +63,15 @@ class Order extends Model
         return $this->hasMany(OrderStatusHistory::class)->orderBy('id');
     }
 
+    /**
+     * Règle 5.2 : une commande qui contient une précommande non servie reste
+     * « Reçue » ou « Confirmée » ; elle ne peut pas passer « Prête ».
+     */
+    public function hasPendingPreorder(): bool
+    {
+        return $this->items()->where('is_preorder', true)->whereNull('preorder_served_at')->exists();
+    }
+
     /** Lien de suivi unique et signé, envoyé dans le courriel de confirmation. */
     public function trackingUrl(): string
     {

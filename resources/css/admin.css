@@ -205,6 +205,20 @@ fieldset.disposition { border: 0; margin: 0; padding: 0; min-width: 0; display: 
 .check input { width: 20px; height: 20px; accent-color: var(--vert); margin-top: 1px; flex: none; }
 .filtres-dates { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
 
+/* Précommandes */
+.groupe-preco { border: 1.5px solid var(--ligne); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.groupe-preco h3 { font-size: 17px; }
+.chiffres-preco { margin: 0; display: flex; gap: 8px 28px; flex-wrap: wrap; font-size: 14px; }
+.chiffres-preco dt { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--texte-3); }
+.chiffres-preco dd { margin: 0; font-weight: 700; }
+.groupe-preco summary { font-weight: 700; cursor: pointer; min-height: 32px; }
+.file-preco { margin: 6px 0 0; padding-left: 22px; font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
+.servir { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; background: var(--vert-pale); border-radius: 10px; padding: 10px 12px; }
+.e-preco { background: var(--osier-pale); color: #6A430A; }
+.e-preco::before { display: none; }
+.resultat .preco { color: #6A430A; font-weight: 700; }
+.preco-box ul { margin: 4px 0 0; padding-left: 18px; }
+
 /* Stock sur la fiche produit */
 .niveaux { display: flex; gap: 12px 24px; flex-wrap: wrap; align-items: center; }
 .niveaux > div { display: flex; flex-direction: column; }

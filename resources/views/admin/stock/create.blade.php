@@ -157,6 +157,9 @@
             <div class="resultat" aria-live="polite">
               <span x-text="`+ ${fmt(added(line))} ${line.product.unit}`"></span>
               <span class="fleche" x-text="`Stock : ${fmt(before(line, i))} → ${fmt(before(line, i) + (added(line) || 0))}`"></span>
+              <template x-if="isLastOf(line, i) && line.product.preorders.length">
+                <span class="preco" x-text="(s => `${(s.count > 1 ? @js(__('preorders.receipt.will_serve')).split('|')[1] : @js(__('preorders.receipt.will_serve')).split('|')[0]).replace(':count', s.count)} (${fmt(s.qty)} ${s.unit}) · ${@js(__('preorders.receipt.left_for_sale')).replace(':qty', fmt(s.left)).replace(':unit', s.unit)}`)(serving(line.product.id))"></span>
+              </template>
             </div>
           </article>
         </template>
@@ -171,7 +174,14 @@
         <dt>{{ __('stock.receipts.sum_packages') }}</dt><dd x-text="fmt(packages)">0</dd>
         <dt>{{ __('stock.receipts.sum_cost') }}</dt><dd class="num" x-text="costLabel">0,00 $</dd>
       </dl>
-      <div class="preco-box">{{ __('stock.receipts.preorders_later') }}</div>
+      <div class="preco-box" aria-live="polite">
+        <b x-text="servings.length ? @js(__('preorders.receipt.box_title')) : @js(__('preorders.receipt.box_none'))"></b>
+        <ul x-show="servings.length">
+          <template x-for="s in servings" :key="s.name">
+            <li x-text="@js(__('preorders.receipt.box_line')).replace(':name', s.name).replace(':served', s.count).replace(':pending', s.pending)"></li>
+          </template>
+        </ul>
+      </div>
       <input type="hidden" name="notify_preorders" value="0">
       <label class="check"><input type="checkbox" name="notify_preorders" value="1" @checked(old('notify_preorders', true))> {{ __('stock.receipts.notify') }}</label>
       <label class="check"><input type="checkbox" name="print_labels" value="1" @checked(old('print_labels'))> {{ __('stock.receipts.print_labels') }}</label>

@@ -6,7 +6,9 @@
         <td>
           <b>{{ $item->product_name }}</b><br>
           <small>{{ $item->format_label }} · {{ \App\Support\Format::quantity($item->qty) }}{{ $item->qty_unit ? ' '.$item->qty_unit : '' }}
-            @if ($item->is_preorder) · {{ __('shop.mail.preorder', ['date' => $item->expected_on ? \App\Support\Format::shortDate($item->expected_on) : '—']) }}@endif</small>
+            @if ($item->is_preorder)
+              · @if ($item->preorder_served_at){{ __('preorders.tracking.arrived') }}@elseif ($item->expected_on){{ __('preorders.tracking.waiting', ['date' => \App\Support\Format::shortDate($item->expected_on)]) }}@else{{ __('preorders.tracking.waiting_no_date') }}@endif
+            @endif</small>
         </td>
         <td class="num">@money($item->line_total_cents)</td>
       </tr>

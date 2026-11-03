@@ -104,6 +104,30 @@ export default function stockReceipt(config) {
             return Number.isNaN(n) ? '—' : num.format(n);
         },
 
+        // Précommandes servies à la validation, par produit (même règle que le serveur :
+        // ordre des commandes, lignes entières, arrêt à la première qui ne tient pas)
+        serving(productId) {
+            const lines = this.lines.filter((l) => l.product.id === productId);
+            const p = lines[0].product;
+            let left = p.available_milli + lines.reduce((s, l) => s + Math.round((this.added(l) || 0) * 1000), 0);
+            let count = 0;
+            let qty = 0;
+            for (const need of p.preorders) {
+                if (need > left) break;
+                left -= need;
+                qty += need;
+                count += 1;
+            }
+            return { count, pending: p.preorders.length, qty: qty / 1000, left: Math.max(0, left) / 1000, unit: p.unit, name: p.name };
+        },
+        isLastOf(line, i) {
+            return !this.lines.slice(i + 1).some((l) => l.product.id === line.product.id);
+        },
+        get servings() {
+            const ids = [...new Set(this.lines.map((l) => l.product.id))];
+            return ids.map((id) => this.serving(id)).filter((s) => s.pending > 0);
+        },
+
         get packages() {
             return this.lines.reduce((s, l) => s + (parse(l.received_qty) || 0), 0);
         },

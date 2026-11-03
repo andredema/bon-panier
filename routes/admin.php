@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExpectedArrivalController;
+use App\Http\Controllers\Admin\PreorderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\StockReceiptController;
@@ -40,6 +41,9 @@ Route::prefix('gestion')->group(function () {
         Route::get('arrivages', [ExpectedArrivalController::class, 'index'])->name('arrivals.index');
         Route::post('arrivages', [ExpectedArrivalController::class, 'store'])->name('arrivals.store');
         Route::patch('arrivages/{arrival}/annuler', [ExpectedArrivalController::class, 'cancel'])->name('arrivals.cancel');
+
+        Route::get('precommandes', [PreorderController::class, 'index'])->name('preorders.index');
+        Route::post('precommandes/{product}/servir', [PreorderController::class, 'serve'])->name('preorders.serve');
 
         Route::resource('fournisseurs', SupplierController::class)
             ->only(['index', 'store', 'update'])

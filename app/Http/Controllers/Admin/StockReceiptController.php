@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ExpectedArrival;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\StockReceipt;
 use App\Models\Supplier;
 use App\Services\Stock\StockLevels;
 use App\Services\Stock\StockReceiving;
+use App\Support\Quantity;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -110,8 +112,9 @@ class StockReceiptController extends Controller
     public function show(StockReceipt $receipt): View
     {
         $receipt->load(['supplier', 'user', 'lots.product.stockUnit']);
+        $served = OrderItem::where('served_receipt_id', $receipt->id)->with(['order.customer', 'product.stockUnit'])->orderBy('id')->get();
 
-        return view('admin.stock.show', compact('receipt'));
+        return view('admin.stock.show', compact('receipt', 'served'));
     }
 
     public function labels(StockReceipt $receipt): View
@@ -133,6 +136,13 @@ class StockReceiptController extends Controller
             'barcode' => $product->barcode,
             'unit' => $product->stockUnit->short_label,
             'on_hand_milli' => $this->levels->onHandMilli($product),
+            'available_milli' => $this->levels->availableMilli($product),
+            // Précommandes en attente, dans l'ordre de service (millièmes de l'unité de stock)
+            'preorders' => OrderItem::pendingPreorder()->where('order_items.product_id', $product->id)
+                ->join('orders', 'orders.id', '=', 'order_items.order_id')
+                ->orderBy('orders.created_at')->orderBy('orders.id')->orderBy('order_items.id')
+                ->select('order_items.*')->get()
+                ->map(fn (OrderItem $i) => Quantity::toMilli($i->stock_qty))->values(),
             'sources' => StockReceiving::sourcesFor($product),
         ];
     }

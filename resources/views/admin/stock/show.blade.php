@@ -49,4 +49,17 @@
       </tbody>
     </table>
   </section>
+
+  <section class="bloc carte" aria-labelledby="t-servies">
+    <h2 id="t-servies">{{ __('preorders.receipt.served_title') }}</h2>
+    @forelse ($served as $item)
+      <p class="note">
+        <b>{{ $item->product_name }}</b> — {{ $item->order->number }} · {{ $item->order->customer->name }}
+        · @qty($item->stock_qty) {{ $item->product->stockUnit->short_label }}
+        · {{ $item->preorder_notified_at ? __('preorders.notified') : __('preorders.not_notified') }}
+      </p>
+    @empty
+      <p class="note">{{ __('preorders.receipt.served_none') }}</p>
+    @endforelse
+  </section>
 @endsection

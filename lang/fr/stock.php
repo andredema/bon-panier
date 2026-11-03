@@ -49,7 +49,6 @@ return [
         'sum_products' => 'Produits',
         'sum_packages' => 'Colis reçus',
         'sum_cost' => 'Coût total saisi',
-        'preorders_later' => 'Le service automatique des précommandes arrive à l’étape 5.',
         'notify' => 'Aviser par courriel les clients dont la précommande est prête',
         'print_labels' => 'Imprimer les étiquettes de lot',
         'validate' => 'Valider l’entrée en stock',
