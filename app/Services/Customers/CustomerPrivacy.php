@@ -32,6 +32,8 @@ class CustomerPrivacy
                 'type' => $customer->type,
                 'gros_approuve' => $customer->approved_wholesale,
                 'consentement_le' => $customer->consent_at?->toIso8601String(),
+                'infolettre_abonne_le' => $customer->marketing_consent_at?->toIso8601String(),
+                'infolettre_desabonne_le' => $customer->marketing_unsubscribed_at?->toIso8601String(),
                 'cree_le' => $customer->created_at?->toIso8601String(),
             ],
             'commandes' => $customer->orders->map(fn (Order $o) => [
@@ -88,6 +90,7 @@ class CustomerPrivacy
                 'phone' => null,
                 'email' => null,
                 'address' => null,
+                'marketing_consent_at' => null,
                 'erased_at' => now(),
             ])->save();
 

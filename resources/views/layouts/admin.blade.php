@@ -19,8 +19,12 @@
         ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
         ['key' => 'customers', 'route' => 'admin.customers.index', 'active' => 'admin.customers.*'],
         ['key' => 'invoices', 'route' => 'admin.invoices.index', 'active' => ['admin.invoices.*', 'admin.payments.*']],
-        ['key' => 'reports', 'route' => auth()->user()->isManager() ? 'admin.reports.index' : null, 'active' => 'admin.reports.*'],
+        ['key' => 'reports', 'route' => auth()->user()->hasRole(\App\Enums\UserRole::Manager, \App\Enums\UserRole::Accountant) ? 'admin.reports.index' : null, 'active' => 'admin.reports.*'],
     ];
+    // Le comptable ne voit que la comptabilité
+    if (auth()->user()->isAccountant()) {
+        $main = array_values(array_filter($main, fn ($i) => in_array($i['key'], ['invoices', 'reports'], true)));
+    }
     $manager = [
         ['key' => 'settings', 'route' => 'admin.settings.edit', 'active' => 'admin.settings.*'],
         ['key' => 'team', 'route' => 'admin.users.index', 'active' => 'admin.users.*'],

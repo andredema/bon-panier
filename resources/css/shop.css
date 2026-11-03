@@ -37,6 +37,8 @@
 .cat-tout { background: var(--vert); color: var(--manioc); }
 .cat-tout .nb { color: var(--manioc); opacity: .9; }
 .cat-tout .ico { background: rgba(247,242,232,.15); }
+.cat .ico.avec-image { overflow: hidden; background: none; }
+.cat .ico img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cat-tout[aria-pressed="true"] { border-color: var(--osier); box-shadow: 0 0 0 3px rgba(212,154,58,.35); }
 .cat-tout[aria-pressed="true"] .nb { color: var(--manioc); }
 .entete-liste { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
@@ -148,7 +150,7 @@ body.tiroir-ouvert .tiroir { transform: none; visibility: visible; }
 .x { width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); background: var(--blanc); font-size: 20px; cursor: pointer; flex: none; }
 .tiroir-corps { flex: 1; overflow: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
 .tiroir .lignes { padding: 0; overflow: visible; flex: none; }
-.bloc-t h3 { font-family: var(--corps); font-size: 14px; font-weight: 800; margin-bottom: 8px; }
+.bloc-t h3, .titre-coord { font-family: var(--corps); font-size: 14px; font-weight: 800; margin-bottom: 8px; }
 .choix { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .choix label { border: 1.5px solid var(--ligne); border-radius: 10px; padding: 10px; cursor: pointer; font-size: 14px; display: flex; gap: 8px; align-items: flex-start; }
 .choix label:has(input:checked) { border-color: var(--vert); background: var(--vert-pale); }

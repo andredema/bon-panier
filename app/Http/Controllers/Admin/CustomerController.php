@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Services\Customers\CustomerPrivacy;
+use App\Support\Csv;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CustomerController extends Controller
 {
@@ -17,6 +19,7 @@ class CustomerController extends Controller
     {
         $q = trim((string) $request->query('q'));
         $type = in_array($request->query('type'), Customer::TYPES, true) ? $request->query('type') : null;
+        $subscribed = $request->boolean('abonnes');
 
         $customers = Customer::query()
             ->whereNull('erased_at')
@@ -25,11 +28,12 @@ class CustomerController extends Controller
             ->withMax('orders', 'created_at')
             ->when($q !== '', fn ($w) => $w->search($q))
             ->when($type, fn ($w) => $w->where('type', $type))
+            ->when($subscribed, fn ($w) => $w->subscribed())
             ->orderBy('name')
             ->paginate(30)
             ->withQueryString();
 
-        return view('admin.customers.index', compact('customers', 'q', 'type'));
+        return view('admin.customers.index', compact('customers', 'q', 'type', 'subscribed'));
     }
 
     public function show(Customer $customer, CustomerPrivacy $privacy): View
@@ -64,6 +68,23 @@ class CustomerController extends Controller
         $customer->update($data);
 
         return back()->with('status', __('customers.updated'));
+    }
+
+    /** Désabonnement de l'infolettre à la demande du client (téléphone, comptoir). */
+    public function unsubscribe(Customer $customer): RedirectResponse
+    {
+        $customer->unsubscribe();
+
+        return back()->with('status', __('customers.marketing.unsubscribed'));
+    }
+
+    /** Liste des abonnés à l'infolettre, pour l'outil d'envoi : chaque ligne porte son lien de désabonnement. */
+    public function subscribers(): StreamedResponse
+    {
+        $rows = Customer::subscribed()->orderBy('name')->lazy()
+            ->map(fn (Customer $c) => [$c->name, $c->email, $c->marketing_consent_at->toDateString(), $c->unsubscribeUrl()]);
+
+        return Csv::download('abonnes-infolettre-'.now()->format('Y-m-d').'.csv', __('customers.marketing.csv_cols'), $rows);
     }
 
     /** Loi 25, droit d'accès : tout ce qu'on détient sur ce client, en JSON lisible. */

@@ -9,7 +9,7 @@ Application web de commande et de gestion pour **l'Épicerie africaine Le Bon Pa
 Deux espaces partagent la même base de données :
 
 1. **Page de commande publique** : les clients commandent au **détail** ou **en gros**, en ramassage ou en livraison, et paient par virement Interac ou au ramassage.
-2. **Espace de gestion** (gérant, employés) : commandes, précommandes, entrées en stock, produits et formats de vente, clients, factures, rapports comptables.
+2. **Espace de gestion** (super administrateur, gérant, employés, comptable) : commandes, précommandes, entrées en stock, produits et formats de vente, clients, factures, rapports comptables.
 
 Les **maquettes HTML validées** sont dans `maquettes/` et servent de référence visuelle et fonctionnelle. Reproduis leur mise en page, leurs couleurs et leurs comportements. Leurs données (produits, prix, clients) sont des exemples : ne les recopie pas en dur, elles iront dans les seeders de démonstration.
 
@@ -88,7 +88,8 @@ npm install && npm run dev      # en local
 npm run build                   # avant le déploiement
 PHP=php83 bash scripts/build-release.sh   # archive à déposer sur PlanetHoster (dist/)
 php artisan test
-php artisan users:create        # créer un compte de l’équipe
+php artisan users:create        # créer un compte de l’équipe (admin, gerant, employe, comptable)
+php artisan users:role courriel admin   # changer le rôle d’un compte (ex. premier super administrateur)
 php artisan backup:database     # sauvegarde de la base dans BACKUP_PATH (lancée chaque jour par le cron)
 ```
 

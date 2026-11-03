@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use RuntimeException;
 
 /**
- * Photos de produits : réduites à 900 px de large au plus et converties en WebP
+ * Photos de produits et images de catégories : réduites à 900 px de large au plus et converties en WebP
  * avec GD (disponible sur PlanetHoster), pour une page de commande légère.
  */
 final class ProductPhoto
@@ -17,7 +17,7 @@ final class ProductPhoto
 
     private const QUALITY = 80;
 
-    public function store(UploadedFile $file): string
+    public function store(UploadedFile $file, string $folder = 'products', int $maxWidth = self::MAX_WIDTH): string
     {
         $data = file_get_contents($file->getRealPath());
         $source = $data !== false ? @imagecreatefromstring($data) : false;
@@ -28,7 +28,7 @@ final class ProductPhoto
 
         $width = imagesx($source);
         $height = imagesy($source);
-        $ratio = min(1, self::MAX_WIDTH / $width);
+        $ratio = min(1, $maxWidth / $width);
         $w = max(1, (int) round($width * $ratio));
         $h = max(1, (int) round($height * $ratio));
 
@@ -44,7 +44,7 @@ final class ProductPhoto
         imagedestroy($source);
         imagedestroy($target);
 
-        $path = 'products/'.Str::uuid().'.webp';
+        $path = $folder.'/'.Str::uuid().'.webp';
         Storage::disk('public')->put($path, $webp);
 
         return $path;

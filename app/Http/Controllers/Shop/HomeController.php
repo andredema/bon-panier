@@ -39,7 +39,7 @@ class HomeController extends Controller
         return view('shop.home', [
             'catalog' => [
                 'categories' => Category::ordered()->get()->map(fn (Category $c) => [
-                    'id' => $c->id, 'name' => $c->name, 'icon' => $c->icon,
+                    'id' => $c->id, 'name' => $c->name, 'icon' => $c->icon, 'image' => $c->imageUrl(),
                     'bg' => $c->palette->background(), 'ink' => $c->palette->ink(),
                 ])->values(),
                 'products' => $products->map(fn (Product $p) => $this->product($p, $available->get($p->id, 0), $arrivals->get($p->id), $wholesale))->values(),

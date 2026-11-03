@@ -19,9 +19,9 @@
       <div class="bloc-t">
         <h3>{{ __('shop.checkout.reception') }}</h3>
         <div class="choix" role="radiogroup" aria-label="{{ __('shop.checkout.reception') }}">
-          <label><input type="radio" name="fulfilment" value="ramassage" x-model="mode"> <span>{{ __('shop.checkout.pickup') }}<small>{{ __('shop.checkout.pickup_note', ['address' => $checkout['address']]) }}</small></span></label>
+          <label><input type="radio" name="fulfilment" value="ramassage" x-model="mode"> <span>{{ __('shop.checkout.pickup_choice') }}<small>{{ __('shop.checkout.pickup_note', ['address' => $checkout['address']]) }}</small></span></label>
           @if ($checkout['delivery'])
-            <label :class="{ inactif: cart.has_frozen }"><input type="radio" name="fulfilment" value="livraison" x-model="mode" :disabled="cart.has_frozen"> <span>{{ __('shop.checkout.delivery') }}<small>{{ __('shop.checkout.delivery_note', ['zone' => $checkout['delivery_zone'] ?: '—', 'fee' => $checkout['delivery_fee']]) }}</small></span></label>
+            <label :class="{ inactif: cart.has_frozen }"><input type="radio" name="fulfilment" value="livraison" x-model="mode" :disabled="cart.has_frozen"> <span>{{ __('shop.checkout.delivery_choice') }}<small>{{ __('shop.checkout.delivery_note', ['zone' => $checkout['delivery_zone'] ?: '—', 'fee' => $checkout['delivery_fee']]) }}</small></span></label>
           @endif
         </div>
         @if ($checkout['delivery'])
@@ -39,7 +39,7 @@
       @endif
 
       <div class="champ">
-        <label for="slot">{{ __('shop.checkout.slot') }}</label>
+        <label for="slot" x-text="mode === 'livraison' ? @js(__('shop.checkout.slot_delivery')) : @js(__('shop.checkout.slot_pickup'))">{{ __('shop.checkout.slot_pickup') }}</label>
         <select id="slot" name="slot" x-show="slots.length">
           <template x-for="s in slots" :key="s.value">
             <option :value="s.value" x-text="s.label" :selected="s.value === @js(old('slot'))"></option>
@@ -61,6 +61,7 @@
         @error('payment_method')<span class="erreur">{{ $message }}</span>@enderror
       </div>
 
+      <h3 class="titre-coord">{{ __('shop.checkout.contact') }}</h3>
       <div class="champ">
         <label for="nom">{{ __('shop.checkout.name') }}</label>
         <input id="nom" name="name" value="{{ old('name') }}" autocomplete="name" maxlength="120" required>
@@ -84,6 +85,7 @@
       </div>
       <label class="consent"><input type="checkbox" name="consent" value="1" required> <span>{!! __('shop.checkout.consent', ['url' => route('shop.privacy')]) !!}</span></label>
       @error('consent')<span class="erreur">{{ $message }}</span>@enderror
+      <label class="consent"><input type="checkbox" name="marketing" value="1" @checked(old('marketing'))> <span>{{ __('shop.checkout.marketing') }}</span></label>
     </div>
 
     <div class="totaux" aria-live="polite">

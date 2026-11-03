@@ -46,7 +46,7 @@
               <td data-lib="{{ __('billing.cols.number') }}"><a href="{{ route('admin.invoices.show', $i) }}">{{ $i->number }}</a></td>
               <td data-lib="{{ __('billing.cols.date') }}">{{ Format::date($i->issued_at) }}</td>
               <td data-lib="{{ __('billing.cols.customer') }}">{{ $i->customer_snapshot['name'] }}</td>
-              <td data-lib="{{ __('billing.cols.order') }}"><a href="{{ route('admin.orders.show', $i->order) }}">{{ $i->order->number }}</a></td>
+              <td data-lib="{{ __('billing.cols.order') }}">@if (auth()->user()->isAccountant()){{ $i->order->number }}@else<a href="{{ route('admin.orders.show', $i->order) }}">{{ $i->order->number }}</a>@endif</td>
               <td data-lib="{{ __('billing.cols.total') }}" class="num droite-large">@money($i->total_cents)</td>
               <td data-lib="{{ __('billing.cols.balance') }}" class="num droite-large">@money(max(0, $i->balance))</td>
               <td data-lib="{{ __('billing.cols.status') }}"><span class="etiquette {{ ['a_payer' => 'e-annulee', 'partielle' => 'e-confirmee', 'payee' => 'e-prete'][$i->computed_status] }}">{{ __('billing.status.'.$i->computed_status) }}</span></td>

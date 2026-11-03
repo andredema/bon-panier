@@ -36,13 +36,31 @@ class User extends Authenticatable
         $this->notify(new ResetPassword($token));
     }
 
+    /** Droits de gérant : le gérant et le super administrateur. */
     public function isManager(): bool
     {
-        return $this->role === UserRole::Manager;
+        return $this->role === UserRole::Manager || $this->isAdmin();
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::Admin;
+    }
+
+    public function isAccountant(): bool
+    {
+        return $this->role === UserRole::Accountant;
+    }
+
+    /** Le super administrateur a tous les rôles. */
     public function hasRole(UserRole ...$roles): bool
     {
-        return in_array($this->role, $roles, true);
+        return $this->isAdmin() || in_array($this->role, $roles, true);
+    }
+
+    /** Peut modifier ce compte : selon les rôles que son propre rôle permet d'attribuer. */
+    public function canManage(User $other): bool
+    {
+        return in_array($other->role, $this->role->assignable(), true);
     }
 }

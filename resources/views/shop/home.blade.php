@@ -71,7 +71,7 @@ x-data="orderPage(@js($config))" @keydown.escape.window="fermer(); menu = null"
         </button>
         <template x-for="c in catsTriees" :key="c.id">
           <button type="button" class="cat" @click="choisirCat(c.id)" :aria-pressed="(cat === c.id).toString()" :style="`background:${c.bg}`" x-show="compteCat(c.id) > 0">
-            <span class="ico" :style="`color:${c.ink}`"><svg width="26" height="26" aria-hidden="true"><use :href="`#i-${c.icon}`"/></svg></span>
+            <span class="ico" :class="{ 'avec-image': c.image }" :style="`color:${c.ink}`"><img x-show="c.image" :src="c.image" alt="" width="44" height="44" loading="lazy"><svg x-show="!c.image" width="26" height="26" aria-hidden="true"><use :href="`#i-${c.icon}`"/></svg></span>
             <span class="txt"><b x-text="c.name"></b><span class="nb" x-text="nbProduits(compteCat(c.id))"></span></span>
           </button>
         </template>

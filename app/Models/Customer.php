@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\URL;
 
 class Customer extends Model
 {
@@ -16,11 +17,12 @@ class Customer extends Model
 
     public const TYPES = ['particulier', 'gros'];
 
-    protected $fillable = ['name', 'phone', 'email', 'address', 'type', 'approved_wholesale', 'consent_at', 'erased_at'];
+    protected $fillable = ['name', 'phone', 'email', 'address', 'type', 'approved_wholesale', 'consent_at', 'marketing_consent_at', 'marketing_unsubscribed_at', 'erased_at'];
 
     protected function casts(): array
     {
-        return ['approved_wholesale' => 'boolean', 'consent_at' => 'datetime', 'erased_at' => 'datetime'];
+        return ['approved_wholesale' => 'boolean', 'consent_at' => 'datetime', 'marketing_consent_at' => 'datetime',
+            'marketing_unsubscribed_at' => 'datetime', 'erased_at' => 'datetime'];
     }
 
     public function orders(): HasMany
@@ -31,6 +33,35 @@ class Customer extends Model
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    /** Abonné aux soldes et nouveautés par courriel (consentement exprès, pas de désabonnement depuis). */
+    public function isSubscribed(): bool
+    {
+        return $this->marketing_consent_at !== null && $this->email !== null;
+    }
+
+    public function scopeSubscribed(Builder $q): void
+    {
+        $q->whereNotNull('marketing_consent_at')->whereNotNull('email')->whereNull('erased_at');
+    }
+
+    public function subscribe(): void
+    {
+        $this->forceFill(['marketing_consent_at' => now(), 'marketing_unsubscribed_at' => null])->save();
+    }
+
+    public function unsubscribe(): void
+    {
+        if ($this->marketing_consent_at) {
+            $this->forceFill(['marketing_consent_at' => null, 'marketing_unsubscribed_at' => now()])->save();
+        }
+    }
+
+    /** Lien de désabonnement en un clic, signé et sans date d'expiration. */
+    public function unsubscribeUrl(): string
+    {
+        return URL::signedRoute('shop.unsubscribe', $this);
     }
 
     public function scopeSearch(Builder $q, string $term): void

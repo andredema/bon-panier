@@ -30,11 +30,12 @@
       </div>
       <div class="champ">
         <label for="role">{{ __('app.users.role') }}</label>
-        <select id="role" name="role">
-          @foreach (\App\Enums\UserRole::cases() as $role)
+        <select id="role" name="role" aria-describedby="role-aide">
+          @foreach ($roles as $role)
             <option value="{{ $role->value }}" @selected(old('role', $user->role?->value) === $role->value)>{{ $role->label() }}</option>
           @endforeach
         </select>
+        <span class="note" id="role-aide">{{ __('app.users.roles_help') }}</span>
         @error('role')<span class="erreur">{{ $message }}</span>@enderror
       </div>
       @if ($editing)

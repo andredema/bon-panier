@@ -6,6 +6,7 @@
     $status = $invoice->status();
     $credited = $invoice->creditedCents();
     $paid = $invoice->paidCents();
+    $staff = ! auth()->user()->isAccountant();
     $creditable = $invoice->lines->sum(fn ($l) => $l->creditableCents()) + $invoice->delivery_fee_cents - $invoice->creditNotes->sum('delivery_cents');
 @endphp
 
@@ -20,7 +21,7 @@
       <p>
         {{ __('billing.show.issued', ['date' => Format::date($invoice->issued_at)]) }}
         @if ($invoice->due_on) · {{ __('billing.show.due', ['date' => Format::date($invoice->due_on)]) }}@endif
-        · <a href="{{ route('admin.orders.show', $invoice->order) }}">{{ __('billing.show.order', ['number' => $invoice->order->number]) }}</a>
+        · @if ($staff)<a href="{{ route('admin.orders.show', $invoice->order) }}">{{ __('billing.show.order', ['number' => $invoice->order->number]) }}</a>@else{{ __('billing.show.order', ['number' => $invoice->order->number]) }}@endif
       </p>
     </div>
     <div class="actions">
@@ -66,7 +67,7 @@
       <section class="bloc carte" aria-labelledby="t-paie">
         <h2 id="t-paie">{{ __('billing.show.payments') }}</h2>
         @include('admin.billing._payments', ['payments' => $invoice->payments])
-        @if ($balance > 0)
+        @if ($balance > 0 && $staff)
           <h3>{{ __('billing.payment.title') }}</h3>
           @include('admin.billing._payment-form', ['order' => $invoice->order, 'due' => $balance])
         @endif
@@ -75,7 +76,7 @@
       <section class="bloc carte" aria-labelledby="t-nc">
         <div class="bloc-tete">
           <h2 id="t-nc">{{ __('billing.show.credit_notes') }}</h2>
-          @if ($creditable > 0)
+          @if ($creditable > 0 && $staff)
             <a class="btn btn-secondaire mini" href="{{ route('admin.invoices.credit', $invoice) }}">{{ __('billing.show.new_credit') }}</a>
           @endif
         </div>

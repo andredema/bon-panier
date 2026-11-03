@@ -7,6 +7,9 @@
 @section('content')
   <div class="barre">
     <div><h1>{{ __('customers.title') }}</h1><p>{{ __('customers.intro') }}</p></div>
+    @if (auth()->user()->isManager())
+      <div class="actions"><a class="btn btn-secondaire" href="{{ route('admin.customers.subscribers') }}">{{ __('customers.marketing.export') }}</a></div>
+    @endif
   </div>
 
   <form class="filtres-liste carte" method="GET" action="{{ route('admin.customers.index') }}">
@@ -18,6 +21,7 @@
         @foreach (\App\Models\Customer::TYPES as $t)<option value="{{ $t }}" @selected($type === $t)>{{ __('customers.types.'.$t) }}</option>@endforeach
       </select>
     </div>
+    <label class="check"><input type="checkbox" name="abonnes" value="1" @checked($subscribed)> {{ __('customers.marketing.filter') }}</label>
     <button class="btn btn-secondaire" type="submit">{{ __('billing.filter') }}</button>
   </form>
 

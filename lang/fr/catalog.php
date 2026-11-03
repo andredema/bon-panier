@@ -135,6 +135,10 @@ return [
         'updated' => 'La catégorie a été enregistrée.',
         'deleted' => 'La catégorie a été supprimée.',
         'not_empty' => 'Cette catégorie contient des produits : déplacez-les avant de la supprimer.',
+        'image' => 'Image',
+        'image_hint' => 'Facultative ; remplace l’icône sur la carte. JPEG, PNG ou WebP, 8 Mo au plus.',
+        'remove_image' => 'Retirer l’image',
+        'image_unreadable' => 'Cette image est illisible : essayez un fichier JPEG ou PNG.',
     ],
 
     'units' => [
