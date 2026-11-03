@@ -44,6 +44,7 @@ class SettingsAdminTest extends TestCase
             'pickup_times' => '10:00-12:00, 14:00-16:00',
             'pickup_lead_hours' => '12',
             'pickup_horizon_days' => '7',
+            'invoice_due_days' => '14',
             'delivery_fee' => '0',
             'delivery_zone' => '',
         ], $overrides);

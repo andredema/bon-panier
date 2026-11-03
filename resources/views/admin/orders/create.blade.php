@@ -115,6 +115,16 @@
       </dl>
       <input type="hidden" name="hand_over" value="0">
       <label class="check"><input type="checkbox" name="hand_over" value="1" @checked(old('hand_over'))> <span>{{ __('orders.counter.hand_over') }}<br><small class="note">{{ __('orders.counter.hand_over_hint') }}</small></span></label>
+      <div class="champ">
+        <label for="collected">{{ __('orders.counter.collected') }}</label>
+        <select id="collected" name="collected">
+          <option value="">{{ __('orders.counter.not_collected') }}</option>
+          @foreach (\App\Models\Payment::METHODS as $m)
+            <option value="{{ $m }}" @selected(old('collected') === $m)>{{ __('billing.methods.'.$m) }}</option>
+          @endforeach
+        </select>
+        <span class="note">{{ __('orders.counter.collected_hint') }}</span>
+      </div>
       <input type="hidden" name="send_mail" value="0">
       <label class="check"><input type="checkbox" name="send_mail" value="1" @checked(old('send_mail', true))> {{ __('orders.counter.send_mail') }}</label>
       <button class="btn btn-primaire" type="submit" :disabled="!lines.length">{{ __('orders.counter.submit') }}</button>

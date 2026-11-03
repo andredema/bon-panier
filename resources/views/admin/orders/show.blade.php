@@ -94,6 +94,24 @@
         @endif
       </section>
 
+      <section class="bloc carte" aria-labelledby="t-fact">
+        <div class="bloc-tete">
+          <h2 id="t-fact">{{ __('billing.show.payments') }}</h2>
+          @if ($order->invoice)
+            <a class="btn btn-secondaire mini" href="{{ route('admin.invoices.show', $order->invoice) }}">{{ $order->invoice->number }}</a>
+          @endif
+        </div>
+        @include('admin.billing._payments', ['payments' => $order->payments])
+        @php $due = $order->balanceCents(); @endphp
+        @if ($due > 0 && ($order->status !== \App\Enums\OrderStatus::Cancelled || $order->invoice))
+          <p class="note">{{ __('billing.show.balance') }} : <b class="num">@money($due)</b></p>
+          <details @if ($errors->hasAny(['amount', 'method', 'paid_at'])) open @endif>
+            <summary>{{ __('billing.payment.title') }}</summary>
+            @include('admin.billing._payment-form', ['order' => $order, 'due' => $due])
+          </details>
+        @endif
+      </section>
+
       <section class="bloc carte" aria-labelledby="t-hist">
         <h2 id="t-hist">{{ __('orders.show.history') }}</h2>
         <ol class="historique">

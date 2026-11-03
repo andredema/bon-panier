@@ -200,6 +200,7 @@ return [
             'delivery_zone' => 'Zone de livraison (texte affiché au client)',
             'delivery_frozen' => 'Les surgelés peuvent être livrés',
             'delivery_taxable' => 'Les frais de livraison sont taxables',
+            'invoice_due_days' => 'Délai de paiement des factures (jours)',
             'payment_on_handover' => 'Accepter le paiement au ramassage (comptant ou débit)',
         ],
         'options' => [

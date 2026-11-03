@@ -4,6 +4,7 @@ namespace App\Services\Orders;
 
 use App\Enums\OrderStatus;
 use App\Events\OrderHandedOver;
+use App\Events\OrderStatusChanged;
 use App\Mail\OrderCancelled;
 use App\Mail\OrderReady;
 use App\Models\Order;
@@ -69,6 +70,7 @@ final class OrderWorkflow
         if ($to === OrderStatus::HandedOver) {
             OrderHandedOver::dispatch($order);
         }
+        OrderStatusChanged::dispatch($order, $from, $to, $user);
 
         return $order;
     }
@@ -104,6 +106,7 @@ final class OrderWorkflow
         if ($order->customer->email && $order->source !== Order::SOURCE_COUNTER) {
             Mail::to($order->customer->email)->queue(new OrderCancelled($order));
         }
+        OrderStatusChanged::dispatch($order, $from, OrderStatus::Cancelled, $user);
 
         return $order;
     }

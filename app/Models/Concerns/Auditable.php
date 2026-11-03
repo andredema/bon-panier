@@ -24,7 +24,7 @@ trait Auditable
             }
         });
 
-        static::deleted(fn (Model $m) => $m->writeAudit('deleted', null));
+        static::deleted(fn (Model $m) => $m->writeAudit('deleted', ['before' => $m->auditableValues($m->getAttributes())]));
 
         if (method_exists(static::class, 'restored')) {
             static::restored(fn (Model $m) => $m->writeAudit('restored', null));

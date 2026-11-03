@@ -289,6 +289,21 @@ td small { display: block; font-size: 12px; color: var(--texte-3); }
   .panneau { width: min(320px, calc(100vw - 32px)); }
 }
 
+/* Facturation */
+.filtres-factures { grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)) auto; }
+.ligne-paiement { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 8px 0; border-bottom: 1px solid #F0EADF; font-size: 14px; }
+.ligne-paiement:last-of-type { border-bottom: 0; }
+.actions-paiement { display: flex; gap: 12px; align-items: flex-start; }
+.form-paiement { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.form-paiement .btn { align-self: flex-start; }
+details > summary { cursor: pointer; font-weight: 700; min-height: 32px; }
+.ligne-rappro { border: 1.5px solid var(--ligne); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.ligne-rappro .haut { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.montant-du { font-family: var(--titre); font-size: 20px; }
+.saisie-montant { min-height: 40px; border-radius: 8px; border: 1.5px solid var(--ligne); padding: 0 8px; width: 110px; text-align: right; }
+@media (max-width: 1100px) { .filtres-factures { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) { .filtres-factures { grid-template-columns: 1fr; } }
+
 /* Précommandes */
 .groupe-preco { border: 1.5px solid var(--ligne); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 .groupe-preco h3 { font-size: 17px; }

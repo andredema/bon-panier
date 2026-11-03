@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CounterOrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExpectedArrivalController;
+use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PreorderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -54,6 +56,19 @@ Route::prefix('gestion')->group(function () {
         Route::post('commandes/{order}/suivant', [OrderController::class, 'advance'])->name('orders.advance');
         Route::post('commandes/{order}/annuler', [OrderController::class, 'cancel'])->name('orders.cancel');
         Route::get('commandes/{order}/preparation', [OrderController::class, 'picking'])->name('orders.picking');
+
+        // Facturation : toute l'équipe encaisse ; la suppression d'un paiement est réservée au gérant
+        Route::get('factures', [InvoiceController::class, 'index'])->name('invoices.index');
+        Route::get('factures/{invoice:number}', [InvoiceController::class, 'show'])->name('invoices.show');
+        Route::get('factures/{invoice:number}/pdf', [InvoiceController::class, 'pdf'])->name('invoices.pdf');
+        Route::post('factures/{invoice:number}/courriel', [InvoiceController::class, 'email'])->name('invoices.email');
+        Route::get('factures/{invoice:number}/note-de-credit', [InvoiceController::class, 'createCredit'])->name('invoices.credit');
+        Route::post('factures/{invoice:number}/note-de-credit', [InvoiceController::class, 'storeCredit'])->name('invoices.credit.store');
+        Route::get('notes-de-credit/{creditNote:number}/pdf', [InvoiceController::class, 'creditPdf'])->name('credit-notes.pdf');
+        Route::get('paiements/interac', [PaymentController::class, 'reconcile'])->name('payments.reconcile');
+        Route::post('commandes/{order}/paiements', [PaymentController::class, 'store'])->name('payments.store');
+        Route::get('paiements/{payment}/recu', [PaymentController::class, 'receipt'])->name('payments.receipt');
+        Route::delete('paiements/{payment}', [PaymentController::class, 'destroy'])->middleware('role:gerant')->name('payments.destroy');
 
         Route::get('precommandes', [PreorderController::class, 'index'])->name('preorders.index');
         Route::post('precommandes/{product}/servir', [PreorderController::class, 'serve'])->name('preorders.serve');

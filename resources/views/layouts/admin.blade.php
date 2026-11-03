@@ -18,7 +18,7 @@
         ['key' => 'stock', 'route' => 'admin.receipts.create', 'active' => ['admin.receipts.*', 'admin.arrivals.*', 'admin.suppliers.*', 'admin.preorders.*']],
         ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
         ['key' => 'customers', 'route' => null],
-        ['key' => 'invoices', 'route' => null],
+        ['key' => 'invoices', 'route' => 'admin.invoices.index', 'active' => ['admin.invoices.*', 'admin.payments.*']],
         ['key' => 'reports', 'route' => null],
     ];
     $manager = [

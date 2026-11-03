@@ -54,7 +54,7 @@
         @if ($kpi['preorder_dates']->isNotEmpty()) · {{ __('orders.dashboard.arrivals_on', ['dates' => $kpi['preorder_dates']->map(fn ($d) => Format::shortDate($d))->join(', ')]) }}@endif
       </span>
     </a>
-    <a class="kpi carte" href="{{ route('admin.orders.index') }}">
+    <a class="kpi carte" href="{{ route('admin.payments.reconcile') }}">
       <span class="lib">{{ __('orders.dashboard.interac') }}</span>
       <span class="val num">@money($kpi['interac_total'])</span>
       <span class="det">{{ trans_choice('orders.dashboard.interac_split', $kpi['interac_count'], ['count' => $kpi['interac_count']]) }}</span>

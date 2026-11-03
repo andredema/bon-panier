@@ -9,6 +9,7 @@ use App\Models\ExpectedArrival;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Services\Billing\InteracReconciliation;
 use App\Services\Stock\StockLevels;
 use App\Support\Quantity;
 use Illuminate\Support\Carbon;
@@ -17,7 +18,7 @@ use Illuminate\View\View;
 /** Accueil de l'espace de gestion (maquettes/tableau-de-bord.html, cahier 4.1). */
 class DashboardController extends Controller
 {
-    public function __invoke(StockLevels $levels): View
+    public function __invoke(StockLevels $levels, InteracReconciliation $interac): View
     {
         $active = array_map(fn (OrderStatus $s) => $s->value, OrderStatus::active());
 
@@ -31,7 +32,7 @@ class DashboardController extends Controller
         $pendingProducts = $pending->pluck('product_id')->unique();
         $arrivals = ExpectedArrival::open()->whereDate('expected_on', '>=', today())->with(['product.stockUnit', 'supplier'])->orderBy('expected_on')->get();
 
-        $interac = Order::whereIn('status', $active)->where('payment_method', Order::PAY_INTERAC);
+        $interac = $interac->pending();
 
         return view('admin.dashboard', [
             'kpi' => [
@@ -44,8 +45,8 @@ class DashboardController extends Controller
                 'preorders' => $pending->count(),
                 'preorder_products' => $pendingProducts->count(),
                 'preorder_dates' => $arrivals->whereIn('product_id', $pendingProducts)->pluck('expected_on')->unique(fn ($d) => $d->toDateString())->take(3),
-                'interac_total' => (int) (clone $interac)->sum('total_cents'),
-                'interac_count' => (clone $interac)->count(),
+                'interac_total' => (int) $interac->sum('due'),
+                'interac_count' => $interac->count(),
             ],
             'orders' => Order::whereIn('status', $active)->with('customer')->withPendingPreorders()->orderBy('slot_start')->limit(50)->get(),
             'stock' => $this->stockLines($levels, $pending, $arrivals),

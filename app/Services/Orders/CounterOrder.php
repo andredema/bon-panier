@@ -5,9 +5,11 @@ namespace App\Services\Orders;
 use App\Mail\OrderConfirmation;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\Payment;
 use App\Models\Product;
 use App\Models\SaleFormat;
 use App\Models\User;
+use App\Services\Billing\PaymentRecorder;
 use App\Support\Quantity;
 use App\Support\Settings;
 use Illuminate\Support\Carbon;
@@ -27,6 +29,7 @@ final class CounterOrder
         private Cart $cart,
         private OrderWriter $writer,
         private OrderWorkflow $workflow,
+        private PaymentRecorder $payments,
     ) {}
 
     /** Lignes du formulaire → [id de format => quantité], dans l'ordre. */
@@ -108,6 +111,10 @@ final class CounterOrder
             // La commande existe déjà : en cas d'échec de la remise, on la garde et on le signale
             try {
                 $this->workflow->handOverNow($order, $user);
+                // Vente au comptoir encaissée sur-le-champ : le paiement règle la facture émise à la remise
+                if (! empty($data['collected'])) {
+                    $this->payments->record($order->fresh(), $data['collected'], $order->fresh()->balanceCents(), null, null, $user);
+                }
             } catch (WorkflowException $e) {
                 session()->flash('warnings', [$e->getMessage()]);
             }
@@ -137,6 +144,7 @@ final class CounterOrder
             'payment_method' => ['required', 'in:'.Order::PAY_INTERAC.','.Order::PAY_ON_HANDOVER],
             'notes' => ['nullable', 'string', 'max:500'],
             'hand_over' => ['boolean'],
+            'collected' => ['nullable', 'in:'.implode(',', Payment::METHODS)],
             'send_mail' => ['boolean'],
         ], ['lines.required' => __('orders.errors.no_lines'), 'lines.min' => __('orders.errors.no_lines'), 'slot.date_format' => __('orders.errors.slot')],
             __('shop.checkout.attributes'))->validate();

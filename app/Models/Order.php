@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\URL;
 
 class Order extends Model
@@ -75,6 +76,24 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class)->orderBy('is_preorder')->orderBy('id');
+    }
+
+    public function invoice(): HasOne
+    {
+        return $this->hasOne(Invoice::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class)->orderBy('paid_at');
+    }
+
+    /** Solde dû : facture (ou commande, avant facture) − notes de crédit − paiements. */
+    public function balanceCents(): int
+    {
+        $invoice = $this->invoice;
+
+        return $invoice ? $invoice->balanceCents() : $this->total_cents - (int) $this->payments()->sum('amount_cents');
     }
 
     public function history(): HasMany

@@ -7,6 +7,8 @@ use App\Enums\OrderStatus;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Services\Orders\CounterOrder;
 use App\Services\Orders\TaxCalculator;
 use App\Support\Quantity;
 use Illuminate\Database\Seeder;
@@ -65,6 +67,21 @@ class OrderDemoSeeder extends Seeder
             $t = app(TaxCalculator::class)->totals($subtotal, 0);
             $order->update(['subtotal_cents' => $subtotal, 'total_cents' => $t['total'], 'has_preorder' => $preorder]);
             $order->history()->create(['to' => OrderStatus::Received]);
+        }
+
+        // Vente au comptoir remise et payée : une facture et un paiement de démonstration
+        $manager = User::where('email', 'gerant@example.com')->first();
+        if ($manager) {
+            app(CounterOrder::class)->place([
+                'name' => 'Client Démo D', 'phone' => '450-555-0199', 'email' => 'demo.d@example.com', 'consent' => '1',
+                'fulfilment' => Order::PICKUP, 'slot' => now()->format('Y-m-d\TH:i'), 'payment_method' => Order::PAY_ON_HANDOVER,
+                'hand_over' => true, 'collected' => 'debit', 'send_mail' => false,
+                'lines' => [
+                    ['format_id' => $products['Gari jaune']->formats->firstWhere('label', 'Sac de 1 kg')->id, 'qty' => '4'],
+                    ['format_id' => $products['Malta']->formats->firstWhere('label', 'Bouteille de 330 ml')->id, 'qty' => '12'],
+                    ['format_id' => $products['Water Leaf']->formats->firstWhere('label', 'Boule de 500 g')->id, 'qty' => '3'],
+                ],
+            ], $manager);
         }
     }
 }

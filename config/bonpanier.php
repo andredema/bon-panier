@@ -31,6 +31,8 @@ return [
         'delivery.zone' => ['type' => 'string', 'default' => '', 'group' => 'pickup', 'open_question' => true],
         'delivery.frozen' => ['type' => 'bool', 'default' => false, 'group' => 'pickup', 'open_question' => true],
         'delivery.taxable' => ['type' => 'bool', 'default' => false, 'group' => 'pickup', 'open_question' => true],
+        // Délai de paiement inscrit sur la facture (date d'échéance), en jours ; 0 = payable à la réception
+        'invoice.due_days' => ['type' => 'int', 'default' => 14, 'min' => 0, 'max' => 90, 'group' => 'payment', 'open_question' => true],
         'payment.on_handover' => ['type' => 'bool', 'default' => true, 'group' => 'payment', 'open_question' => true],
 
         // Taxes du Québec
