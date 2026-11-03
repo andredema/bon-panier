@@ -32,6 +32,30 @@ enum OrderStatus: string
         return ! in_array($this, [self::HandedOver, self::Cancelled], true);
     }
 
+    /** Étape suivante du parcours normal, ou nul (remise, annulée). */
+    public function next(): ?self
+    {
+        return match ($this) {
+            self::Received => self::Confirmed,
+            self::Confirmed => self::Preparing,
+            self::Preparing => self::Ready,
+            self::Ready => self::HandedOver,
+            default => null,
+        };
+    }
+
+    /** Libellé du bouton d'étape suivante (« Confirmer », « Préparer »…). */
+    public function nextActionLabel(): ?string
+    {
+        return $this->next() ? __('orders.actions.'.$this->next()->value) : null;
+    }
+
+    /** Statuts qui exigent que toutes les précommandes soient servies (règle 5.2). */
+    public function needsPreordersServed(): bool
+    {
+        return in_array($this, [self::Preparing, self::Ready, self::HandedOver], true);
+    }
+
     /** @return list<self> */
     public static function active(): array
     {

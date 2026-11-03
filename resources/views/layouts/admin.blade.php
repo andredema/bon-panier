@@ -13,7 +13,8 @@
     ];
     $main = [
         ['key' => 'dashboard', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
-        ['key' => 'orders', 'route' => null],
+        ['key' => 'orders', 'route' => 'admin.orders.index', 'active' => 'admin.orders.*',
+            'count' => \App\Models\Order::whereIn('status', ['recue', 'confirmee', 'en_preparation'])->count()],
         ['key' => 'stock', 'route' => 'admin.receipts.create', 'active' => ['admin.receipts.*', 'admin.arrivals.*', 'admin.suppliers.*', 'admin.preorders.*']],
         ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
         ['key' => 'customers', 'route' => null],
@@ -68,6 +69,7 @@
             @endif
                 <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons[$item['key']] }}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 {{ __('app.nav.'.$item['key']) }}
+                @if (! empty($item['count']))<span class="compte">{{ $item['count'] }}</span>@endif
                 @unless ($item['route'])<span class="sr"> ({{ __('app.nav.soon') }})</span>@endunless
               </a>
           @endforeach

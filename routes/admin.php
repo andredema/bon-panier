@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CounterOrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExpectedArrivalController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PreorderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -41,6 +43,17 @@ Route::prefix('gestion')->group(function () {
         Route::get('arrivages', [ExpectedArrivalController::class, 'index'])->name('arrivals.index');
         Route::post('arrivages', [ExpectedArrivalController::class, 'store'])->name('arrivals.store');
         Route::patch('arrivages/{arrival}/annuler', [ExpectedArrivalController::class, 'cancel'])->name('arrivals.cancel');
+
+        // Commandes : toute l'équipe les traite
+        Route::get('commandes', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('commandes/nouvelle', [CounterOrderController::class, 'create'])->name('orders.create');
+        Route::get('commandes/produits', [CounterOrderController::class, 'products'])->name('orders.products');
+        Route::post('commandes/apercu', [CounterOrderController::class, 'preview'])->name('orders.preview');
+        Route::post('commandes', [CounterOrderController::class, 'store'])->name('orders.store');
+        Route::get('commandes/{order}', [OrderController::class, 'show'])->name('orders.show');
+        Route::post('commandes/{order}/suivant', [OrderController::class, 'advance'])->name('orders.advance');
+        Route::post('commandes/{order}/annuler', [OrderController::class, 'cancel'])->name('orders.cancel');
+        Route::get('commandes/{order}/preparation', [OrderController::class, 'picking'])->name('orders.picking');
 
         Route::get('precommandes', [PreorderController::class, 'index'])->name('preorders.index');
         Route::post('precommandes/{product}/servir', [PreorderController::class, 'serve'])->name('preorders.serve');

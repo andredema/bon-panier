@@ -7,6 +7,7 @@ use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class OrderItem extends Model
 {
@@ -27,6 +28,11 @@ class OrderItem extends Model
     public function isPendingPreorder(): bool
     {
         return $this->is_preorder && $this->preorder_served_at === null;
+    }
+
+    public function lots(): HasMany
+    {
+        return $this->hasMany(OrderItemLot::class);
     }
 
     public function servedReceipt(): BelongsTo

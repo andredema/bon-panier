@@ -96,7 +96,16 @@ final class Cart
      */
     public function summary(): array
     {
-        $raw = $this->raw();
+        return $this->summaryFor($this->raw());
+    }
+
+    /**
+     * Même évaluation pour une liste de lignes quelconque (commande saisie au comptoir).
+     *
+     * @param  array<int, string>  $raw  quantité par id de format, dans l'ordre
+     */
+    public function summaryFor(array $raw): array
+    {
         $formats = SaleFormat::with(['product.stockUnit', 'unit'])->whereIn('id', array_keys($raw))->get()->keyBy('id');
 
         // Lignes dont le format ou le produit a disparu du catalogue : retirées en silence
@@ -224,15 +233,29 @@ final class Cart
         return $f->is_by_weight ? $q.' '.$f->unit->short_label : $q;
     }
 
+    /**
+     * Vérifie une ligne saisie par l'équipe (comptoir) : mêmes règles de pas et de minimum.
+     * L'équipe vend en gros même quand les prix de gros sont masqués en ligne.
+     *
+     * @throws CartException
+     */
+    public function validateLine(SaleFormat $format, string $qty): int
+    {
+        $milli = $this->validQty($format, $qty, staff: true);
+        $this->checkMin($format, $milli);
+
+        return $milli;
+    }
+
     /** @throws CartException */
-    private function validQty(SaleFormat $format, string $qty): int
+    private function validQty(SaleFormat $format, string $qty, bool $staff = false): int
     {
         $product = $format->product;
 
         if (! $format->is_visible || ! $product || $product->trashed() || ! $product->is_visible) {
             throw new CartException(__('shop.cart.errors.unavailable_format'));
         }
-        if ($format->channel === Channel::Wholesale && Settings::get('wholesale.prices_visible_to') !== 'all') {
+        if (! $staff && $format->channel === Channel::Wholesale && Settings::get('wholesale.prices_visible_to') !== 'all') {
             throw new CartException(__('shop.cart.errors.wholesale_closed'));
         }
         if (! Quantity::isValid($qty) || ($milli = Quantity::toMilli($qty)) <= 0 || $milli > self::MAX_QTY) {
@@ -248,10 +271,9 @@ final class Cart
     }
 
     /** @throws CartException */
-    private function store(SaleFormat $format, array $lines, int $milli): void
+    private function checkMin(SaleFormat $format, int $milli): void
     {
-        $min = Quantity::toMilli($format->min_qty);
-        if ($milli < $min) {
+        if ($milli < Quantity::toMilli($format->min_qty)) {
             throw new CartException($format->channel === Channel::Wholesale
                 ? __('shop.cart.errors.wholesale_min', ['min' => Format::quantity($format->min_qty), 'label' => $format->label])
                 : __('shop.cart.errors.min', ['min' => Format::quantity($format->min_qty)]));
@@ -259,6 +281,12 @@ final class Cart
         if ($milli > self::MAX_QTY) {
             throw new CartException(__('shop.cart.errors.qty'));
         }
+    }
+
+    /** @throws CartException */
+    private function store(SaleFormat $format, array $lines, int $milli): void
+    {
+        $this->checkMin($format, $milli);
 
         $previous = $lines;
         $lines[$format->id] = Quantity::fromMilli($milli);

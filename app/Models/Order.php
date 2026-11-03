@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Channel;
 use App\Enums\OrderStatus;
 use Database\Factories\OrderFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,10 +25,15 @@ class Order extends Model
 
     public const PAY_ON_HANDOVER = 'remise';
 
+    public const SOURCE_ONLINE = 'en_ligne';
+
+    public const SOURCE_COUNTER = 'comptoir';
+
     protected $fillable = [
         'number', 'customer_id', 'channel', 'status', 'fulfilment', 'slot_start', 'slot_end',
         'delivery_address', 'payment_method', 'subtotal_cents', 'taxable_cents', 'delivery_fee_cents',
         'tax_tps_cents', 'tax_tvq_cents', 'total_cents', 'has_preorder', 'notes', 'consent_at', 'cancel_reason',
+        'source', 'created_by', 'handed_over_at',
     ];
 
     protected function casts(): array
@@ -38,6 +44,7 @@ class Order extends Model
             'slot_start' => 'datetime',
             'slot_end' => 'datetime',
             'consent_at' => 'datetime',
+            'handed_over_at' => 'datetime',
             'has_preorder' => 'boolean',
             'subtotal_cents' => 'integer',
             'taxable_cents' => 'integer',
@@ -51,6 +58,18 @@ class Order extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    /** Ajoute items_pending_count : lignes en précommande pas encore servies. */
+    public function scopeWithPendingPreorders(Builder $q): void
+    {
+        $q->withCount(['items as items_pending_count' => fn ($i) => $i->where('is_preorder', true)->whereNull('preorder_served_at')]);
+    }
+
+    /** Membre de l'équipe qui a saisi la commande (comptoir, téléphone). */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function items(): HasMany
