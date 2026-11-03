@@ -43,6 +43,25 @@
                 <input id="{{ $field }}" name="{{ $field }}" inputmode="decimal" value="{{ old($field, \App\Support\Format::quantity(\App\Support\Quantity::fromMilli($s['value']))) }}">
                 @error($field)<span class="erreur">{{ $message }}</span>@enderror
               </div>
+            @elseif ($s['type'] === 'days')
+              @php $chosen = array_map('strval', \App\Support\Settings::days($s['key'])); @endphp
+              <fieldset class="champ plein jours">
+                <legend>{{ $label }} @if ($s['open_question'] ?? false)<span class="etiquette e-confirmee">{{ __('catalog.settings.open_question') }}</span>@endif</legend>
+                <div class="bascules">
+                  @foreach (range(1, 7) as $d)
+                    <label class="case"><input type="checkbox" name="{{ $field }}[]" value="{{ $d }}" @checked(in_array((string) $d, old($field, $chosen), true))> {{ __('catalog.settings.weekdays.'.$d) }}</label>
+                  @endforeach
+                </div>
+              </fieldset>
+            @elseif (in_array($s['type'], ['int', 'money', 'slots'], true))
+              <div class="champ {{ $s['type'] === 'slots' ? 'plein' : '' }}">
+                <label for="{{ $field }}">{{ $label }} @if ($s['open_question'] ?? false)<span class="etiquette e-confirmee">{{ __('catalog.settings.open_question') }}</span>@endif</label>
+                <input id="{{ $field }}" name="{{ $field }}" inputmode="{{ $s['type'] === 'slots' ? 'text' : 'decimal' }}"
+                       value="{{ old($field, $s['type'] === 'money' ? number_format($s['value'] / 100, 2, ',', ' ') : $s['value']) }}"
+                       @if ($s['type'] === 'slots') aria-describedby="{{ $field }}-aide" @endif>
+                @if ($s['type'] === 'slots')<span class="note" id="{{ $field }}-aide">{{ __('catalog.settings.slots_hint') }}</span>@endif
+                @error($field)<span class="erreur">{{ $message }}</span>@enderror
+              </div>
             @else
               <div class="champ {{ $s['key'] === 'shop.address' ? 'plein' : '' }}">
                 <label for="{{ $field }}">{{ $label }}</label>

@@ -39,6 +39,13 @@ class SettingsAdminTest extends TestCase
             'wholesale_prices_visible_to' => 'all',
             'preorder_scope' => 'whole_line',
             'invoice_wholesale_issued_at' => 'handover',
+            'shop_privacy_officer' => '',
+            'pickup_days' => ['2', '3', '4', '5', '6'],
+            'pickup_times' => '10:00-12:00, 14:00-16:00',
+            'pickup_lead_hours' => '12',
+            'pickup_horizon_days' => '7',
+            'delivery_fee' => '0',
+            'delivery_zone' => '',
         ], $overrides);
     }
 
@@ -60,6 +67,23 @@ class SettingsAdminTest extends TestCase
         $this->assertSame('123456789 RT0001', Settings::get('tax.tps_number'));
         $this->assertSame('missing_part', Settings::get('preorder.scope'));
         $this->assertTrue(AuditLog::where('subject_id', 'tax.tps_number')->exists());
+    }
+
+    public function test_pickup_and_delivery_settings(): void
+    {
+        $this->actingAs($this->manager)->put('/gestion/reglages', $this->settingsPayload([
+            'pickup_days' => ['6', '9', '2'], 'pickup_times' => '09:30-11:00,13:00-15:30',
+            'delivery_enabled' => '1', 'delivery_fee' => '8,50',
+        ]))->assertSessionHasNoErrors();
+
+        $this->assertSame([2, 6], Settings::days('pickup.days'));
+        $this->assertSame([['09:30', '11:00'], ['13:00', '15:30']], Settings::parseSlots(Settings::get('pickup.times')));
+        $this->assertTrue(Settings::get('delivery.enabled'));
+        $this->assertSame(850, Settings::get('delivery.fee'));
+
+        $this->actingAs($this->manager)->put('/gestion/reglages', $this->settingsPayload([
+            'pickup_times' => '12:00-10:00', 'pickup_lead_hours' => '-1', 'delivery_fee' => 'gratuit',
+        ]))->assertSessionHasErrors(['pickup_times', 'pickup_lead_hours', 'delivery_fee']);
     }
 
     public function test_invalid_settings_are_refused(): void

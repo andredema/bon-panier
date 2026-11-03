@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Support\Settings;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isProduction()) {
             URL::forceHttps();
         }
+
+        // Limites d'envoi (sécurité, cahier 9) : panier et commandes
+        RateLimiter::for('cart', fn (Request $r) => Limit::perMinute(120)->by($r->ip()));
+        RateLimiter::for('orders', fn (Request $r) => Limit::perMinutes(10, 5)->by($r->ip()));
 
         // Modifier les produits, formats et prix : le gérant, et les employés si le réglage le permet
         Gate::define('edit-catalog', fn (User $user) => $user->isManager()

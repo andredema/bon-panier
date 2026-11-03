@@ -73,9 +73,41 @@ final class Settings
     {
         return match ($def['type']) {
             'bool' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
-            'rate' => (int) $value,
+            'rate', 'int', 'money' => (int) $value,
             default => (string) ($value ?? ''),
         };
+    }
+
+    /** Jours de la semaine ISO (1 = lundi … 7 = dimanche) d'un réglage « days ». */
+    public static function days(string $key): array
+    {
+        return array_values(array_unique(array_filter(
+            array_map('intval', explode(',', (string) self::get($key))),
+            fn (int $d) => $d >= 1 && $d <= 7,
+        )));
+    }
+
+    /**
+     * Plages horaires d'un réglage « slots » : « 10:00-12:00, 14:00-16:00 ».
+     *
+     * @return list<array{0: string, 1: string}>|null nul si le format est invalide
+     */
+    public static function parseSlots(string $value): ?array
+    {
+        $slots = [];
+        foreach (array_filter(array_map('trim', explode(',', $value))) as $part) {
+            if (! preg_match('/^([01]\d|2[0-3]):([0-5]\d)\s*-\s*([01]\d|2[0-3]):([0-5]\d)$/', $part, $m)) {
+                return null;
+            }
+            $start = "{$m[1]}:{$m[2]}";
+            $end = "{$m[3]}:{$m[4]}";
+            if ($end <= $start) {
+                return null;
+            }
+            $slots[] = [$start, $end];
+        }
+
+        return $slots ?: null;
     }
 
     private static function serialize(array $def, mixed $value): string

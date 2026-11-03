@@ -18,6 +18,20 @@ return [
         'shop.address' => ['type' => 'string', 'default' => '840, avenue du Marché, Saint-Lin–Laurentides (Québec)', 'group' => 'shop'],
         'shop.phone' => ['type' => 'string', 'default' => '', 'group' => 'shop'],
         'shop.email' => ['type' => 'string', 'default' => '', 'group' => 'shop'],
+        // Loi 25 : personne responsable de la protection des renseignements personnels
+        'shop.privacy_officer' => ['type' => 'string', 'default' => '', 'group' => 'shop'],
+
+        // Ramassage et livraison (horaires et zone : questions ouvertes)
+        'pickup.days' => ['type' => 'days', 'default' => '2,3,4,5,6', 'group' => 'pickup', 'open_question' => true],
+        'pickup.times' => ['type' => 'slots', 'default' => '10:00-12:00, 14:00-16:00, 16:00-18:00', 'group' => 'pickup', 'open_question' => true],
+        'pickup.lead_hours' => ['type' => 'int', 'default' => 12, 'min' => 0, 'max' => 168, 'group' => 'pickup'],
+        'pickup.horizon_days' => ['type' => 'int', 'default' => 7, 'min' => 1, 'max' => 30, 'group' => 'pickup'],
+        'delivery.enabled' => ['type' => 'bool', 'default' => false, 'group' => 'pickup', 'open_question' => true],
+        'delivery.fee' => ['type' => 'money', 'default' => 0, 'group' => 'pickup', 'open_question' => true],
+        'delivery.zone' => ['type' => 'string', 'default' => '', 'group' => 'pickup', 'open_question' => true],
+        'delivery.frozen' => ['type' => 'bool', 'default' => false, 'group' => 'pickup', 'open_question' => true],
+        'delivery.taxable' => ['type' => 'bool', 'default' => false, 'group' => 'pickup', 'open_question' => true],
+        'payment.on_handover' => ['type' => 'bool', 'default' => true, 'group' => 'payment', 'open_question' => true],
 
         // Taxes du Québec
         'tax.tps_rate' => ['type' => 'rate', 'default' => 5000, 'group' => 'tax'],
