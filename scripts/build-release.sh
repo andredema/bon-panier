@@ -46,8 +46,9 @@ OUT="$ROOT/dist/$NAME.zip"
 if command -v zip >/dev/null 2>&1; then
   (cd "$STAGE" && zip -qr "$OUT" .)
 elif [ -x /c/Windows/System32/tar.exe ]; then
-  # tar de Windows (bsdtar) sait écrire un .zip
-  /c/Windows/System32/tar.exe -a -c -f "$(cygpath -w "$OUT")" -C "$(cygpath -w "$STAGE")" .
+  # tar de Windows (bsdtar) sait écrire un .zip ; on liste les entrées une à une,
+  # car un « ./ » en tête des chemins rend l'archive illisible pour l'Explorateur Windows.
+  (cd "$STAGE" && shopt -s dotglob && /c/Windows/System32/tar.exe -a -c -f "$(cygpath -w "$OUT")" -- *)
 else
   echo "Aucun outil pour créer le .zip (installez zip)." >&2; exit 1
 fi
