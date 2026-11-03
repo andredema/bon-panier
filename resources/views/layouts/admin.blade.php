@@ -15,13 +15,13 @@
         ['key' => 'dashboard', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard'],
         ['key' => 'orders', 'route' => null],
         ['key' => 'stock', 'route' => null],
-        ['key' => 'products', 'route' => null],
+        ['key' => 'products', 'route' => 'admin.products.index', 'active' => 'admin.products.*'],
         ['key' => 'customers', 'route' => null],
         ['key' => 'invoices', 'route' => null],
         ['key' => 'reports', 'route' => null],
     ];
     $manager = [
-        ['key' => 'settings', 'route' => null],
+        ['key' => 'settings', 'route' => 'admin.settings.edit', 'active' => 'admin.settings.*'],
         ['key' => 'team', 'route' => 'admin.users.index', 'active' => 'admin.users.*'],
     ];
     $user = auth()->user();
@@ -41,6 +41,8 @@
 </head>
 <body>
 <a class="saut" href="#contenu">Aller au contenu</a>
+<x-category-icons />
+
 <div class="app">
   <aside class="menu" x-data="{ ouvert: false }" :class="{ ouvert }" @keydown.escape="ouvert = false">
     <a class="marque" href="{{ route('admin.dashboard') }}">
@@ -62,7 +64,7 @@
             @if ($item['route'])
               <a href="{{ route($item['route']) }}" @if ($current) aria-current="page" @endif>
             @else
-              <a aria-disabled="true" title="{{ ucfirst(__('app.nav.soon')) }}">
+              <a aria-disabled="true">
             @endif
                 <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ $icons[$item['key']] }}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 {{ __('app.nav.'.$item['key']) }}
@@ -87,6 +89,12 @@
   <main class="contenu" id="contenu" tabindex="-1">
     @if (session('status'))
       <div class="alerte alerte-ok" role="status">{{ session('status') }}</div>
+    @endif
+    @if (session('warnings'))
+      <div class="alerte alerte-avert" role="status">
+        <b>{{ __('catalog.products.warnings') }}</b>
+        <ul>@foreach (session('warnings') as $w)<li>{{ $w }}</li>@endforeach</ul>
+      </div>
     @endif
     @yield('content')
   </main>

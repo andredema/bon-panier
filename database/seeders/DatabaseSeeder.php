@@ -3,14 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use RuntimeException;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Données de démonstration seulement : jamais en production.
      * En production, créer les comptes avec « php artisan users:create ».
@@ -31,5 +28,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Employé Démo',
             'email' => 'employe@example.com',
         ]);
+
+        $this->call(CatalogDemoSeeder::class);
     }
 }

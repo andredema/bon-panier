@@ -67,8 +67,8 @@ img, svg { max-width: 100%; }
 .saut:focus { top: 8px; color: var(--manioc); }
 
 /* Champs de formulaire */
-.champ { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--texte-2); }
-.champ input, .champ select, .champ textarea { min-height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 12px; background: var(--blanc); color: var(--encre); font-weight: 500; font-size: 15px; }
+.champ { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--texte-2); min-width: 0; }
+.champ input, .champ select, .champ textarea { width: 100%; min-width: 0; max-width: 100%; min-height: 44px; border-radius: 10px; border: 1.5px solid var(--ligne); padding: 0 12px; background: var(--blanc); color: var(--encre); font-weight: 500; font-size: 15px; }
 .champ input:focus, .champ select:focus, .champ textarea:focus { outline: 2px solid var(--vert); outline-offset: 1px; }
 .champ .erreur { color: #8A3420; font-weight: 600; font-size: 13px; }
 .case { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer; }
