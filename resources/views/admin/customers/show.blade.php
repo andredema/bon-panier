@@ -17,10 +17,24 @@
         @endif
         · {{ __('customers.since', ['date' => Format::date($customer->created_at)]) }}
       </p>
+      @unless ($customer->isErased())
+        <p>
+          @if ($customer->isSubscribed())
+            {{ __('customers.marketing.subscribed', ['date' => Format::date($customer->marketing_consent_at)]) }}
+          @elseif ($customer->marketing_unsubscribed_at)
+            {{ __('customers.marketing.unsubscribed_on', ['date' => Format::date($customer->marketing_unsubscribed_at)]) }}
+          @else
+            {{ __('customers.marketing.none') }}
+          @endif
+        </p>
+      @endunless
     </div>
-    @if ($manager)
-      <div class="actions"><a class="btn btn-secondaire" href="{{ route('admin.customers.export', $customer) }}">{{ __('customers.export') }}</a></div>
-    @endif
+    <div class="actions">
+      @if ($customer->isSubscribed())
+        <form method="POST" action="{{ route('admin.customers.unsubscribe', $customer) }}">@csrf<button class="btn btn-secondaire" type="submit">{{ __('customers.marketing.unsubscribe') }}</button></form>
+      @endif
+      @if ($manager)<a class="btn btn-secondaire" href="{{ route('admin.customers.export', $customer) }}">{{ __('customers.export') }}</a>@endif
+    </div>
   </div>
 
   <div class="kpis kpis-client">

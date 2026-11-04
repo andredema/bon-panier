@@ -57,8 +57,14 @@ cp .env.example .env
 mkdir -p ~/backups && chmod 700 ~/backups
 php -v                          # doit afficher 8.3 ou plus ; sinon PHP=<chemin du php 8.3> devant la commande suivante
 bash scripts/post-deploy.sh     # clé, migrations, lien storage, caches
-php artisan users:create        # premier compte gérant (mot de passe saisi au clavier, jamais dans un fichier)
+php artisan users:create        # premier compte : choisir « Super administrateur » (mot de passe saisi au clavier, jamais dans un fichier)
 ```
+
+Un compte déjà créé comme gérant devient super administrateur avec `php artisan users:role son@courriel admin`.
+
+**Rôles** : le super administrateur a tous les droits et seul il gère les comptes de gérant et de super administrateur ; le gérant gère les employés et les comptables ; l’employé traite commandes, stock, clients et encaissements ; le comptable voit factures, paiements et rapports, sans rien modifier.
+
+**Livraison à domicile** : désactivée par défaut. L’activer dans Gestion › Réglages (livraison, zone, frais) pour que le client puisse choisir « Livraison à domicile » ou « Je viens ramasser ».
 
 `.env` n'est créé qu'une fois : les mises à jour suivantes ne l'écrasent pas, puisque l'archive n'en contient pas.
 
@@ -136,6 +142,7 @@ php artisan optimize && php artisan up
 - **Demande d’accès** d’un client : Gestion › Clients › fiche du client › « Exporter ses renseignements » (gérant). Le fichier JSON contient ses coordonnées, ses commandes, ses paiements et ses factures ; le lui transmettre dans les 30 jours.
 - **Demande d’effacement** : même fiche › « Effacer les renseignements personnels ». Le nom, le téléphone, le courriel et les adresses sont supprimés ; les factures émises restent intactes (obligation fiscale de 6 ans). L’effacement est refusé tant qu’une commande est en cours ou qu’un solde reste dû.
 - **Correction** : la fiche client est modifiable par toute l’équipe.
+- **Infolettre (soldes et nouveautés)** : le client s’abonne seulement en cochant la case du formulaire de commande (jamais cochée d’avance). Gestion › Clients › « Abonnés à l’infolettre seulement » les liste ; le gérant exporte la liste en CSV, avec un lien de désabonnement personnel pour chaque abonné, à mettre dans chaque envoi. Un client qui demande le désabonnement par téléphone : fiche client › « Désabonner ».
 - Chaque effacement est inscrit au journal d’audit, sans donnée personnelle.
 
 ## 10. Essais sur de vrais appareils (avant l’ouverture)

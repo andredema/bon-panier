@@ -93,7 +93,8 @@ class RolesTest extends TestCase
 
     public function test_password_is_kept_when_left_blank(): void
     {
-        $manager = User::factory()->manager()->create();
+        // Seul le super administrateur peut nommer un gérant
+        $manager = User::factory()->admin()->create();
         $employee = User::factory()->create();
         $hash = $employee->password;
 

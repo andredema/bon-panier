@@ -32,7 +32,7 @@
                 <span class="etiquette e-inactif">{{ __('app.users.inactive') }}</span>
               @endif
             </td>
-            <td class="droite"><a class="btn btn-secondaire mini" href="{{ route('admin.users.edit', $u) }}">{{ __('app.users.modify') }}<span class="sr"> {{ $u->name }}</span></a></td>
+            <td class="droite">@if ($u->is(auth()->user()) || auth()->user()->canManage($u))<a class="btn btn-secondaire mini" href="{{ route('admin.users.edit', $u) }}">{{ __('app.users.modify') }}<span class="sr"> {{ $u->name }}</span></a>@endif</td>
           </tr>
         @endforeach
       </tbody>

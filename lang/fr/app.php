@@ -7,8 +7,10 @@ return [
     'admin_tagline' => 'Gestion',
 
     'roles' => [
+        'admin' => 'Super administrateur',
         'gerant' => 'Gérant',
         'employe' => 'Employé',
+        'comptable' => 'Comptable',
     ],
 
     'nav' => [
@@ -87,7 +89,9 @@ return [
         'modify' => 'Modifier',
         'created' => 'Le compte a été créé.',
         'updated' => 'Le compte a été mis à jour.',
-        'self_demote' => 'Vous ne pouvez pas retirer votre propre accès de gérant.',
+        'self_demote' => 'Vous ne pouvez pas changer votre propre rôle ni désactiver votre propre compte.',
+        'roles_help' => 'Super administrateur : tous les droits et gestion des gérants. Gérant : tous les droits sauf les comptes de gérant. Employé : commandes, stock, clients, encaissements. Comptable : factures, paiements et rapports, en lecture.',
+        'not_manageable' => 'Seul un super administrateur peut modifier ce compte.',
         'you' => 'vous',
     ],
 

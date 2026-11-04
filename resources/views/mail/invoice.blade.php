@@ -18,6 +18,7 @@
       <p style="margin:0 0 12px;background:#F6E8CF;border-radius:10px;padding:12px;">{{ __('shop.mail.interac', ['total' => Format::money($balance), 'email' => $invoice->shop_snapshot['interac_email'], 'number' => $invoice->number]) }}</p>
     @endif
     <p style="margin:0;">{{ __('shop.mail.thanks') }}</p>
+    @include('mail.partials.unsubscribe', ['customer' => $invoice->customer])
   </td></tr>
 </table>
 </td></tr>

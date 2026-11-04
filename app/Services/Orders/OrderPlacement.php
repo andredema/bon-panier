@@ -73,6 +73,11 @@ final class OrderPlacement
             $customer->type ??= 'particulier';
             $customer->save();
 
+            // Infolettre : seulement si la case est cochée ; ne pas la cocher ne désabonne pas
+            if ($data['marketing'] ?? false) {
+                $customer->subscribe();
+            }
+
             return $this->writer->create($summary, $customer, [
                 'fulfilment' => $data['fulfilment'],
                 'slot_start' => $slot['start'],
@@ -112,6 +117,7 @@ final class OrderPlacement
             'payment_method' => ['required', 'in:'.implode(',', $payments)],
             'notes' => ['nullable', 'string', 'max:500'],
             'consent' => ['accepted'],
+            'marketing' => ['nullable', 'boolean'],
         ], [], __('shop.checkout.attributes'))->validate();
     }
 }

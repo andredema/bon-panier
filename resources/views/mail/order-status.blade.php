@@ -20,6 +20,7 @@
     @endif
     <p style="margin:16px 0;"><a href="{{ $order->trackingUrl() }}" style="display:inline-block;background:#1F4D2E;color:#FFFFFF;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:bold;">{{ __('shop.mail.track') }}</a></p>
     <p style="margin:0;">{{ __('shop.mail.thanks') }}</p>
+    @include('mail.partials.unsubscribe', ['customer' => $order->customer])
   </td></tr>
 </table>
 </td></tr>

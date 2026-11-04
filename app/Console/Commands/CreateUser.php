@@ -19,19 +19,16 @@ class CreateUser extends Command
     protected $signature = 'users:create
         {--name= : Nom affiché}
         {--email= : Courriel de connexion}
-        {--role= : gerant ou employe}';
+        {--role= : admin, gerant, employe ou comptable}';
 
-    protected $description = 'Créer un compte de l’équipe (gérant ou employé)';
+    protected $description = 'Créer un compte de l’équipe (super administrateur, gérant, employé ou comptable)';
 
     public function handle(): int
     {
         $data = [
             'name' => $this->option('name') ?? text('Nom', required: true),
             'email' => $this->option('email') ?? text('Courriel', required: true),
-            'role' => $this->option('role') ?? select('Rôle', [
-                UserRole::Manager->value => 'Gérant',
-                UserRole::Employee->value => 'Employé',
-            ]),
+            'role' => $this->option('role') ?? select('Rôle', collect(UserRole::cases())->mapWithKeys(fn (UserRole $r) => [$r->value => $r->label()])->all(), default: UserRole::Manager->value),
             'password' => password('Mot de passe (10 caractères minimum)', required: true),
         ];
 

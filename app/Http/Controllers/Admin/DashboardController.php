@@ -12,14 +12,21 @@ use App\Models\Product;
 use App\Services\Billing\InteracReconciliation;
 use App\Services\Stock\StockLevels;
 use App\Support\Quantity;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\View\View;
 
 /** Accueil de l'espace de gestion (maquettes/tableau-de-bord.html, cahier 4.1). */
 class DashboardController extends Controller
 {
-    public function __invoke(StockLevels $levels, InteracReconciliation $interac): View
+    public function __invoke(Request $request, StockLevels $levels, InteracReconciliation $interac): View|RedirectResponse
     {
+        // Le comptable arrive directement sur les factures
+        if ($request->user()->isAccountant()) {
+            return redirect()->route('admin.invoices.index');
+        }
+
         $active = array_map(fn (OrderStatus $s) => $s->value, OrderStatus::active());
 
         // Ventes du jour : commandes remises aujourd'hui, avant taxes

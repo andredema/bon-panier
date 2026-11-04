@@ -27,7 +27,10 @@
     <li>vous joindre à son sujet : confirmation, commande prête, précommande arrivée, facture ;</li>
     <li>tenir nos documents comptables et fiscaux.</li>
   </ul>
-  <p>Nous ne les vendons pas, ne les louons pas et ne les utilisons pas pour de la publicité. Votre consentement est demandé à chaque commande ; vous pouvez le retirer en tout temps.</p>
+  <p>Nous ne les vendons pas et ne les louons pas. Votre consentement est demandé à chaque commande ; vous pouvez le retirer en tout temps.</p>
+
+  <h2>Soldes et nouveautés par courriel</h2>
+  <p>Nous vous écrivons au sujet de nos soldes et nouveautés seulement si vous avez coché la case prévue à cet effet ; elle n’est jamais cochée d’avance. Chacun de ces courriels contient un lien pour vous désabonner en un clic, et vous pouvez aussi le demander à l’épicerie. Le désabonnement ne touche pas les courriels liés à vos commandes.</p>
 
   <h2>Témoins (cookies) et traceurs</h2>
   <p>Le site utilise seulement les témoins nécessaires à son fonctionnement (votre panier et la sécurité des formulaires). Aucun outil de mesure d’audience, aucun traceur publicitaire, aucune police ou ressource chargée depuis un site tiers.</p>

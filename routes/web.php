@@ -4,6 +4,7 @@ use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CheckoutController;
 use App\Http\Controllers\Shop\HomeController;
 use App\Http\Controllers\Shop\TrackingController;
+use App\Http\Controllers\Shop\UnsubscribeController;
 use Illuminate\Support\Facades\Route;
 
 // Page de commande publique
@@ -20,5 +21,8 @@ Route::middleware('throttle:cart')->prefix('panier')->name('shop.cart.')->group(
 Route::post('commande', [CheckoutController::class, 'store'])->middleware('throttle:orders')->name('shop.checkout');
 Route::get('commande/{order}/merci', [CheckoutController::class, 'confirmation'])->name('shop.confirmation');
 Route::get('suivi/{order}', TrackingController::class)->middleware('signed')->name('shop.track');
+
+// Infolettre : désabonnement en un clic depuis le lien signé des courriels
+Route::get('desabonnement/{customer}', UnsubscribeController::class)->middleware('signed')->name('shop.unsubscribe');
 
 Route::view('confidentialite', 'shop.privacy')->name('shop.privacy');
